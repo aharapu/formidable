@@ -1,19 +1,28 @@
 {
   "name": "formidable",
-  "version": "1.0.0",
   "description": "Ticket descroiption using form",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "homepage": "https://github.com/aharapu/formidable#readme",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aharapu/formidable.git"
   },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/aharapu/formidable/issues"
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "homepage": "https://github.com/aharapu/formidable#readme"
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "vite": "^3.2.3"
+  }
 }
