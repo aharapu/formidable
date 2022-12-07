@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import {DARK_BLUE} from "./constants";
 
 function App() {
   const handleCopyClick = (evt) => {
@@ -43,7 +44,7 @@ function App() {
         It <br />
         is <br />
         multiline <br />
-        and <span style={{ color: "red" }}>contains styled spans</span>
+        and <span style={{ color: DARK_BLUE }}>contains styled spans</span>
       </p>
       <Button onClick={handleCopyClick}>Copy to clipboard</Button>
     </div>
