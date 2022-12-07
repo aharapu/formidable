@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-import {DARK_BLUE} from "./constants";
+import { Button, Paper, Grid, TextField } from "@mui/material";
+import { DARK_BLUE } from "./constants";
 
 function App() {
   const handleCopyClick = (evt) => {
@@ -35,19 +35,47 @@ function App() {
   };
 
   return (
-    <div>
+    <>
       <h1>Formidable tickets</h1>
-      <Button children="Submit" variant="outlined" color="error" />
-      <p>
-        I am some text <strong>some is strong</strong> and <em>some is em</em>
-        <br />
-        It <br />
-        is <br />
-        multiline <br />
-        and <span style={{ color: DARK_BLUE }}>contains styled spans</span>
-      </p>
-      <Button onClick={handleCopyClick}>Copy to clipboard</Button>
-    </div>
+      <Paper
+        style={{ margin: "0 auto", maxWidth: "800px", padding: "20px" }}
+        elevation={3}
+      >
+        <Grid container spacing={3}>
+          <Grid item xs={6}>
+            <TextField
+              label="The What"
+              placeholder="Provide a description of the issue, as if you are explaining what is being seen and what is expected to a colleague."
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="The What"
+              placeholder="Provide a description of the issue, as if you are explaining what is being seen and what is expected to a colleague."
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+        <hr />
+        <h3>Preview: </h3>
+        <p
+          style={{
+            border: "2px solid black",
+            borderRadius: "5px",
+            padding: "10px",
+          }}
+        >
+          I am some text <strong>some is strong</strong> and <em>some is em</em>
+          <br />
+          It <br />
+          is <br />
+          multiline <br />
+          and <span style={{ color: DARK_BLUE }}>contains styled spans</span>
+        </p>
+        <Button onClick={handleCopyClick}>Copy to clipboard</Button>
+      </Paper>
+    </>
   );
 }
 
