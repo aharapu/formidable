@@ -1,6 +1,25 @@
 import React from "react";
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
+
+import {
+  Button,
+  Paper,
+  Grid,
+  TextField,
+  IconButton,
+  Typography,
+} from "@mui/material";
+
+import { dependencyInput } from "../main";
 
 export default function Preview() {
+  const dependecyCurrentValue = useRecoilValue(dependencyInput);
   const handleCopyClick = (evt) => {
     const clipboardContent = `
         <p>
@@ -37,6 +56,7 @@ export default function Preview() {
   return (
     <>
       <div>Preview</div>
+      <p>{dependecyCurrentValue}</p>
       <Button onClick={handleCopyClick}>Copy to clipboard</Button>
     </>
   );

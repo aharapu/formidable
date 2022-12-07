@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 
 import {
   Button,
@@ -10,12 +11,12 @@ import {
 } from "@mui/material";
 import { v4 as createId } from "uuid";
 
-export default function BulletContent({
-  textFieldLabel,
-  textFieldPlaceholder,
-}) {
+import { dependencyInput } from "../main";
+
+export function BulletContent({ textFieldLabel, textFieldPlaceholder }) {
   // TODO -> move state to parent and make this as dumb as possible
-  const [inputContent, setInputContent] = useState("");
+  // const [inputContent, setInputContent] = useState("");
+  const [inputContent, setInputContent] = useRecoilState(dependencyInput);
   const [items, setItems] = useState([]);
 
   const handleAddItem = () => {

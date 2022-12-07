@@ -2,9 +2,17 @@ import { Button, Paper, Grid, TextField, IconButton } from "@mui/material";
 import { DARK_BLUE } from "../constants";
 import { useState } from "react";
 import { v4 as createId } from "uuid";
-import BulletContent from "./BulletContent";
+import { BulletContent } from "./BulletContent";
 
 export default function FeatureForm() {
+  const [acceptanceCriterias, setAcceptanceCriterias] = useState([
+    { value: "", id: createId() },
+  ]);
+
+  const handleAddCriteria = () => {
+    setAcceptanceCriterias((prev) => [...prev, { value: "", id: createId() }]);
+  };
+
   return (
     <Paper
       style={{ margin: "0 auto", maxWidth: "800px", padding: "20px" }}
