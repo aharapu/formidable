@@ -54,9 +54,9 @@ export default function FeaturePreview() {
     return ul;
   };
 
-    const criteriasList = criterias.length > 0 || arrayToUL(
+    const criteriasList = criterias.length > 0 ? arrayToUL(
     criterias.map((criteria) => criteria.value)
-  ).innerHTML;
+  ).innerHTML : '';
   const techGuide = techGuidance.length > 0 ? arrayToUL([techGuidance]).innerHTML : '';
   const deps =
     dependencies.length > 0

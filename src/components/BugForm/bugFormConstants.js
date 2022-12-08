@@ -4,7 +4,7 @@ export const LABLES = {
   steps: "Steps to Reproduce",
   expectedResult: "Expected Result:",
   actualResult: "Actual Result:",
-  reproducible: "Y/N/Sometimes",
+  reproducible: "Reproducible (Y/N/Sometimes):",
   includeScreenshots: "Include screenshots and/or video",
 };
 

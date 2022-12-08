@@ -53,9 +53,9 @@ export default function BugPreview() {
     return ul;
   };
 
-    const stepsList = steps.length > 0 || arrayToUL(
+    const stepsList = steps.length > 0 ? arrayToUL(
     steps.map((step) => step.value)
-  ).innerHTML;
+  ).innerHTML : '';
 
     const isReproducible = reproducible ? `YES - ${reproducible}` : " NO ";
     const includeSS = includeScreenshots ? " YES " : " NO ";
