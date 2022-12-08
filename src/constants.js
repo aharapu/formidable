@@ -91,3 +91,42 @@ export const featureRequireAutomationTest = atom({
   key: "featureRequireAutomationTest",
   default: false,
 });
+
+//Bug states
+export const bugSummary = atom({
+  key: "bugSummary",
+  default: "",
+});
+
+export const bugEnv = atom({
+  key: "bugEnv",
+  default: "",
+});
+
+export const bugSteps = atom({
+  key: "bugSteps",
+  default: [],
+  /*
+  array object shape { id: UUID, value: String }
+  */
+});
+
+export const bugExpectedResult = atom({
+  key: "bugExpectedResult",
+  default: "",
+});
+
+export const bugActualResult = atom({
+  key: "bugActualResult",
+  default: "",
+});
+
+export const bugReproducible = atom({
+  key: "bugReproducible",
+  default: [],
+});
+
+export const bugIncludeScreenshots = atom({
+  key: "bugIncludeScreenshots",
+  default: false,
+});

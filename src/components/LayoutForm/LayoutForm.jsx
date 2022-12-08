@@ -2,10 +2,9 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useRecoilState } from "recoil";
 import { currentPage, HOME_PAGE } from "../../constants";
-import Preview from "../Preview";
 
-export function LayoutForm({ form }) {
-  const [, setPate] = useRecoilState(currentPage);
+export function LayoutForm({ form, preview }) {
+  const [, setPage] = useRecoilState(currentPage);
 
   return (
     <>
@@ -26,7 +25,7 @@ export function LayoutForm({ form }) {
           backgroundColor: "lightgray",
         }}
       >
-        <Button onClick={() => setPate(HOME_PAGE)}>Back</Button>
+        <Button onClick={() => setPage(HOME_PAGE)}>Back</Button>
       </div>
       <div
         id="content-container"
@@ -49,7 +48,7 @@ export function LayoutForm({ form }) {
           backgroundColor: "lightpink",
         }}
       >
-        <Preview />
+          {preview}
       </div>
     </>
   );
