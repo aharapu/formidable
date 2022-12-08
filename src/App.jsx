@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import React from "react";
 import Preview from "./components/Preview";
 import LayoutHome from "./components/LayoutHome/LayoutHome";
+import { LayoutForm } from "./components/LayoutForm/LayoutForm";
 
 import { BUG_PAGE, currentPage, FEATURE_PAGE, HOME_PAGE } from "./constants";
 
@@ -18,8 +19,8 @@ function App() {
   return (
     <>
       {pageName === HOME_PAGE && <LayoutHome />}
-      {pageName === FEATURE_PAGE && "feature page"}
-      {pageName === BUG_PAGE && "bug page"}
+      {pageName === FEATURE_PAGE && <LayoutForm form={<FeatureForm />} />}
+      {pageName === BUG_PAGE && <LayoutForm form={<BugForm />} />}
     </>
   );
 }
