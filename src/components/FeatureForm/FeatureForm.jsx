@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { v4 as createId } from "uuid";
+import { v4 as createId, validate } from "uuid";
 import { Paper, Grid } from "@mui/material";
 
 import {
@@ -11,12 +12,15 @@ import {
   featureRequireEdition,
   featureTechGuide,
   featureWhat,
+  formValidationErrors,
 } from "../../constants";
 
 import { BulletContent } from "../BulletContent";
-import { LABLES, PLACEHOLDERS } from "./featureFormConstants";
 import { FormTextField } from "../FormTextField";
 import { FormCheckbox } from "../FormCheckbox";
+
+import { LABLES, PLACEHOLDERS } from "./featureFormConstants";
+import { validateWhat } from "./utils";
 
 export default function FeatureForm() {
   const [what, setWhat] = useRecoilState(featureWhat);
@@ -29,6 +33,28 @@ export default function FeatureForm() {
   const [requireAutomation, setRequireAutomation] = useRecoilState(
     featureRequireAutomationTest
   );
+  const [validErr, setValidErr] = useRecoilState(formValidationErrors);
+
+  const [whatErr, setWhatErr] = useState(null);
+
+  const handleWhatChange = (e) => {
+    setWhat(e.target.value);
+    if (whatErr) {
+      setWhatErr(null);
+      setValidErr((prev) => prev.filter((err) => err !== "feature-what"));
+    }
+  };
+
+  const handleWhatBlur = () => {
+    const err = validateWhat(what);
+    if (err) {
+      setWhatErr(err);
+      // TODO -> have a formError state that is kept in sync
+      if (!validErr.includes("feature-what")) {
+        setValidErr((prev) => [...prev, "feature-what"]);
+      }
+    }
+  };
 
   // TODO -> get DRY?
   const handleAddCriteria = (criteria) => {
@@ -101,7 +127,10 @@ export default function FeatureForm() {
           placeholder={PLACEHOLDERS.what}
           multiline
           value={what}
-          onChange={(e) => setWhat(e.target.value)}
+          onChange={handleWhatChange}
+          onBlur={handleWhatBlur}
+          error={Boolean(whatErr)}
+          helperText={whatErr}
         />
         <BulletContent
           textFieldLabel={LABLES.acceptCritInput}

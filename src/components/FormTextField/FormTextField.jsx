@@ -10,6 +10,9 @@ export function FormTextField({
   showToggle: isUsingToggle = false,
   toggleLabel = "Default Toggle Label",
   onToggleChange = (isChecked) => {},
+  onBlur = () => {},
+  error,
+  helperText,
 }) {
   const [showInput, setShowInput] = useState(false);
 
@@ -47,6 +50,9 @@ export function FormTextField({
             fullWidth
             multiline={multiline}
             rows={4}
+            onBlur={onBlur}
+            error={error}
+            helperText={helperText}
           />
         </Grid>
       )}
