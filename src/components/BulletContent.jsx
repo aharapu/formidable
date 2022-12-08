@@ -1,26 +1,33 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
 
 import {
-  Button,
   Paper,
   Grid,
   TextField,
   IconButton,
   Typography,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
-import { v4 as createId } from "uuid";
+import { AddCircleOutline, DeleteForever } from "@mui/icons-material";
 
-import { dependencyInput } from "../main";
-
-export function BulletContent({ textFieldLabel, textFieldPlaceholder }) {
-  // TODO -> move state to parent and make this as dumb as possible
-  // const [inputContent, setInputContent] = useState("");
-  const [inputContent, setInputContent] = useRecoilState(dependencyInput);
-  const [items, setItems] = useState([]);
+export function BulletContent({
+  textFieldLabel = "Default Input Label",
+  textFieldPlaceholder = "Default Input Placeholder",
+  onAdd = (inputString) => {},
+  onDelete = (id) => {},
+  items = [], // item shape is { id: UUID, value: String }
+  showToggle: isUsingToggle = false,
+  toggleLabel = "Default Toggle Label",
+  onToggleChange = (isChecked) => {},
+}) {
+  const [showInput, setShowInput] = useState(false);
+  const [inputContent, setInputContent] = useState("");
 
   const handleAddItem = () => {
-    setItems((prev) => [...prev, { value: inputContent, id: createId() }]);
+    const trimmedInput = inputContent.trim();
+    if (!trimmedInput) return;
+    onAdd(trimmedInput);
     setInputContent("");
   };
 
@@ -28,34 +35,74 @@ export function BulletContent({ textFieldLabel, textFieldPlaceholder }) {
     e.keyCode === 13 && handleAddItem();
   };
 
+  const handleSwitchChange = (e) => {
+    const isChecked = e.target.checked;
+    setShowInput(isChecked);
+    onToggleChange(isChecked);
+  };
+
+  const isInputVisible = isUsingToggle ? showInput : true;
+
   return (
-    <Grid container item xs={12}>
-      <Paper
-        style={{ width: "100%", padding: "15px", backgroundColor: "lightblue" }}
-        height={3}
-      >
-        <Grid item xs={12}>
-          <TextField
-            label={textFieldLabel}
-            placeholder={textFieldPlaceholder} // TODO -> pass an array and provide pseudorandom placeholders
-            fullWidth
-            value={inputContent}
-            onChange={(e) => setInputContent(e.target.value)}
-            onKeyDown={handleKeyDown}
+    <>
+      {isUsingToggle && (
+        <Grid container item xs={12}>
+          <FormControlLabel
+            control={
+              <Switch
+                size="medium"
+                value={showInput}
+                onChange={handleSwitchChange}
+              />
+            }
+            label={toggleLabel}
           />
         </Grid>
-        <Grid item xs={12}>
-          <IconButton onClick={handleAddItem}>(+)</IconButton>
-        </Grid>
-        {items.map(({ id, value }) => (
-          <React.Fragment key={id}>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={10}>
-              <Typography>{value}</Typography>
+      )}
+      {isInputVisible && (
+        <Grid container item xs={12}>
+          <Paper
+            style={{
+              width: "100%",
+              padding: "15px",
+              backgroundColor: "lightblue",
+            }}
+            height={3}
+          >
+            <Grid item xs={12}>
+              <TextField
+                label={textFieldLabel}
+                placeholder={textFieldPlaceholder}
+                fullWidth
+                value={inputContent}
+                onChange={(e) => setInputContent(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
             </Grid>
-          </React.Fragment>
-        ))}
-      </Paper>
-    </Grid>
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <IconButton onClick={handleAddItem}>
+                <AddCircleOutline />
+              </IconButton>
+            </Grid>
+            {items.map(({ id, value }) => (
+              <React.Fragment key={id}>
+                <Grid
+                  item
+                  xs={12}
+                  paddingLeft={2}
+                  display="flex"
+                  alignItems="center"
+                >
+                  <IconButton onClick={() => onDelete(id)}>
+                    <DeleteForever />
+                  </IconButton>
+                  <Typography>{value}</Typography>
+                </Grid>
+              </React.Fragment>
+            ))}
+          </Paper>
+        </Grid>
+      )}
+    </>
   );
 }
