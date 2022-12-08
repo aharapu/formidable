@@ -20,7 +20,7 @@ import { FormTextField } from "../FormTextField";
 import { FormCheckbox } from "../FormCheckbox";
 
 import { LABLES, PLACEHOLDERS } from "./featureFormConstants";
-import { validateWhat } from "./utils";
+import { validateACs, validateWhat } from "./utils";
 
 export default function FeatureForm() {
   const [what, setWhat] = useRecoilState(featureWhat);
@@ -36,6 +36,7 @@ export default function FeatureForm() {
   const [validErr, setValidErr] = useRecoilState(formValidationErrors);
 
   const [whatErr, setWhatErr] = useState(null);
+  const [ACsErr, setACsErr] = useState(null);
 
   const handleWhatChange = (e) => {
     setWhat(e.target.value);
@@ -49,7 +50,6 @@ export default function FeatureForm() {
     const err = validateWhat(what);
     if (err) {
       setWhatErr(err);
-      // TODO -> have a formError state that is kept in sync
       if (!validErr.includes("feature-what")) {
         setValidErr((prev) => [...prev, "feature-what"]);
       }
@@ -58,11 +58,26 @@ export default function FeatureForm() {
 
   // TODO -> get DRY?
   const handleAddCriteria = (criteria) => {
+    if (ACsErr) {
+      setACsErr(null);
+      setValidErr((prev) => prev.filter((err) => err !== "feature-ACs"));
+    }
     setACs((prev) => [...prev, { id: createId(), value: criteria }]);
   };
 
   const handleDelCriteria = (critId) => {
     setACs((prevACs) => prevACs.filter((ac) => ac.id !== critId));
+  };
+
+  const handleACsBlur = () => {
+    const err = validateACs(ACs);
+
+    if (err) {
+      setACsErr(err);
+      if (!validErr.includes("feature-ACs")) {
+        setValidErr((prev) => [...prev, "feature-ACs"]);
+      }
+    }
   };
 
   const handleAddDeps = (dep) => {
@@ -135,6 +150,9 @@ export default function FeatureForm() {
         <BulletContent
           textFieldLabel={LABLES.acceptCritInput}
           textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
+          textFieldOnBlur={handleACsBlur}
+          textFieldShowError={Boolean(ACsErr)}
+          textFieldError={ACsErr}
           items={ACs}
           // TODO -> use an array and provide pseudorandom placeholders
           // TODO -> if this is a function, it will auto switch to new random placeholder
