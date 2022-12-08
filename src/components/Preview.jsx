@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 
-import { Button } from "@mui/material";
+import {Button, Typography} from "@mui/material";
 
 import {
   featureACs,
@@ -53,10 +53,10 @@ export default function Preview() {
     return ul;
   };
 
-  const criteriasList = arrayToUL(
+  const criteriasList = criterias.length > 0 || arrayToUL(
     criterias.map((criteria) => criteria.value)
   ).innerHTML;
-  const techGuide = arrayToUL([techGuidance]).innerHTML;
+  const techGuide = techGuidance.length > 0 ? arrayToUL([techGuidance]).innerHTML : '';
   const deps =
     dependencies.length > 0
       ? arrayToUL(dependencies.map((dep) => dep.value)).innerHTML
@@ -72,35 +72,39 @@ export default function Preview() {
   const requiresAutomation = automation ? " YES " : " NO ";
 
   let clipboardContent = `
-        <div>Preview</div>
-        <span style="color:#6554C0">
+        <span style="color:#6554C0; display: inline-block;margin: 10px 0">
            <strong>Acceptance Criteria:</strong>
         </span>
         ${criteriasList}
-        <span style="color:#36B37E">
+        </br>
+        <span style="color:#36B37E; display: inline-block;margin: 10px 0">
            <strong>Technical Guidance:</strong>
         </span>
        ${techGuide}
-         <span style="color:#0747A6">
+       </br>
+         <span style="color:#0747A6; display: inline-block;margin: 10px 0">
            <strong>Dependencies:</strong>
         </span>
        ${deps}
-        <span style="color:#FF991F">
+       </br>
+        <span style="color:#FF991F; display: inline-block;margin: 10px 0">
            <strong>Requires a Feature Flag:</strong>
         </span>
-       <span style="color: #97A0AF">
+       <span style="color: #97A0AF; display: inline-block;margin: 10px 0">
             <strong> ${requiresFF}</strong>
        </span>
       <br/>
-        <span style="color:#FF5630">
+        <span style="color:#FF5630; display: inline-block;margin: 10px 0">
            <strong>Impacted Projects:</strong>
         </span>
        ${impactedProjects}
-        <span style="color:#403294">
+       </br>
+        <span style="color:#403294; display: inline-block;margin: 10px 0">
            <strong>Requires an Edition:</strong>
         </span>
        ${requiresEdition}
-               <span style="color:#008DA6">
+       </br>
+               <span style="color:#008DA6; display: inline-block;margin: 10px 0">
            <strong>Requires Automation Test:</strong>
         </span>
        <span style="color: #97A0AF">
@@ -111,8 +115,9 @@ export default function Preview() {
   // TODO -> use state to create an elaborate preview with colors and such
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: clipboardContent }}></div>
-      <Button onClick={handleCopyClick}>Copy to clipboard</Button>
+        <Typography align="center" variant="h5">PREVIEW</Typography>
+        <div dangerouslySetInnerHTML={{ __html: clipboardContent }}></div>
+        <Button onClick={handleCopyClick}>Copy to clipboard</Button>
     </>
   );
 }
