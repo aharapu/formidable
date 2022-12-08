@@ -11,7 +11,7 @@ import {
   featureRequireEdition,
   featureTechGuide,
   featureWhat,
-} from "../../main";
+} from "../../constants";
 
 import { BulletContent } from "../BulletContent";
 import { LABLES, PLACEHOLDERS } from "./featureFormConstants";

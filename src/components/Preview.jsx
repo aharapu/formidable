@@ -1,21 +1,17 @@
 import React from "react";
-import {
-  useRecoilValue,
-} from "recoil";
+import { useRecoilValue } from "recoil";
+
+import { Button } from "@mui/material";
 
 import {
-  Button,
-} from "@mui/material";
-
-import {
-    featureACs,
-    featureDeps,
-    featureTechGuide,
-    featureFlag,
-    featureImpactedProj,
-    featureRequireEdition,
-    featureRequireAutomationTest
-} from "../main";
+  featureACs,
+  featureDeps,
+  featureTechGuide,
+  featureFlag,
+  featureImpactedProj,
+  featureRequireEdition,
+  featureRequireAutomationTest,
+} from "../constants";
 
 export default function Preview() {
   const criterias = useRecoilValue(featureACs);
@@ -27,7 +23,6 @@ export default function Preview() {
   const automation = useRecoilValue(featureRequireAutomationTest);
 
   const handleCopyClick = (evt) => {
-
     var type = "text/html";
     var blob = new Blob([clipboardContent], { type });
     var data = [new ClipboardItem({ [type]: blob })];
@@ -47,25 +42,34 @@ export default function Preview() {
   const arrayToUL = (arr) => {
     const ul = document.createElement("ul");
     ul.append(
-        ...arr.map((value) => {
-          if (Array.isArray(value)) return arrayToUL(value);
-          const li = document.createElement("li");
-          li.textContent = value;
-          li.style = ' margin: 10px 0;';
-          return li;
-        })
+      ...arr.map((value) => {
+        if (Array.isArray(value)) return arrayToUL(value);
+        const li = document.createElement("li");
+        li.textContent = value;
+        li.style = " margin: 10px 0;";
+        return li;
+      })
     );
     return ul;
   };
 
-
-  const criteriasList = arrayToUL(criterias.map((criteria) => criteria.value)).innerHTML;
+  const criteriasList = arrayToUL(
+    criterias.map((criteria) => criteria.value)
+  ).innerHTML;
   const techGuide = arrayToUL([techGuidance]).innerHTML;
-  const deps = dependencies.length> 0 ? arrayToUL(dependencies.map((dep) => dep.value)).innerHTML : '<span style="color: #97A0AF"><strong> NO </strong></span>';
-  const requiresFF = FF? `YES - ${FF}` : ' NO ';
-  const impactedProjects = arrayToUL(impactedProj.map((proj) => proj.value)).innerHTML;
-  const requiresEdition = edition.length> 0 ? arrayToUL(edition.map((ed) => ed.value)).innerHTML : '<span style="color: #97A0AF"><strong> NO </strong></span>';
-  const requiresAutomation = automation? ' YES ' : ' NO ';
+  const deps =
+    dependencies.length > 0
+      ? arrayToUL(dependencies.map((dep) => dep.value)).innerHTML
+      : '<span style="color: #97A0AF"><strong> NO </strong></span>';
+  const requiresFF = FF ? `YES - ${FF}` : " NO ";
+  const impactedProjects = arrayToUL(
+    impactedProj.map((proj) => proj.value)
+  ).innerHTML;
+  const requiresEdition =
+    edition.length > 0
+      ? arrayToUL(edition.map((ed) => ed.value)).innerHTML
+      : '<span style="color: #97A0AF"><strong> NO </strong></span>';
+  const requiresAutomation = automation ? " YES " : " NO ";
 
   let clipboardContent = `
         <div>Preview</div>
@@ -107,8 +111,8 @@ export default function Preview() {
   // TODO -> use state to create an elaborate preview with colors and such
   return (
     <>
-        <div dangerouslySetInnerHTML={{__html: clipboardContent}}></div>
-        <Button onClick={handleCopyClick}>Copy to clipboard</Button>
+      <div dangerouslySetInnerHTML={{ __html: clipboardContent }}></div>
+      <Button onClick={handleCopyClick}>Copy to clipboard</Button>
     </>
   );
 }
