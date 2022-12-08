@@ -9,11 +9,13 @@ import {
   FormControlLabel,
   Switch,
 } from "@mui/material";
+import { AddCircleOutline, DeleteForever } from "@mui/icons-material";
 
 export function BulletContent({
   textFieldLabel = "Default Input Label",
   textFieldPlaceholder = "Default Input Placeholder",
-  onAddInput = (inputString) => {},
+  onAdd = (inputString) => {},
+  onDelete = (id) => {},
   items = [], // item shape is { id: UUID, value: String }
   showToggle: isUsingToggle = false,
   toggleLabel = "Default Toggle Label",
@@ -23,7 +25,9 @@ export function BulletContent({
   const [inputContent, setInputContent] = useState("");
 
   const handleAddItem = () => {
-    onAddInput(inputContent);
+    const trimmedInput = inputContent.trim();
+    if (!trimmedInput) return;
+    onAdd(trimmedInput);
     setInputContent("");
   };
 
@@ -75,13 +79,23 @@ export function BulletContent({
                 onKeyDown={handleKeyDown}
               />
             </Grid>
-            <Grid item xs={12}>
-              <IconButton onClick={handleAddItem}>(+)</IconButton>
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <IconButton onClick={handleAddItem}>
+                <AddCircleOutline />
+              </IconButton>
             </Grid>
             {items.map(({ id, value }) => (
               <React.Fragment key={id}>
-                <Grid item xs={2}></Grid>
-                <Grid item xs={10}>
+                <Grid
+                  item
+                  xs={12}
+                  paddingLeft={2}
+                  display="flex"
+                  alignItems="center"
+                >
+                  <IconButton onClick={() => onDelete(id)}>
+                    <DeleteForever />
+                  </IconButton>
                   <Typography>{value}</Typography>
                 </Grid>
               </React.Fragment>

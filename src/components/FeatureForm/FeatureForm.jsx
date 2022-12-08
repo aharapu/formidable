@@ -35,16 +35,34 @@ export default function FeatureForm() {
     setACs((prev) => [...prev, { id: createId(), value: criteria }]);
   };
 
+  const handleDelCriteria = (critId) => {
+    setACs((prevACs) => prevACs.filter((ac) => ac.id !== critId));
+  };
+
   const handleAddDeps = (dep) => {
     setDeps((prev) => [...prev, { id: createId(), value: dep }]);
+  };
+
+  const handleDelDeps = (depId) => {
+    setDeps((prevDeps) => prevDeps.filter((dep) => dep.id !== depId));
   };
 
   const handleAddProj = (proj) => {
     setImpactProjs((prev) => [...prev, { id: createId(), value: proj }]);
   };
 
+  const handleDelProj = (projId) => {
+    setImpactProjs((prevProjs) => prevProjs.filter((pr) => pr.id !== projId));
+  };
+
   const handleAddEdition = (edition) => {
     setEditions((prev) => [...prev, { id: createId(), value: edition }]);
+  };
+
+  const handleDelEdition = (editionId) => {
+    setEditions((prevEditions) =>
+      prevEditions.filter((edition) => edition.id !== editionId)
+    );
   };
 
   const handleToggleDeps = (isVisible) => {
@@ -91,7 +109,8 @@ export default function FeatureForm() {
           items={ACs}
           // TODO -> use an array and provide pseudorandom placeholders
           // TODO -> if this is a function, it will auto switch to new random placeholder
-          onAddInput={handleAddCriteria}
+          onAdd={handleAddCriteria}
+          onDelete={handleDelCriteria}
         />
         <FormTextField
           label={LABLES.techGuide}
@@ -106,8 +125,9 @@ export default function FeatureForm() {
           showToggle
           toggleLabel={LABLES.depsToggle}
           items={deps}
-          onAddInput={handleAddDeps}
+          onAdd={handleAddDeps}
           onToggleChange={handleToggleDeps}
+          onDelete={handleDelDeps}
         />
         <FormTextField
           label={LABLES.flagInput}
@@ -122,7 +142,8 @@ export default function FeatureForm() {
           textFieldLabel={LABLES.imapctedProj}
           textFieldPlaceholder={PLACEHOLDERS.imapctedProj}
           items={impactProjs}
-          onAddInput={handleAddProj}
+          onAdd={handleAddProj}
+          onDelete={handleDelProj}
         />
         <BulletContent
           textFieldLabel={LABLES.editionInput}
@@ -130,7 +151,8 @@ export default function FeatureForm() {
           showToggle
           toggleLabel={LABLES.editionToggle}
           items={editions}
-          onAddInput={handleAddEdition}
+          onAdd={handleAddEdition}
+          onDelete={handleDelEdition}
           onToggleChange={handleToggleEditions}
         />
         <FormCheckbox
