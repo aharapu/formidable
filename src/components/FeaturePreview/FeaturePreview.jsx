@@ -1,16 +1,17 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 
-import {Button, Typography} from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 import {
-    featureACs,
-    featureDeps,
-    featureTechGuide,
-    featureFlag,
-    featureImpactedProj,
-    featureRequireEdition,
-    featureRequireAutomationTest, featureWhat,
+  featureACs,
+  featureDeps,
+  featureTechGuide,
+  featureFlag,
+  featureImpactedProj,
+  featureRequireEdition,
+  featureRequireAutomationTest,
+  featureWhat,
 } from "../../constants";
 
 export default function FeaturePreview() {
@@ -54,10 +55,12 @@ export default function FeaturePreview() {
     return ul;
   };
 
-    const criteriasList = criterias.length > 0 ? arrayToUL(
-    criterias.map((criteria) => criteria.value)
-  ).innerHTML : '';
-  const techGuide = techGuidance.length > 0 ? arrayToUL([techGuidance]).innerHTML : '';
+  const criteriasList =
+    criterias.length > 0
+      ? arrayToUL(criterias.map((criteria) => criteria.value)).innerHTML
+      : "";
+  const techGuide =
+    techGuidance.length > 0 ? arrayToUL([techGuidance]).innerHTML : "";
   const deps =
     dependencies.length > 0
       ? arrayToUL(dependencies.map((dep) => dep.value)).innerHTML
@@ -121,9 +124,13 @@ export default function FeaturePreview() {
   // TODO -> use state to create an elaborate preview with colors and such
   return (
     <>
-        <Typography align="center" variant="h5">PREVIEW</Typography>
-        <div dangerouslySetInnerHTML={{ __html: clipboardContent }}></div>
-        <Button variant="contained" color={"success"} onClick={handleCopyClick}>Copy to clipboard</Button>
+      <Typography align="center" variant="h5">
+        PREVIEW
+      </Typography>
+      <div dangerouslySetInnerHTML={{ __html: clipboardContent }}></div>
+      <Button variant="contained" color={"success"} onClick={handleCopyClick}>
+        Copy to clipboard
+      </Button>
     </>
   );
 }

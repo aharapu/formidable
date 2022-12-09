@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { v4 as createId } from "uuid";
+import { v4 as createId, validate } from "uuid";
 import { Paper, Grid } from "@mui/material";
 
 import {
@@ -11,12 +12,15 @@ import {
   featureRequireEdition,
   featureTechGuide,
   featureWhat,
+  formValidationErrors,
 } from "../../constants";
 
 import { BulletContent } from "../BulletContent";
-import { LABLES, PLACEHOLDERS } from "./featureFormConstants";
 import { FormTextField } from "../FormTextField";
 import { FormCheckbox } from "../FormCheckbox";
+
+import { LABLES, PLACEHOLDERS } from "./featureFormConstants";
+import { validateACs, validateWhat } from "./utils";
 
 export default function FeatureForm() {
   const [what, setWhat] = useRecoilState(featureWhat);
@@ -29,14 +33,51 @@ export default function FeatureForm() {
   const [requireAutomation, setRequireAutomation] = useRecoilState(
     featureRequireAutomationTest
   );
+  const [validErr, setValidErr] = useRecoilState(formValidationErrors);
+
+  const [whatErr, setWhatErr] = useState(null);
+  const [ACsErr, setACsErr] = useState(null);
+
+  const handleWhatChange = (e) => {
+    setWhat(e.target.value);
+    if (whatErr) {
+      setWhatErr(null);
+      setValidErr((prev) => prev.filter((err) => err !== "feature-what"));
+    }
+  };
+
+  const handleWhatBlur = () => {
+    const err = validateWhat(what);
+    if (err) {
+      setWhatErr(err);
+      if (!validErr.includes("feature-what")) {
+        setValidErr((prev) => [...prev, "feature-what"]);
+      }
+    }
+  };
 
   // TODO -> get DRY?
   const handleAddCriteria = (criteria) => {
+    if (ACsErr) {
+      setACsErr(null);
+      setValidErr((prev) => prev.filter((err) => err !== "feature-ACs"));
+    }
     setACs((prev) => [...prev, { id: createId(), value: criteria }]);
   };
 
   const handleDelCriteria = (critId) => {
     setACs((prevACs) => prevACs.filter((ac) => ac.id !== critId));
+  };
+
+  const handleACsBlur = () => {
+    const err = validateACs(ACs);
+
+    if (err) {
+      setACsErr(err);
+      if (!validErr.includes("feature-ACs")) {
+        setValidErr((prev) => [...prev, "feature-ACs"]);
+      }
+    }
   };
 
   const handleAddDeps = (dep) => {
@@ -101,11 +142,17 @@ export default function FeatureForm() {
           placeholder={PLACEHOLDERS.what}
           multiline
           value={what}
-          onChange={(e) => setWhat(e.target.value)}
+          onChange={handleWhatChange}
+          onBlur={handleWhatBlur}
+          error={Boolean(whatErr)}
+          helperText={whatErr}
         />
         <BulletContent
           textFieldLabel={LABLES.acceptCritInput}
           textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
+          textFieldOnBlur={handleACsBlur}
+          textFieldShowError={Boolean(ACsErr)}
+          textFieldError={ACsErr}
           items={ACs}
           // TODO -> use an array and provide pseudorandom placeholders
           // TODO -> if this is a function, it will auto switch to new random placeholder
