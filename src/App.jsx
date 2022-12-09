@@ -20,8 +20,12 @@ function App() {
   return (
     <>
       {pageName === HOME_PAGE && <LayoutHome />}
-      {pageName === FEATURE_PAGE && <LayoutForm form={<FeatureForm />} preview={<FeaturePreview/>} />}
-      {pageName === BUG_PAGE && <LayoutForm form={<BugForm />} preview={<BugPreview/>} />}
+      {pageName === FEATURE_PAGE && (
+        <LayoutForm form={<FeatureForm />} preview={<FeaturePreview />} />
+      )}
+      {pageName === BUG_PAGE && (
+        <LayoutForm form={<BugForm />} preview={<BugPreview />} />
+      )}
     </>
   );
 }
