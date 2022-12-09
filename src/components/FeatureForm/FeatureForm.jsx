@@ -134,6 +134,43 @@ export default function FeatureForm() {
   const handleTestInstructionsChange = (changeType, data) => {
     console.log("changeType", changeType);
     console.log("data", data);
+    const scenarioId = data?.scenarioId;
+
+    switch (changeType) {
+      case "add-test":
+        setTestInstructions((prev) => [
+          ...prev,
+          {
+            scenarioName: "",
+            scenarioId: createId(),
+            given: [{ id: createId(), value: "" }],
+            when: [{ id: createId(), value: "" }],
+            then: [{ id: createId(), value: "" }],
+          },
+        ]);
+        break;
+      case "delete-test":
+        setTestInstructions((prev) =>
+          prev.filter((t) => t.scenarioId !== scenarioId)
+        );
+        break;
+      case "edit-scenario-name":
+        const name = data.scenarioName;
+        console.log("name", name);
+        const existingScenario = testIntructions.find(
+          (t) => t.scenarioId === scenarioId
+        );
+        const updatedScenario = { ...existingScenario, scenarioName: name };
+        console.log("updatedScenario", updatedScenario);
+        const updatedInstructions = testIntructions.map((t) =>
+          t.scenarioId === scenarioId ? updatedScenario : t
+        );
+        console.log("updatedInstructions", updatedInstructions);
+        setTestInstructions(updatedInstructions);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleRequireAutoChange = (isRequired) => {

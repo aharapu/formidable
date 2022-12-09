@@ -22,6 +22,21 @@ export function TestingInstructions({
   items,
   onChange = (changeType, data) => {},
 }) {
+  const handleAddTest = () => {
+    onChange("add-test");
+  };
+
+  const handleDeleteTest = (scenarioId) => {
+    onChange("delete-test", { scenarioId });
+  };
+
+  const handleScenarioNameChange = (e, scenarioId) => {
+    onChange("edit-scenario-name", {
+      scenarioId,
+      scenarioName: e.target.value,
+    });
+  };
+
   const handleAddGiven = () => {
     onChange();
   };
@@ -35,18 +50,21 @@ export function TestingInstructions({
   return (
     <>
       <Grid item xs={12}>
-        <Button>Add Test</Button>
+        <Button variant="contained" color="primary" onClick={handleAddTest}>
+          Add Test
+        </Button>
       </Grid>
       {items.map((item) => (
         <React.Fragment key={item.scenarioId}>
           <Grid item xs={12} display="flex" alignItems="center">
-            <IconButton>
+            <IconButton onClick={() => handleDeleteTest(item.scenarioId)}>
               <DeleteForever />
             </IconButton>
             <TextField
               label="scenario name"
               value={item.scenarioName}
               fullWidth
+              onChange={(e) => handleScenarioNameChange(e, item.scenarioId)}
             />
           </Grid>
           {item.given.map((g, idx) => (
