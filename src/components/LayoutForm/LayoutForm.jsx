@@ -105,9 +105,9 @@ export function LayoutForm({ form, preview }) {
           width: "33vw",
           minHeight: "550px",
           position: "fixed",
-          top: "80px",
+          top: "68px",
           right: "0px",
-          backgroundColor: "lightpink",
+          paddingTop: "24px",
         }}
       >
         {preview}
