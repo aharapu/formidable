@@ -61,7 +61,7 @@ export default function BugPreview() {
     const includeSS = includeScreenshots ? " YES " : " NO ";
 
   let clipboardContent = `
-        <span style="color:#6554C0; display: inline-block;margin: 10px 0">
+        <span style="color:#97A0AF; display: inline-block;margin: 10px 0">
            <strong>Summary:</strong>
         </span>
         ${summary}
@@ -76,17 +76,17 @@ export default function BugPreview() {
         </span>
        ${stepsList}
        </br>
-            <span style="color:#6554C0; display: inline-block;margin: 10px 0">
+            <span style="color:#4C9AFF; display: inline-block;margin: 10px 0">
            <strong>Expected Result:</strong>
         </span>
         ${expectedResult}
         </br>
-             <span style="color:#6554C0; display: inline-block;margin: 10px 0">
+             <span style="color:#FF991F; display: inline-block;margin: 10px 0">
            <strong>Actual Result:</strong>
         </span>
         ${actualResult}
         </br>
-        <span style="color:#FF991F; display: inline-block;margin: 10px 0">
+        <span style="color:#BF2600; display: inline-block;margin: 10px 0">
            <strong>Reproducible (Y/N/Sometimes): :</strong>
         </span>
        <span style="color: #97A0AF; display: inline-block;margin: 10px 0">
