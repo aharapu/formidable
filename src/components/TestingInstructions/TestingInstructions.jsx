@@ -37,15 +37,51 @@ export function TestingInstructions({
     });
   };
 
-  const handleAddGiven = () => {
-    onChange();
+  const handleAddGiven = (id, scenarioId) => {
+    onChange("add-given", { givenId: id, scenarioId });
+  };
+  const handleAddWhen = (id, scenarioId) => {
+    onChange("add-when", { whenId: id, scenarioId });
+  };
+  const handleAddThen = (id, scenarioId) => {
+    onChange("add-then", { thenId: id, scenarioId });
   };
 
-  const handleDeleteGiven = (id) => {
-    onChange();
+  const handleGivenChange = (e, givenId, scenarioId) => {
+    onChange("edit-given-value", {
+      scenarioId,
+      givenId,
+      value: e.target.value,
+    });
   };
 
-  console.log("items", items);
+  const handleWhenChange = (e, whenId, scenarioId) => {
+    onChange("edit-when-value", {
+      scenarioId,
+      whenId,
+      value: e.target.value,
+    });
+  };
+
+  const handleThenChange = (e, thenId, scenarioId) => {
+    onChange("edit-then-value", {
+      scenarioId,
+      thenId,
+      value: e.target.value,
+    });
+  };
+
+  const handleDeleteGiven = (id, scenarioId) => {
+    onChange("delete-given", { givenId: id, scenarioId });
+  };
+
+  const handleDeleteWhen = (id, scenarioId) => {
+    onChange("delete-when", { whenId: id, scenarioId });
+  };
+
+  const handleDeleteThen = (id, scenarioId) => {
+    onChange("delete-then", { thenId: id, scenarioId });
+  };
 
   return (
     <>
@@ -89,6 +125,7 @@ export function TestingInstructions({
               />
               <TextField
                 value={g.value}
+                onChange={(e) => handleGivenChange(e, g.id, item.scenarioId)}
                 style={{ flexGrow: 1 }}
                 InputProps={{
                   startAdornment:
@@ -103,7 +140,11 @@ export function TestingInstructions({
                 }}
               />
               <IconButton
-                onClick={idx === 0 ? handleAddGiven : handleDeleteGiven}
+                onClick={
+                  idx === 0
+                    ? () => handleAddGiven(g.id, item.scenarioId)
+                    : () => handleDeleteGiven(g.id, item.scenarioId)
+                }
               >
                 {idx === 0 ? <AddCircleOutline /> : <DeleteForever />}
               </IconButton>
@@ -131,6 +172,7 @@ export function TestingInstructions({
               />
               <TextField
                 value={w.value}
+                onChange={(e) => handleWhenChange(e, w.id, item.scenarioId)}
                 style={{ flexGrow: 1 }}
                 InputProps={{
                   startAdornment:
@@ -142,7 +184,11 @@ export function TestingInstructions({
                 }}
               />
               <IconButton
-                onClick={idx === 0 ? handleAddGiven : handleDeleteGiven}
+                onClick={
+                  idx === 0
+                    ? () => handleAddWhen(w.id, item.scenarioId)
+                    : () => handleDeleteWhen(w.id, item.scenarioId)
+                }
               >
                 {idx === 0 ? <AddCircleOutline /> : <DeleteForever />}
               </IconButton>
@@ -170,6 +216,7 @@ export function TestingInstructions({
               />
               <TextField
                 value={t.value}
+                onChange={(e) => handleThenChange(e, t.id, item.scenarioId)}
                 style={{ flexGrow: 1 }}
                 InputProps={{
                   startAdornment:
@@ -181,7 +228,11 @@ export function TestingInstructions({
                 }}
               />
               <IconButton
-                onClick={idx === 0 ? handleAddGiven : handleDeleteGiven}
+                onClick={
+                  idx === 0
+                    ? () => handleAddThen(t.id, item.scenarioId)
+                    : () => handleDeleteThen(t.id, item.scenarioId)
+                }
               >
                 {idx === 0 ? <AddCircleOutline /> : <DeleteForever />}
               </IconButton>

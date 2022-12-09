@@ -88,19 +88,21 @@ export const featureRequireEdition = atom({
 
 export const featureTestInstruct = atom({
   key: "featureTestInstruct",
-  default: [
-    {
-      scenarioName: "",
-      scenarioId: 1,
-      given: [
-        { id: 1, value: "first given" },
-        { id: 2, value: "second given" },
-      ],
-      when: [{ id: 1, value: "one when" }],
-      then: [{ id: 1, value: "this then" }],
-    },
-  ],
+  default: [],
 });
+/*
+example object
+{
+  scenarioName: "",
+  scenarioId: 1,
+  given: [
+    { id: 1, value: "first given" },
+    { id: 2, value: "second given" },
+  ],
+  when: [{ id: 1, value: "one when" }],
+  then: [{ id: 1, value: "this then" }],
+},
+*/
 
 export const featureRequireAutomationTest = atom({
   key: "featureRequireAutomationTest",
