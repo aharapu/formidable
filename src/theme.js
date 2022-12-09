@@ -276,11 +276,11 @@ export const theme = createTheme({
     //     fontSize: "3.5rem",
     //     lineHeight: 1.375,
     //   },
-    //   h2: {
-    //     fontWeight: 700,
-    //     fontSize: "3rem",
-    //     lineHeight: 1.375,
-    //   },
+    h2: {
+      fontWeight: "bold",
+      fontSize: "32px",
+      lineHeight: "34px",
+    },
     //   h3: {
     //     fontWeight: 700,
     //     fontSize: "2.25rem",
