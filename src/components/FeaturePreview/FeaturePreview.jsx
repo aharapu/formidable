@@ -63,8 +63,8 @@ export default function FeaturePreview() {
         testingInstructions.map((testInstruc) => {
             displayText += "<li>"+testInstruc.scenarioName;
             const givenValues = testInstruc.given.map((elem) => elem.value);
-            const whenValues = testInstruc.given.map((elem) => elem.value);
-            const thenValues = testInstruc.given.map((elem) => elem.value);
+            const whenValues = testInstruc.when.map((elem) => elem.value);
+            const thenValues = testInstruc.then.map((elem) => elem.value);
             displayText += "<ul><li><strong> Given </strong>" +givenValues.join(" <strong> and </strong>")+"</li>";
             displayText +=   "<li><strong> Then </strong>" +thenValues.join("<strong> and </strong>")+"</li>";
             displayText += "<li><strong> When </strong>" +whenValues.join("<strong> and </strong>")+"</li></ul>";
@@ -91,7 +91,7 @@ export default function FeaturePreview() {
     edition.length > 0
       ? arrayToUL(edition.map((ed) => ed.value)).innerHTML
       : '<span style="color: #97A0AF"><strong> NO </strong></span>';
-  const testInstructions= featureTestInstructions.length > 0 ? displayTestInstructions(featureTestInstructions) : '';
+  const testInstructions= featureTestInstructions.length > 0 && featureTestInstructions[0].scenarioName ? displayTestInstructions(featureTestInstructions) : '';
   const requiresAutomation = automation ? " YES " : " NO ";
   let clipboardContent = `
         <span style="color:#97A0AF; width: 407px; height: 19px; left:1067px; top: 371px;font-family: 'Source Sans Pro'; display: inline-block;margin: 10px 0; font-weight:600; font-size: 16px;">
