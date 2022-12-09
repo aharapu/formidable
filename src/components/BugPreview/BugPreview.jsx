@@ -106,7 +106,7 @@ export default function BugPreview() {
     <>
         <Typography align="center" variant="h5">PREVIEW</Typography>
         <div dangerouslySetInnerHTML={{ __html: clipboardContent }}></div>
-        <Button variant="contained" color={"success"} onClick={handleCopyClick}>Copy to clipboard</Button>
+        <Button variant="contained" style={{backgroundColor: "#172F4D", width: "190px", height: "42px"}} onClick={handleCopyClick}>Copy to clipboard</Button>
     </>
   );
 }

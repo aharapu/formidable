@@ -11,15 +11,25 @@ export default function LayoutHome() {
     <>
       <div
         id="banner-container"
-        style={{ height: "120px", backgroundColor: "cyan" }}
+        style={{ height: "120px", backgroundColor: "cyan"}}
       >
-        i am the banner. dana te asteptam cu ce vrei sa bagam aici
+          <div style={{left: "0", right: "41.82%", top: "0%", bottom: "36.56%"}}>
+          <span style={{color: "#172F4D"}}>
+              Form
+          </span>
+              <span style={{color: "#FF991F"}}>
+              idable
+          </span>
+              <span style={{color:"#919EAB"}}>
+                  features&bugs
+              </span>
+          </div>
+
       </div>
       <div
         id="options-container"
         style={{
           height: "calc(100vh - 120px)",
-          backgroundColor: "turquoise",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -35,27 +45,29 @@ export default function LayoutHome() {
           elevation={3}
         >
           <Typography align="center" variant="h5">
-            What you want to add to your project?
+            What do you want to do?
           </Typography>
           <br />
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <Button
                 variant="contained"
+                style={{backgroundColor: "#172F4D", width: "190px", height: "42px"}}
                 onClick={() => setPage(FEATURE_PAGE)}
                 fullWidth
               >
-                Feature
+                CREATE A FEATURE
               </Button>
             </Grid>
             <Grid item xs={6}>
               <Button
                 variant="contained"
                 color={"error"}
+                style={{backgroundColor: "#ED6C02", width: "190px", height: "42px"}}
                 onClick={() => setPage(BUG_PAGE)}
                 fullWidth
               >
-                Bug
+                REPORT A BUG
               </Button>
             </Grid>
           </Grid>
