@@ -1,37 +1,99 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { currentPage, HOME_PAGE } from "../../constants";
+import { BrivoLogo } from "../../assets/BrivoLogo";
+import { FormidableLogo } from "../../assets/FormidableLogo";
+import {
+  BUG_PAGE,
+  currentPage,
+  FEATURE_PAGE,
+  HOME_PAGE,
+} from "../../constants";
 
 export function LayoutForm({ form, preview }) {
-  const [, setPage] = useRecoilState(currentPage);
+  const [page, setPage] = useRecoilState(currentPage);
 
   return (
     <>
       <div
         id="banner-container"
-        style={{ height: "80px", backgroundColor: "cyan" }}
+        style={{
+          height: "68px",
+          backgroundColor: "#F3F5F6",
+          boxShadow: "0 3px 5px rgba(0, 0, 0, 0.1)",
+          display: "flex",
+          alignItems: "center",
+        }}
       >
-        i am the TINY banner. dana te asteptam cu ce vrei sa bagam aici
+        <FormidableLogo
+          style={{ height: "42px", marginLeft: "-24px", marginTop: "4px" }}
+        />
       </div>
       <div
         id="menu-container"
         style={{
-          width: "10vw",
-          height: "200px",
+          width: "11vw",
+          height: "calc(100vh - 116px)",
           position: "fixed",
           top: "80px",
           left: "0px",
-          backgroundColor: "lightgray",
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <Button onClick={() => setPage(HOME_PAGE)}>Back</Button>
+        <Typography
+          onClick={() => setPage(HOME_PAGE)}
+          style={{
+            cursor: "pointer",
+            padding: "16px",
+            backgroundColor:
+              page === HOME_PAGE ? "rgba(0, 0, 0, 0.04)" : undefined,
+          }}
+        >
+          Back to Home
+        </Typography>
+        <Typography
+          onClick={() => setPage(FEATURE_PAGE)}
+          style={{
+            cursor: "pointer",
+            padding: "16px",
+            backgroundColor:
+              page === FEATURE_PAGE ? "rgba(0, 0, 0, 0.04)" : undefined,
+          }}
+        >
+          Create a Feature
+        </Typography>
+        <Typography
+          onClick={() => setPage(BUG_PAGE)}
+          style={{
+            cursor: "pointer",
+            padding: "16px",
+            backgroundColor:
+              page === BUG_PAGE ? "rgba(0, 0, 0, 0.04)" : undefined,
+          }}
+        >
+          Report a Bug
+        </Typography>
+        <div
+          style={{
+            marginTop: "auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+          }}
+        >
+          <Typography variant="h5" style={{ paddingBottom: "8px" }}>
+            Powered by
+          </Typography>
+          <BrivoLogo style={{ height: "44px", marginLeft: "-28px" }} />
+        </div>
       </div>
       <div
         id="content-container"
         style={{
-          marginLeft: "11vw",
-          width: "48vw",
+          marginLeft: "calc(13vw + 40px)",
+          width: "46vw",
           backgroundColor: "magenta",
         }}
       >
@@ -40,7 +102,7 @@ export function LayoutForm({ form, preview }) {
       <div
         id="preview-container"
         style={{
-          width: "38vw",
+          width: "33vw",
           minHeight: "550px",
           position: "fixed",
           top: "80px",
@@ -48,7 +110,7 @@ export function LayoutForm({ form, preview }) {
           backgroundColor: "lightpink",
         }}
       >
-          {preview}
+        {preview}
       </div>
     </>
   );
