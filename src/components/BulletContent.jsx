@@ -15,9 +15,14 @@ import {
   AddCircleOutline,
   DeleteForever,
   WarningRounded,
+  ClearRounded,
+  AddCircle,
 } from "@mui/icons-material";
+// import AddCircleIcon from '@mui/icons-material/AddCircle';
+// import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 
 import { getRandomExclamation } from "./FeatureForm/utils";
+import { ORANGE } from "../constants";
 
 export function BulletContent({
   textFieldLabel = "Default Input Label",
@@ -105,52 +110,54 @@ export function BulletContent({
         </Grid>
       )}
       {isInputVisible && (
-        <Grid container item xs={12}>
-          <Paper
-            style={{
-              width: "100%",
-              padding: "15px",
-              backgroundColor: "lightblue",
-            }}
-            height={3}
-          >
-            <Grid item xs={12}>
-              <TextField
-                label={textFieldLabel}
-                placeholder={textFieldPlaceholder}
-                fullWidth
-                value={inputContent}
-                onChange={handleTextFieldChange}
-                onKeyDown={handleKeyDown}
-                error={textFieldShowError}
-                helperText={textFieldError}
-                onBlur={handleTextFieldBlur}
-                InputProps={InputProps}
+        <>
+          <Grid item xs={12}>
+            <TextField
+              label={textFieldLabel}
+              placeholder={textFieldPlaceholder}
+              fullWidth
+              value={inputContent}
+              onChange={handleTextFieldChange}
+              onKeyDown={handleKeyDown}
+              error={textFieldShowError}
+              helperText={textFieldError}
+              onBlur={handleTextFieldBlur}
+              InputProps={InputProps}
+              size="small"
+            />
+          </Grid>
+          <Grid item xs={12} display="flex" justifyContent="center">
+            <IconButton
+              onClick={handleAddItem}
+              style={{ margin: "-30px 0 -16px" }}
+            >
+              <AddCircle
+                style={{ width: "29px", height: "29px", color: ORANGE }}
               />
-            </Grid>
-            <Grid item xs={12} display="flex" justifyContent="center">
-              <IconButton onClick={handleAddItem}>
-                <AddCircleOutline />
-              </IconButton>
-            </Grid>
-            {items.map(({ id, value }) => (
-              <React.Fragment key={id}>
-                <Grid
-                  item
-                  xs={12}
-                  paddingLeft={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <IconButton onClick={() => onDelete(id)}>
-                    <DeleteForever />
-                  </IconButton>
-                  <Typography>{value}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Paper>
-        </Grid>
+            </IconButton>
+          </Grid>
+          {items.map(({ id, value }) => (
+            <React.Fragment key={id}>
+              <Grid
+                item
+                xs={12}
+                display="flex"
+                alignItems="center"
+                style={{ paddingLeft: "50px", paddingTop: "16px" }}
+              >
+                <TextField
+                  label={textFieldLabel}
+                  value={value}
+                  fullWidth
+                  size="small"
+                />
+                <IconButton onClick={() => onDelete(id)}>
+                  <ClearRounded style={{ width: "24px", height: "24px" }} />
+                </IconButton>
+              </Grid>
+            </React.Fragment>
+          ))}
+        </>
       )}
     </>
   );

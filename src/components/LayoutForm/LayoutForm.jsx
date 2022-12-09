@@ -94,7 +94,7 @@ export function LayoutForm({ form, preview }) {
         style={{
           marginLeft: "calc(13vw + 40px)",
           width: "46vw",
-          backgroundColor: "magenta",
+          paddingTop: "48px",
         }}
       >
         {form}

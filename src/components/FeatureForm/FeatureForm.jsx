@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { v4 as createId, validate } from "uuid";
-import { Paper, Grid } from "@mui/material";
+import { Box, Paper, Grid, Typography } from "@mui/material";
 
 import {
   featureACs,
@@ -319,10 +319,16 @@ export default function FeatureForm() {
   };
 
   return (
-    <Paper
-      style={{ margin: "0 auto", maxWidth: "800px", padding: "20px" }}
-      elevation={3}
+    <Box
+      style={{
+        margin: "0 auto",
+        maxWidth: "800px",
+        padding: "0 20px",
+      }}
     >
+      <Typography variant="h2" paddingBottom="32px">
+        Feature Form
+      </Typography>
       <Grid container spacing={3}>
         <FormTextField
           label={LABLES.what}
@@ -399,6 +405,6 @@ export default function FeatureForm() {
           onChange={handleRequireAutoChange}
         />
       </Grid>
-    </Paper>
+    </Box>
   );
 }
