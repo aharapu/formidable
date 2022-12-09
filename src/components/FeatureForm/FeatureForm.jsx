@@ -11,6 +11,7 @@ import {
   featureRequireAutomationTest,
   featureRequireEdition,
   featureTechGuide,
+  featureTestInstruct,
   featureWhat,
   formValidationErrors,
 } from "../../constants";
@@ -18,6 +19,7 @@ import {
 import { BulletContent } from "../BulletContent";
 import { FormTextField } from "../FormTextField";
 import { FormCheckbox } from "../FormCheckbox";
+import { TestingInstructions } from "../TestingInstructions";
 
 import { LABLES, PLACEHOLDERS } from "./featureFormConstants";
 import { validateACs, validateWhat } from "./utils";
@@ -30,6 +32,8 @@ export default function FeatureForm() {
   const [flag, setFlag] = useRecoilState(featureFlag);
   const [impactProjs, setImpactProjs] = useRecoilState(featureImpactedProj);
   const [editions, setEditions] = useRecoilState(featureRequireEdition);
+  const [testIntructions, setTestInstructions] =
+    useRecoilState(featureTestInstruct);
   const [requireAutomation, setRequireAutomation] = useRecoilState(
     featureRequireAutomationTest
   );
@@ -127,6 +131,11 @@ export default function FeatureForm() {
     // TODO -> else restore previous state ("keep in ref")
   };
 
+  const handleTestInstructionsChange = (changeType, data) => {
+    console.log("changeType", changeType);
+    console.log("data", data);
+  };
+
   const handleRequireAutoChange = (isRequired) => {
     setRequireAutomation(isRequired);
   };
@@ -201,6 +210,10 @@ export default function FeatureForm() {
           onAdd={handleAddEdition}
           onDelete={handleDelEdition}
           onToggleChange={handleToggleEditions}
+        />
+        <TestingInstructions
+          items={testIntructions}
+          onChange={handleTestInstructionsChange}
         />
         <FormCheckbox
           label={LABLES.requiresAutomation}

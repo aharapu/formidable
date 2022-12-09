@@ -57,11 +57,6 @@ export const featureTechGuide = atom({
   default: "",
 });
 
-export const featureTestInstruct = atom({
-  key: "featureTestInstruct",
-  default: "",
-});
-
 export const featureDeps = atom({
   key: "featureDeps",
   default: [],
@@ -91,7 +86,21 @@ export const featureRequireEdition = atom({
   */
 });
 
-// TODO -> state for testing instructions
+export const featureTestInstruct = atom({
+  key: "featureTestInstruct",
+  default: [
+    {
+      scenarioName: "",
+      scenarioId: 1,
+      given: [
+        { id: 1, value: "first given" },
+        { id: 2, value: "second given" },
+      ],
+      when: [{ id: 1, value: "one when" }],
+      then: [{ id: 1, value: "this then" }],
+    },
+  ],
+});
 
 export const featureRequireAutomationTest = atom({
   key: "featureRequireAutomationTest",
