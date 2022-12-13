@@ -208,6 +208,7 @@ export default function FeaturePreview() {
           </ul>
         </>
       )}
+      {/* TODO -> break into reusable components? */}
       {dependencies.length > 0 && (
         <>
           <Typography
@@ -297,7 +298,7 @@ export default function FeaturePreview() {
                 <ul key={w.id} className="preview-list">
                   <li>
                     <Typography>
-                      <strong>{idx === 0 ? "Given " : "And "}</strong>
+                      <strong>{idx === 0 ? "Then " : "And "}</strong>
                       {w.value}
                     </Typography>
                   </li>
@@ -307,7 +308,7 @@ export default function FeaturePreview() {
                 <ul key={t.id} className="preview-list">
                   <li>
                     <Typography>
-                      <strong>{idx === 0 ? "Given " : "And "}</strong>
+                      <strong>{idx === 0 ? "When " : "And "}</strong>
                       {t.value}
                     </Typography>
                   </li>
@@ -317,6 +318,15 @@ export default function FeaturePreview() {
           ))}
         </>
       )}
+      <Typography
+        variant="subtitle1"
+        style={{ marginTop: 16, color: LIGHT_GRAY }}
+      >
+        {"REQUIRES AUTOMATION - "}
+        <strong style={{ color: DARK_GREY }}>
+          {automation ? "YES" : "NO"}
+        </strong>
+      </Typography>
       <div
         style={{
           display: "flex",
