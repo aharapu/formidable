@@ -17,6 +17,12 @@ import {
   DARK_PURPLE,
   LIGHT_GRAY,
   PURPLE,
+  GREEN,
+  BLUE,
+  ORANGE,
+  DARK_RED,
+  RED,
+  DARK_TEAL,
 } from "../../constants";
 
 export default function FeaturePreview() {
@@ -168,13 +174,16 @@ export default function FeaturePreview() {
       <Typography variant="h2" style={{ marginBottom: 24 }}>
         Feature Form Preview
       </Typography>
-      <Typography variant="subtitle1" style={{ color: LIGHT_GRAY }}>
+      <Typography
+        variant="subtitle1"
+        style={{ marginTop: 16, color: LIGHT_GRAY }}
+      >
         WHAT
       </Typography>
       <Typography variant="body1" color="text.primary">
         {what}
       </Typography>
-      <Typography variant="subtitle1" style={{ color: PURPLE }}>
+      <Typography variant="subtitle1" style={{ marginTop: 16, color: PURPLE }}>
         ACCEPTANCE CRITERIA
       </Typography>
       <ul className="preview-list">
@@ -184,6 +193,130 @@ export default function FeaturePreview() {
           </li>
         ))}
       </ul>
+      {techGuidance && (
+        <>
+          <Typography
+            variant="subtitle1"
+            style={{ marginTop: 16, color: GREEN }}
+          >
+            TECHNICAL GUIDANCE
+          </Typography>
+          <ul className="preview-list">
+            <li>
+              <Typography variant="body1">{techGuidance}</Typography>
+            </li>
+          </ul>
+        </>
+      )}
+      {dependencies.length > 0 && (
+        <>
+          <Typography
+            variant="subtitle1"
+            style={{ marginTop: 16, color: BLUE }}
+          >
+            DEPENDENCIES
+          </Typography>
+          <ul className="preview-list">
+            {dependencies.map((d) => (
+              <li key={d.id}>
+                <Typography variant="body1">{d.value}</Typography>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {FF && (
+        <>
+          <Typography
+            variant="subtitle1"
+            style={{ marginTop: 16, color: ORANGE }}
+          >
+            FEATURE FLAG
+          </Typography>
+          <ul className="preview-list">
+            <li>
+              <Typography variant="body1">{FF}</Typography>
+            </li>
+          </ul>
+        </>
+      )}
+      {impactedProj.length > 0 && (
+        <>
+          <Typography
+            variant="subtitle1"
+            style={{ marginTop: 16, color: DARK_RED }}
+          >
+            IMPACTED PROJECT
+          </Typography>
+          <ul className="preview-list">
+            {impactedProj.map((proj) => (
+              <li key={proj.id}>
+                <Typography variant="body1">{proj.value}</Typography>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {/* TODO -> add plural only when applicable */}
+      {edition.length > 0 && (
+        <>
+          <Typography variant="subtitle1" style={{ marginTop: 16, color: RED }}>
+            REQUIRES EDITIONS
+          </Typography>
+          <ul className="preview-list">
+            {edition.map((ed) => (
+              <li key={ed.id}>
+                <Typography variant="body1">{ed.value}</Typography>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {featureTestInstructions.length > 0 && (
+        <>
+          <Typography
+            variant="subtitle1"
+            style={{ marginTop: 16, color: DARK_TEAL }}
+          >
+            TESTING SCENARIOS
+          </Typography>
+          {featureTestInstructions.map((ti) => (
+            <>
+              <Typography>{ti.scenarioName}</Typography>
+              {ti.given.map((g, idx) => (
+                <ul key={g.id} className="preview-list">
+                  <li>
+                    <Typography>
+                      <strong>{idx === 0 ? "Given " : "And "}</strong>
+                      {g.value}
+                    </Typography>
+                  </li>
+                </ul>
+              ))}
+              {ti.when.map((w, idx) => (
+                <ul key={w.id} className="preview-list">
+                  <li>
+                    <Typography>
+                      <strong>{idx === 0 ? "Given " : "And "}</strong>
+                      {w.value}
+                    </Typography>
+                  </li>
+                </ul>
+              ))}
+              {ti.then.map((t, idx) => (
+                <ul key={t.id} className="preview-list">
+                  <li>
+                    <Typography>
+                      <strong>{idx === 0 ? "Given " : "And "}</strong>
+                      {t.value}
+                    </Typography>
+                  </li>
+                </ul>
+              ))}
+            </>
+          ))}
+        </>
+      )}
       <div
         style={{
           display: "flex",
