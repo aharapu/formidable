@@ -36,7 +36,7 @@ export default function FeaturePreview() {
   const featureTestInstructions = useRecoilValue(featureTestInstruct);
   const automation = useRecoilValue(featureRequireAutomationTest);
 
-  const handleCopyClick = (evt) => {
+  const handleCopyClickOld = (evt) => {
     var type = "text/html";
     var blob = new Blob([clipboardContent], { type });
     var data = [new ClipboardItem({ [type]: blob })];
@@ -51,6 +51,10 @@ export default function FeaturePreview() {
         /* failure */
       }
     );
+  };
+
+  const handleCopyClick = () => {
+    updateClipboard({ what });
   };
 
   const arrayToUL = (arr) => {
@@ -344,4 +348,18 @@ export default function FeaturePreview() {
       </div>
     </Paper>
   );
+}
+
+// TODO -> make this return promise
+function updateClipboard({ what }) {
+  let clipboardContent = "";
+  clipboardContent += `<strong style="color:${LIGHT_GRAY};">WHAT</strong>`;
+  clipboardContent += `<br />`;
+  clipboardContent += `<span style="color:${DARK_GREY};">${what}</span>`; // TODO -> should this be sanitized?
+
+  const type = "text/html";
+  const blob = new Blob([clipboardContent], { type });
+  const data = [new ClipboardItem({ [type]: blob })];
+
+  return navigator.clipboard.write(data);
 }
