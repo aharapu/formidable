@@ -14,6 +14,9 @@ import {
   featureWhat,
   featureTestInstruct,
   DARK_GREY,
+  DARK_PURPLE,
+  LIGHT_GRAY,
+  PURPLE,
 } from "../../constants";
 
 export default function FeaturePreview() {
@@ -162,8 +165,25 @@ export default function FeaturePreview() {
       }}
       elevation={3}
     >
-      <Typography variant="h2">Feature Form Preview</Typography>
-      <div dangerouslySetInnerHTML={{ __html: clipboardContent }}></div>
+      <Typography variant="h2" style={{ marginBottom: 24 }}>
+        Feature Form Preview
+      </Typography>
+      <Typography variant="subtitle1" style={{ color: LIGHT_GRAY }}>
+        WHAT
+      </Typography>
+      <Typography variant="body1" color="text.primary">
+        {what}
+      </Typography>
+      <Typography variant="subtitle1" style={{ color: PURPLE }}>
+        ACCEPTANCE CRITERIA
+      </Typography>
+      <ul className="preview-list">
+        {criterias.map((c) => (
+          <li>
+            <Typography variant="body1">{c.value}</Typography>
+          </li>
+        ))}
+      </ul>
       <div
         style={{
           display: "flex",
