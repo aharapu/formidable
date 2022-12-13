@@ -25,6 +25,8 @@ import {
   DARK_TEAL,
 } from "../../constants";
 
+const HTML_BR_STRING = `<br />`;
+
 export default function FeaturePreview() {
   const what = useRecoilValue(featureWhat);
   const criterias = useRecoilValue(featureACs);
@@ -54,7 +56,7 @@ export default function FeaturePreview() {
   };
 
   const handleCopyClick = () => {
-    updateClipboard({ what });
+    updateClipboard({ what, criterias });
   };
 
   const arrayToUL = (arr) => {
@@ -350,16 +352,59 @@ export default function FeaturePreview() {
   );
 }
 
-// TODO -> make this return promise
-function updateClipboard({ what }) {
+// TODO -> move this to a utils file
+function updateClipboard({
+  what,
+  criterias,
+  techGuidance,
+  dependencies,
+  FF,
+  impactedProj,
+  edition,
+  featureTestInstructions,
+  automation,
+}) {
+  const criteriaValues = getValues(criterias);
+
   let clipboardContent = "";
-  clipboardContent += `<strong style="color:${LIGHT_GRAY};">WHAT</strong>`;
-  clipboardContent += `<br />`;
-  clipboardContent += `<span style="color:${DARK_GREY};">${what}</span>`; // TODO -> should this be sanitized?
+  clipboardContent += buildHtmlStrongString({
+    content: "What:",
+    color: LIGHT_GRAY,
+  });
+  clipboardContent += HTML_BR_STRING;
+  clipboardContent += buildHtmlSpanString({ content: what, color: DARK_GREY });
+  clipboardContent += HTML_BR_STRING;
+  clipboardContent += buildHtmlStrongString({
+    content: "Acceptance Criteria:",
+    color: PURPLE,
+  });
+  clipboardContent += buildHtmlListString(criteriaValues);
+  clipboardContent += HTML_BR_STRING;
 
   const type = "text/html";
   const blob = new Blob([clipboardContent], { type });
   const data = [new ClipboardItem({ [type]: blob })];
 
   return navigator.clipboard.write(data);
+}
+
+function buildHtmlStrongString({ content, color }) {
+  return `<strong style="color:${color};">${content}</strong>`;
+}
+
+function buildHtmlSpanString({ content, color }) {
+  return `<span style="color:${color};">${content}</span>`;
+}
+
+function buildHtmlListString(items = []) {
+  let result = `<ul>`;
+  items.forEach((item) => {
+    result += `<li>${item}</li>`;
+  });
+  result += `</ul>`;
+  return result;
+}
+
+function getValues(objects = []) {
+  return objects.map((o) => o.value);
 }
