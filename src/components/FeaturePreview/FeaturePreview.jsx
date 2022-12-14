@@ -366,56 +366,68 @@ function updateClipboard({
 }) {
   const criteriaValues = getValues(criterias);
 
-  // TODO -> make a ClipboardContent class and chain methods
-  let clipboardContent = "";
-  clipboardContent += buildHtmlTagString({
-    tag: "h3",
-    content: "What:",
-    color: LIGHT_GRAY,
-  });
-  clipboardContent += buildHtmlTagString({
-    tag: "p",
-    content: what,
-    color: DARK_GREY,
-  });
-  clipboardContent += HTML_BR_STRING;
-  clipboardContent += buildHtmlStrongString({
-    content: "Acceptance Criteria:",
-    color: PURPLE,
-  });
-  clipboardContent += buildHtmlListString(criteriaValues);
-  clipboardContent += HTML_BR_STRING;
+  const cc = new ClipboardContent();
+
+  cc.addH3({ content: "What:" })
+    .addP({ content: what })
+    .addH3({ content: "Acceptance Criteria:", color: PURPLE })
+    .addList(criteriaValues);
+
+  const content = cc.getContent();
+
+  console.log("content", content);
 
   const type = "text/html";
-  const blob = new Blob([clipboardContent], { type });
+  const blob = new Blob([content], { type });
   const data = [new ClipboardItem({ [type]: blob })];
 
   return navigator.clipboard.write(data);
 }
 
-function buildHtmlStrongString({ content, color }) {
-  return `<strong style="color:${color};">${content}</strong>`;
+function getValues(objects = []) {
+  return objects.map((o) => o.value);
 }
 
-// TODO -> make these implementations of "buildHtmlTagString" ?
-function buildHtmlSpanString({ content, color }) {
-  return `<span style="color:${color};">${content}</span>`;
+class ClipboardContent {
+  // TODO -> turn content into array?
+  constructor() {
+    this.content = "";
+  }
+
+  _private_addHtmlTagString({ tag, content, color }) {
+    // TODO -> tag should be limited to certain strings
+    const style = color ? `style="color:${color};"` : "";
+
+    this.content += `<${tag} ${style}>${content}</${tag}>`;
+  }
+
+  addH3({ content, color }) {
+    this._private_addHtmlTagString({ tag: "h3", content, color });
+    return this;
+  }
+
+  addP({ content }) {
+    this._private_addHtmlTagString({ tag: "p", content });
+    return this;
+  }
+
+  addList(values = []) {
+    const list = buildHtmlListString(values);
+    this.content += list;
+    return this;
+  }
+
+  // TODO -> add possibility to indent?
+  getContent() {
+    return this.content;
+  }
 }
 
-function buildHtmlTagString({ tag, content, color }) {
-  // TODO -> tag should be limited to certain strings
-  return `<${tag} style="color:${color};">${content}</${tag}>`;
-}
-
-function buildHtmlListString(items = []) {
+function buildHtmlListString(values = []) {
   let result = `<ul>`;
-  items.forEach((item) => {
-    result += `<li>${item}</li>`;
+  values.forEach((val) => {
+    result += `<li>${val}</li>`;
   });
   result += `</ul>`;
   return result;
-}
-
-function getValues(objects = []) {
-  return objects.map((o) => o.value);
 }
