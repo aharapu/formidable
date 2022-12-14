@@ -47,6 +47,7 @@ export default function FeaturePreview() {
       featureFlag: FF,
       impactedProjects: getValues(impactedProj),
       requiredEditions: getValues(edition),
+      testingScenarios: featureTestInstructions,
     });
   };
 
@@ -172,7 +173,7 @@ export default function FeaturePreview() {
             TESTING SCENARIOS
           </Typography>
           {featureTestInstructions.map((ti) => (
-            <>
+            <React.Fragment key={ti.scenarioId}>
               <Typography>{ti.scenarioName}</Typography>
               {ti.given.map((g, idx) => (
                 <ul key={g.id} className="preview-list">
@@ -204,7 +205,7 @@ export default function FeaturePreview() {
                   </li>
                 </ul>
               ))}
-            </>
+            </React.Fragment>
           ))}
         </>
       )}
@@ -288,6 +289,13 @@ function updateClipboard({
     );
   }
 
+  if (testingScenarios.length > 0) {
+    cc.addHeading({
+      content: "Testing Scenarios:",
+      color: DARK_TEAL,
+    }).addTestScenarios(testingScenarios);
+  }
+
   const content = cc.getContent();
 
   console.log("content", content);
@@ -311,13 +319,23 @@ class ClipboardContent {
 
   _private_addHtmlTagString({ tag, content, color }) {
     // TODO -> tag should be limited to certain strings
-    const style = color ? `style="color:${color};"` : "";
+    const style = color ? ` style="color:${color};"` : "";
 
-    this.content += `<${tag} ${style}>${content}</${tag}>`;
+    this.content += `<${tag}${style}>${content}</${tag}>`;
   }
 
   addHeading({ content, color }) {
-    this._private_addHtmlTagString({ tag: "h4", content, color });
+    // TODO -> make a tag creation function and use in stead of the _private method
+    //         similar to addList
+    // const strongContent = this._private_addHtmlTagString({
+    //   tag: "strong",
+    //   content,
+    // });
+    this._private_addHtmlTagString({
+      tag: "h4",
+      content: `<strong>${content}</strong>`,
+      color,
+    });
     return this;
   }
 
@@ -330,6 +348,24 @@ class ClipboardContent {
     const list = buildHtmlListString(values);
     this.content += list;
     return this;
+  }
+
+  // TODO -> do a nested list
+  // TODO -> make use of a SCENARIO_SEGMENTS = ["given", "when", "then"] constant
+  //         and also use it in state handling
+  addTestScenarios(scenarios = []) {
+    this.content += "<ul>";
+    scenarios.forEach((scenario) => {
+      this.addParagraph({ content: scenario.scenarioName }); // TODO -> rename scenarioName to name
+      this.content += "<ul>";
+      scenario.given.forEach((g, idx) => {
+        const prefix = idx === 0 ? "Given" : "And";
+        const rowContent = `<strong>${prefix} </strong>` + g.value;
+        this._private_addHtmlTagString({ tag: "li", content: rowContent });
+      });
+      this.content += "</ul>";
+    });
+    this.content += "</ul>";
   }
 
   // TODO -> add possibility to indent?
@@ -345,4 +381,11 @@ function buildHtmlListString(values = []) {
   });
   result += `</ul>`;
   return result;
+}
+
+function buildHtmlTagString({ tag, content, color }) {
+  // TODO -> tag should be limited to certain strings
+  const style = color ? `style="color:${color};"` : "";
+
+  return `<${tag} ${style}>${content}</${tag}>`;
 }

@@ -94,7 +94,7 @@ export const featureTestInstruct = atom({
 example object
 {
   scenarioName: "",
-  scenarioId: 1,
+  scenarioId: 1, // TODO -> rename to id
   given: [
     { id: 1, value: "first given" },
     { id: 2, value: "second given" },
