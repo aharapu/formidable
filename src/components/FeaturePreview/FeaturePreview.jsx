@@ -39,7 +39,15 @@ export default function FeaturePreview() {
   const automation = useRecoilValue(featureRequireAutomationTest);
 
   const handleCopyClick = () => {
-    updateClipboard({ what, criterias, techGuidance, dependencies });
+    updateClipboard({
+      what,
+      criterias,
+      techGuidance,
+      dependencies,
+      featureFlag: FF,
+      impactedProjects: getValues(impactedProj),
+      requiredEditions: getValues(edition),
+    });
   };
 
   // TODO -> use state to create an elaborate preview with colors and such
@@ -234,10 +242,10 @@ function updateClipboard({
   criterias,
   techGuidance,
   dependencies,
-  FF,
-  impactedProj,
-  edition,
-  featureTestInstructions,
+  featureFlag,
+  impactedProjects,
+  requiredEditions,
+  testingScenarios,
   automation,
 }) {
   const criteriaValues = getValues(criterias);
@@ -245,20 +253,39 @@ function updateClipboard({
 
   const cc = new ClipboardContent();
 
-  cc.addH3({ content: "What:", color: LIGHT_GRAY })
-    .addP({ content: what })
-    .addH3({ content: "Acceptance Criteria:", color: PURPLE })
+  cc.addHeading({ content: "What:", color: LIGHT_GRAY })
+    .addParagraph({ content: what })
+    .addHeading({ content: "Acceptance Criteria:", color: PURPLE })
     .addList(criteriaValues);
 
   // TODO -> trim and capitalize?
   if (techGuidance) {
-    cc.addH3({ content: "Technical Guidance:", color: GREEN }).addP({
+    cc.addHeading({
+      content: "Technical Guidance:",
+      color: GREEN,
+    }).addParagraph({
       content: techGuidance,
     });
   }
 
   if (dependencies.length > 0) {
-    cc.addH3({ content: "Dependencies:", color: BLUE }).addList(depValues);
+    cc.addHeading({ content: "Dependencies:", color: BLUE }).addList(depValues);
+  }
+
+  if (featureFlag) {
+    cc.addHeading({ content: "Feature Flag:", color: ORANGE }).addParagraph({
+      content: featureFlag,
+    });
+  }
+
+  cc.addHeading({ content: "Impacted Projects:", color: DARK_RED }).addList(
+    impactedProjects
+  );
+
+  if (requiredEditions.length > 0) {
+    cc.addHeading({ content: "Required Editions:", color: RED }).addList(
+      requiredEditions
+    );
   }
 
   const content = cc.getContent();
@@ -289,12 +316,12 @@ class ClipboardContent {
     this.content += `<${tag} ${style}>${content}</${tag}>`;
   }
 
-  addH3({ content, color }) {
-    this._private_addHtmlTagString({ tag: "h3", content, color });
+  addHeading({ content, color }) {
+    this._private_addHtmlTagString({ tag: "h4", content, color });
     return this;
   }
 
-  addP({ content }) {
+  addParagraph({ content }) {
     this._private_addHtmlTagString({ tag: "p", content });
     return this;
   }
