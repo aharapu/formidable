@@ -366,13 +366,18 @@ function updateClipboard({
 }) {
   const criteriaValues = getValues(criterias);
 
+  // TODO -> make a ClipboardContent class and chain methods
   let clipboardContent = "";
-  clipboardContent += buildHtmlStrongString({
+  clipboardContent += buildHtmlTagString({
+    tag: "h3",
     content: "What:",
     color: LIGHT_GRAY,
   });
-  clipboardContent += HTML_BR_STRING;
-  clipboardContent += buildHtmlSpanString({ content: what, color: DARK_GREY });
+  clipboardContent += buildHtmlTagString({
+    tag: "p",
+    content: what,
+    color: DARK_GREY,
+  });
   clipboardContent += HTML_BR_STRING;
   clipboardContent += buildHtmlStrongString({
     content: "Acceptance Criteria:",
@@ -392,8 +397,14 @@ function buildHtmlStrongString({ content, color }) {
   return `<strong style="color:${color};">${content}</strong>`;
 }
 
+// TODO -> make these implementations of "buildHtmlTagString" ?
 function buildHtmlSpanString({ content, color }) {
   return `<span style="color:${color};">${content}</span>`;
+}
+
+function buildHtmlTagString({ tag, content, color }) {
+  // TODO -> tag should be limited to certain strings
+  return `<${tag} style="color:${color};">${content}</${tag}>`;
 }
 
 function buildHtmlListString(items = []) {
