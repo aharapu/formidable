@@ -52,13 +52,11 @@ export function updateClipboard({
         });
     }
 
-    cc.addHeading({ content: 'Impacted Projects:', color: DARK_RED }).addList(
-        impactedProjects
-    );
+    cc.addHeading({ content: 'Impacted Projects:', color: DARK_RED }).addList(impactedProjects);
 
     if (requiredEditions.length > 0) {
         cc.addHeading({ content: 'Required Editions:', color: RED }).addList(
-            requiredEditions
+            requiredEditions,
         );
     }
 

@@ -32,6 +32,8 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-trailing-spaces": "error",
+        "comma-dangle": ["error", "always-multiline"]
     }
 }
