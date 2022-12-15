@@ -1,103 +1,100 @@
-import { ClipboardContent } from "../../classes/ClipboardContent";
+import { ClipboardContent } from '../../classes/ClipboardContent';
 
 import {
-  featureACs,
-  featureDeps,
-  featureTechGuide,
-  featureFlag,
-  featureImpactedProj,
-  featureRequireEdition,
-  featureRequireAutomationTest,
-  featureWhat,
-  featureTestInstruct,
-  DARK_GREY,
-  DARK_PURPLE,
-  LIGHT_GRAY,
-  PURPLE,
-  GREEN,
-  BLUE,
-  ORANGE,
-  DARK_RED,
-  RED,
-  DARK_TEAL,
-} from "../../constants";
+    LIGHT_GRAY,
+    PURPLE,
+    GREEN,
+    BLUE,
+    ORANGE,
+    DARK_RED,
+    RED,
+    DARK_TEAL,
+} from '../../constants';
 
 export function updateClipboard({
-  what,
-  criterias,
-  techGuidance,
-  dependencies,
-  featureFlag,
-  impactedProjects,
-  requiredEditions,
-  testingScenarios,
-  automation,
+    what,
+    criterias,
+    techGuidance,
+    dependencies,
+    featureFlag,
+    impactedProjects,
+    requiredEditions,
+    testingScenarios,
+    requiresAutomation,
 }) {
-  const criteriaValues = getValues(criterias);
-  const depValues = getValues(dependencies);
+    const criteriaValues = getValues(criterias);
+    const depValues = getValues(dependencies);
 
-  const cc = new ClipboardContent();
+    const cc = new ClipboardContent();
 
-  cc.addHeading({ content: "What:", color: LIGHT_GRAY })
-    .addParagraph({ content: what })
-    .addHeading({ content: "Acceptance Criteria:", color: PURPLE })
-    .addList(criteriaValues);
+    cc.addHeading({ content: 'What:', color: LIGHT_GRAY })
+        .addParagraph({ content: what })
+        .addHeading({ content: 'Acceptance Criteria:', color: PURPLE })
+        .addList(criteriaValues);
 
-  // TODO -> trim and capitalize?
-  if (techGuidance) {
-    cc.addHeading({
-      content: "Technical Guidance:",
-      color: GREEN,
-    }).addParagraph({
-      content: techGuidance,
-    });
-  }
+    // TODO -> trim and capitalize?
+    if (techGuidance) {
+        cc.addHeading({
+            content: 'Technical Guidance:',
+            color: GREEN,
+        }).addParagraph({
+            content: techGuidance,
+        });
+    }
 
-  if (dependencies.length > 0) {
-    cc.addHeading({ content: "Dependencies:", color: BLUE }).addList(depValues);
-  }
+    if (dependencies.length > 0) {
+        cc.addHeading({ content: 'Dependencies:', color: BLUE }).addList(depValues);
+    }
 
-  if (featureFlag) {
-    cc.addHeading({ content: "Feature Flag:", color: ORANGE }).addParagraph({
-      content: featureFlag,
-    });
-  }
+    if (featureFlag) {
+        cc.addHeading({ content: 'Feature Flag:', color: ORANGE }).addParagraph({
+            content: featureFlag,
+        });
+    }
 
-  cc.addHeading({ content: "Impacted Projects:", color: DARK_RED }).addList(
-    impactedProjects
-  );
-
-  if (requiredEditions.length > 0) {
-    cc.addHeading({ content: "Required Editions:", color: RED }).addList(
-      requiredEditions
+    cc.addHeading({ content: 'Impacted Projects:', color: DARK_RED }).addList(
+        impactedProjects
     );
-  }
 
-  if (testingScenarios.length > 0) {
-    cc.addHeading({
-      content: "Testing Scenarios:",
-      color: DARK_TEAL,
-    }).addTestScenarios(testingScenarios);
-  }
+    if (requiredEditions.length > 0) {
+        cc.addHeading({ content: 'Required Editions:', color: RED }).addList(
+            requiredEditions
+        );
+    }
 
-  const content = cc.getContent();
+    if (testingScenarios.length > 0) {
+        cc.addHeading({
+            content: 'Testing Scenarios:',
+            color: DARK_TEAL,
+        }).addTestScenarios(testingScenarios);
+    }
 
-  console.log("content", content);
+    if (requiresAutomation) {
+        cc.addHeading({
+            content: 'Requires Automation',
+            color: LIGHT_GRAY,
+        });
+    }
 
-  const type = "text/html";
-  const blob = new Blob([content], { type });
-  const data = [new ClipboardItem({ [type]: blob })];
+    const content = cc.getContent();
 
-  return navigator.clipboard.write(data);
+    console.log('content', content);
+
+    const type = 'text/html';
+    const blob = new Blob([content], { type });
+    const data = [new ClipboardItem({ [type]: blob })];
+
+    return navigator.clipboard.write(data);
 }
 
 export function getValues(objects = []) {
-  return objects.map((o) => o.value);
+    return objects.map((o) => o.value);
 }
 
-function buildHtmlTagString({ tag, content, color }) {
-  // TODO -> tag should be limited to certain strings
-  const style = color ? `style="color:${color};"` : "";
+// TODO -> check use cases
+export function buildHtmlTagString({ tag, content, color }) {
+    // TODO -> tag should be limited to certain strings
+    const style = color ? `style="color:${color};"` : '';
 
-  return `<${tag} ${style}>${content}</${tag}>`;
+    return `<${tag} ${style}>${content}</${tag}>`;
 }

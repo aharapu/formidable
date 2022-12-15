@@ -46,9 +46,11 @@ export default function FeaturePreview() {
             impactedProjects: getValues(impactedProj),
             requiredEditions: getValues(edition),
             testingScenarios: featureTestInstructions,
+            requiresAutomation: automation,
         });
     };
 
+    // TODO -> have a show as html option
     return (
         <Paper
             style={{
