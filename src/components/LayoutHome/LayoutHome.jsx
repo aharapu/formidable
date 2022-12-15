@@ -41,10 +41,10 @@ export default function LayoutHome() {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        variant="h5"
+                        variant="h4"
                         style={{ height: '60px', backgroundColor: '#F3F5F6' }}
                     >
-            What do you want to do?
+                        What do you want to do?
                     </Typography>
                     <div
                         style={{
@@ -64,7 +64,7 @@ export default function LayoutHome() {
                             onClick={() => setPage(FEATURE_PAGE)}
                             fullWidth
                         >
-              CREATE A FEATURE
+                            CREATE A FEATURE
                         </Button>
                         <Button
                             variant="contained"
@@ -77,7 +77,7 @@ export default function LayoutHome() {
                             onClick={() => setPage(BUG_PAGE)}
                             fullWidth
                         >
-              REPORT A BUG
+                            REPORT A BUG
                         </Button>
                     </div>
                 </Paper>

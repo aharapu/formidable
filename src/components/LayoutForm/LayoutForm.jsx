@@ -47,22 +47,20 @@ export function LayoutForm({ form, preview }) {
                     style={{
                         cursor: 'pointer',
                         padding: '16px',
-                        backgroundColor:
-              page === HOME_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
+                        backgroundColor: page === HOME_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
                     }}
                 >
-          Back to Home
+                    Back to Home
                 </Typography>
                 <Typography
                     onClick={() => setPage(FEATURE_PAGE)}
                     style={{
                         cursor: 'pointer',
                         padding: '16px',
-                        backgroundColor:
-              page === FEATURE_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
+                        backgroundColor: page === FEATURE_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
                     }}
                 >
-          Create a Feature
+                    Create a Feature
                 </Typography>
                 <Typography
                     onClick={() => setPage(BUG_PAGE)}
@@ -82,6 +80,7 @@ export function LayoutForm({ form, preview }) {
                     marginLeft: 'calc(13vw + 40px)',
                     width: '46vw',
                     paddingTop: '48px',
+                    paddingBottom: '38vh',
                 }}
             >
                 {form}
