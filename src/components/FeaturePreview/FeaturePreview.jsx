@@ -24,8 +24,7 @@ import {
   RED,
   DARK_TEAL,
 } from "../../constants";
-
-const HTML_BR_STRING = `<br />`;
+import { getValues, updateClipboard } from "./utils";
 
 export default function FeaturePreview() {
   const what = useRecoilValue(featureWhat);
@@ -51,7 +50,6 @@ export default function FeaturePreview() {
     });
   };
 
-  // TODO -> use state to create an elaborate preview with colors and such
   return (
     <Paper
       style={{
@@ -235,157 +233,4 @@ export default function FeaturePreview() {
       </div>
     </Paper>
   );
-}
-
-// TODO -> move this to a utils file
-function updateClipboard({
-  what,
-  criterias,
-  techGuidance,
-  dependencies,
-  featureFlag,
-  impactedProjects,
-  requiredEditions,
-  testingScenarios,
-  automation,
-}) {
-  const criteriaValues = getValues(criterias);
-  const depValues = getValues(dependencies);
-
-  const cc = new ClipboardContent();
-
-  cc.addHeading({ content: "What:", color: LIGHT_GRAY })
-    .addParagraph({ content: what })
-    .addHeading({ content: "Acceptance Criteria:", color: PURPLE })
-    .addList(criteriaValues);
-
-  // TODO -> trim and capitalize?
-  if (techGuidance) {
-    cc.addHeading({
-      content: "Technical Guidance:",
-      color: GREEN,
-    }).addParagraph({
-      content: techGuidance,
-    });
-  }
-
-  if (dependencies.length > 0) {
-    cc.addHeading({ content: "Dependencies:", color: BLUE }).addList(depValues);
-  }
-
-  if (featureFlag) {
-    cc.addHeading({ content: "Feature Flag:", color: ORANGE }).addParagraph({
-      content: featureFlag,
-    });
-  }
-
-  cc.addHeading({ content: "Impacted Projects:", color: DARK_RED }).addList(
-    impactedProjects
-  );
-
-  if (requiredEditions.length > 0) {
-    cc.addHeading({ content: "Required Editions:", color: RED }).addList(
-      requiredEditions
-    );
-  }
-
-  if (testingScenarios.length > 0) {
-    cc.addHeading({
-      content: "Testing Scenarios:",
-      color: DARK_TEAL,
-    }).addTestScenarios(testingScenarios);
-  }
-
-  const content = cc.getContent();
-
-  console.log("content", content);
-
-  const type = "text/html";
-  const blob = new Blob([content], { type });
-  const data = [new ClipboardItem({ [type]: blob })];
-
-  return navigator.clipboard.write(data);
-}
-
-function getValues(objects = []) {
-  return objects.map((o) => o.value);
-}
-
-class ClipboardContent {
-  // TODO -> turn content into array?
-  constructor() {
-    this.content = "";
-  }
-
-  _private_addHtmlTagString({ tag, content, color }) {
-    // TODO -> tag should be limited to certain strings
-    const style = color ? ` style="color:${color};"` : "";
-
-    this.content += `<${tag}${style}>${content}</${tag}>`;
-  }
-
-  addHeading({ content, color }) {
-    // TODO -> make a tag creation function and use in stead of the _private method
-    //         similar to addList
-    // const strongContent = this._private_addHtmlTagString({
-    //   tag: "strong",
-    //   content,
-    // });
-    this._private_addHtmlTagString({
-      tag: "h4",
-      content: `<strong>${content}</strong>`,
-      color,
-    });
-    return this;
-  }
-
-  addParagraph({ content }) {
-    this._private_addHtmlTagString({ tag: "p", content });
-    return this;
-  }
-
-  addList(values = []) {
-    const list = buildHtmlListString(values);
-    this.content += list;
-    return this;
-  }
-
-  // TODO -> do a nested list
-  // TODO -> make use of a SCENARIO_SEGMENTS = ["given", "when", "then"] constant
-  //         and also use it in state handling
-  addTestScenarios(scenarios = []) {
-    this.content += "<ul>";
-    scenarios.forEach((scenario) => {
-      this.addParagraph({ content: scenario.scenarioName }); // TODO -> rename scenarioName to name
-      this.content += "<ul>";
-      scenario.given.forEach((g, idx) => {
-        const prefix = idx === 0 ? "Given" : "And";
-        const rowContent = `<strong>${prefix} </strong>` + g.value;
-        this._private_addHtmlTagString({ tag: "li", content: rowContent });
-      });
-      this.content += "</ul>";
-    });
-    this.content += "</ul>";
-  }
-
-  // TODO -> add possibility to indent?
-  getContent() {
-    return this.content;
-  }
-}
-
-function buildHtmlListString(values = []) {
-  let result = `<ul>`;
-  values.forEach((val) => {
-    result += `<li>${val}</li>`;
-  });
-  result += `</ul>`;
-  return result;
-}
-
-function buildHtmlTagString({ tag, content, color }) {
-  // TODO -> tag should be limited to certain strings
-  const style = color ? `style="color:${color};"` : "";
-
-  return `<${tag} ${style}>${content}</${tag}>`;
 }
