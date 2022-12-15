@@ -3,6 +3,15 @@ body {
   background-color: rgba(255, 255, 255, 0.003);
 }
 
+.preview-list {
+  list-style-type: disc;
+  margin-left: 24px;
+}
+
+.preview-list ::marker {
+  font-size: 10px;
+}
+
 /* source-sans-pro-200 - latin */
 @font-face {
   font-family: "Source Sans Pro";

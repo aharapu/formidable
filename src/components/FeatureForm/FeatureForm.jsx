@@ -318,6 +318,8 @@ export default function FeatureForm() {
     setRequireAutomation(isRequired);
   };
 
+  // TODO -> when focused element is close to screen edge, scroll into view
+
   return (
     <Box
       style={{
