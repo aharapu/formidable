@@ -1,15 +1,6 @@
 import { ClipboardContent } from '../../classes/ClipboardContent';
 
-import {
-    LIGHT_GRAY,
-    PURPLE,
-    GREEN,
-    BLUE,
-    ORANGE,
-    DARK_RED,
-    RED,
-    DARK_TEAL,
-} from '../../constants';
+import { LIGHT_GRAY, PURPLE, GREEN, BLUE, ORANGE, DARK_RED, RED, DARK_TEAL } from '../../constants';
 
 export function updateClipboard({
     what,
@@ -55,9 +46,7 @@ export function updateClipboard({
     cc.addHeading({ content: 'Impacted Projects:', color: DARK_RED }).addList(impactedProjects);
 
     if (requiredEditions.length > 0) {
-        cc.addHeading({ content: 'Required Editions:', color: RED }).addList(
-            requiredEditions,
-        );
+        cc.addHeading({ content: 'Required Editions:', color: RED }).addList(requiredEditions);
     }
 
     if (testingScenarios.length > 0) {

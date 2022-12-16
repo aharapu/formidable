@@ -23,7 +23,7 @@ import {
     RED,
     DARK_TEAL,
 } from '../../constants';
-import { getValues, updateClipboard } from './utils';
+import { useClipboard } from '../../hooks/useClipboard';
 
 export default function FeaturePreview() {
     const what = useRecoilValue(featureWhat);
@@ -36,18 +36,10 @@ export default function FeaturePreview() {
     const featureTestInstructions = useRecoilValue(featureTestInstruct);
     const automation = useRecoilValue(featureRequireAutomationTest);
 
+    const { copyFeature } = useClipboard();
+
     const handleCopyClick = () => {
-        updateClipboard({
-            what,
-            criterias,
-            techGuidance,
-            dependencies,
-            featureFlag: FF,
-            impactedProjects: getValues(impactedProj),
-            requiredEditions: getValues(edition),
-            testingScenarios: featureTestInstructions,
-            requiresAutomation: automation,
-        });
+        copyFeature();
     };
 
     // TODO -> have a show as html option
