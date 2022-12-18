@@ -48,8 +48,8 @@ export default function FeaturePreview() {
             style={{
                 padding: '24px',
                 maxWidth: '420px',
-                maxHeight: 'calc(100vh - 92px)',
-                overflow: 'scroll',
+                maxHeight: 'calc(100vh - 164px)',
+                overflowY: 'auto',
             }}
             elevation={3}
         >
@@ -217,11 +217,12 @@ export default function FeaturePreview() {
                 }}
             >
                 <Button
+                // TODO -> place copy button under the scrollable preview, to make it always visible
                     variant="contained"
                     onClick={handleCopyClick}
                     style={{ backgroundColor: '#172F4D', width: '190px', height: '42px' }}
                 >
-          Copy to clipboard
+                    Copy to clipboard
                 </Button>
             </div>
         </Paper>
