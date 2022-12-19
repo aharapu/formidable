@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -7,45 +7,76 @@ import {
     IconButton,
     FormControlLabel,
     Switch,
+    Tooltip,
+    Typography,
 } from '@mui/material';
 import {
     ClearRounded,
     AddCircle,
 } from '@mui/icons-material';
 
-import { ORANGE } from '../constants';
+import { LIGHT_GRAY, ORANGE } from '../constants';
 
 export function BulletContent({
+    title = 'Default Title',
     textFieldLabel = 'Default Input Label',
     textFieldPlaceholder = 'Default Input Placeholder',
     textFieldOnBlur = (/* id, errorMessage */) => {},
     onAdd: handleAdd = (/* inputString */) => {},
     onChange: handleTextFieldChange = (/* id, string */) => {},
-    onDelete = (/* id */) => {},
+    onDelete: handleDelete = (/* id */) => {},
     items = [],
     showToggle: isUsingToggle = false,
     toggleLabel = 'Default Toggle Label',
     onToggleChange = (/* isChecked */) => {},
+    showDelimiter = false,
 }) {
     const [showInput, setShowInput] = useState(false);
 
-    // TODO -> add keydown handling for each input
-    // const handleKeyDown = (e) => {
-    //     e.keyCode === 13 && handleAddItem();
-    // };
+    const prevItems = usePrevious(items);
+    const lastDeletedIndex = useRef(null);
+
+    const handleKeyDown = (e, idx) => {
+        if (e.keyCode !== 13) return;
+        if (idx === items.length - 1) {
+            handleAdd();
+        }
+    };
+
+    const handleTextFieldDelete = (id, idx) => {
+        lastDeletedIndex.current = idx;
+        handleDelete(id);
+    };
+
+    // change focus when items are added or deleted
+    useLayoutEffect(() => {
+        if (!prevItems) return;
+
+        if (prevItems.length < items.length) {
+            const lastItem = items[items.length - 1];
+            const input = document.getElementById(lastItem.id);
+            input.focus();
+        }
+
+        if (prevItems.length > items.length) {
+            const wasLastItemDeleted = lastDeletedIndex.current === items.length;
+            if (wasLastItemDeleted) {
+                const lastItem = items[items.length - 1];
+                const input = document.getElementById(lastItem.id);
+                input.focus();
+            } else {
+                const nextItem = items[lastDeletedIndex.current];
+                const input = document.getElementById(nextItem.id);
+                input.focus();
+            }
+        }
+    }, [items, prevItems]);
 
     const handleSwitchChange = (e) => {
         const isChecked = e.target.checked;
         setShowInput(isChecked);
         onToggleChange(isChecked);
     };
-
-    // const handleTextFieldChange = (e) => {
-    //     console.log('exec handleTextFieldChange');
-    //     const val = e.target.value;
-    //     setInputContent(val);
-    //     setShowWarning(false);
-    // };
 
     const handleTextFieldBlur = (id) => {
         const value = items.find((item) => item.id === id).value;
@@ -55,26 +86,18 @@ export function BulletContent({
 
     const isInputVisible = isUsingToggle ? showInput : true;
 
-    // const InputProps = {
-    //     endAdornment: showWarning ? (
-    //         <InputAdornment position="end">
-    //             <Tooltip
-    //                 arrow
-    //                 placement="top"
-    //                 title={`${getRandomExclamation()}This text has not been added!`}
-    //             >
-    //                 <WarningRounded
-    //                     // TODO -> add cursor default?
-    //                 />
-    //             </Tooltip>
-    //         </InputAdornment>
-    //     ) : undefined,
-    // };
-
     return (
         <>
+            {showDelimiter &&
+                <Grid item xs={12} style={{ paddingTop: '20px', paddingBottom: '4px' }} >
+                    <hr style={{
+                        width: '100%',
+                        border: `1px solid ${LIGHT_GRAY}33`,
+                    }} />
+                </Grid>
+            }
             {isUsingToggle && (
-                <Grid container item xs={12}>
+                <Grid item xs={12}>
                     <FormControlLabel
                         control={
                             <Switch
@@ -89,47 +112,52 @@ export function BulletContent({
             )}
             {isInputVisible && (
                 <>
-                    {/* <Grid item xs={12}>
-                        <TextField
-                            label={textFieldLabel}
-                            placeholder={textFieldPlaceholder}
-                            fullWidth
-                            value={inputContent}
-                            onChange={handleTextFieldChange}
-                            onKeyDown={handleKeyDown}
-                            error={textFieldShowError}
-                            helperText={textFieldError}
-                            onBlur={handleTextFieldBlur}
-                            InputProps={InputProps}
-                            size="small"
-                        />
+                    <Grid
+                        item
+                        xs={12}
+                        style={{ paddingTop: '12px' }}
+                    >
+                        <Typography
+                            variant="subtitle2"
+                        >
+                            {title}
+                        </Typography>
                     </Grid>
-                     */}
-                    {items.map(({ id, value, error }) => (
+                    {items.map(({ id, value, error }, idx) => (
                         <React.Fragment key={id}>
                             <Grid
                                 item
                                 xs={12}
                                 display="flex"
-                                alignItems="center"
-                                style={{ paddingLeft: '50px', paddingTop: '16px' }}
+                                alignItems="start"
+                                style={{ paddingTop: '12px' }}
                             >
                                 <TextField
-                                    label={textFieldLabel}
+                                    id={id}
+                                    label={`${textFieldLabel} No. ${idx + 1}`}
                                     placeholder={textFieldPlaceholder}
                                     fullWidth
                                     value={value}
                                     onChange={(e) => handleTextFieldChange(id, e.target.value)}
-                                    // onKeyDown={handleKeyDown} // TODO -> implement keydown handling
+                                    onKeyDown={(e) => handleKeyDown(e, idx)}
                                     error={Boolean(error)}
                                     helperText={error}
                                     onBlur={() => handleTextFieldBlur(id)}
-                                    // InputProps={InputProps}
                                     size="small"
                                 />
-                                <IconButton onClick={() => onDelete(id)}>
-                                    <ClearRounded style={{ width: '24px', height: '24px' }} />
-                                </IconButton>
+                                <Tooltip
+                                    placement='right'
+                                    arrow
+                                    title={items.length === 1 ? 'Must have at least one item' : 'Delete'}
+                                >
+                                    <span>
+                                        <IconButton onClick={() => handleTextFieldDelete(id, idx)}
+                                            disabled={items.length === 1}
+                                        >
+                                            <ClearRounded style={{ width: '18.25px', height: '18.25px' }} />
+                                        </IconButton>
+                                    </span>
+                                </Tooltip>
                             </Grid>
                         </React.Fragment>
                     ))}
@@ -150,6 +178,7 @@ export function BulletContent({
 }
 
 BulletContent.propTypes = {
+    title: PropTypes.string,
     textFieldLabel: PropTypes.string,
     textFieldPlaceholder: PropTypes.string,
     textFieldShowError: PropTypes.bool,
@@ -167,10 +196,21 @@ BulletContent.propTypes = {
     showToggle: PropTypes.bool,
     toggleLabel: PropTypes.string,
     onToggleChange: PropTypes.func,
+    showDelimiter: PropTypes.bool,
 };
 
+// TODO -> move this to a utils file
 function validateInput(value) {
     const trimmedValue = value.trim();
     if (!trimmedValue) return 'This field is required';
     return '';
+}
+
+// TODO -> move this to a hooks file
+function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
 }

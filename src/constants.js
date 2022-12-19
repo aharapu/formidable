@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { v4 as createId } from 'uuid';
 
 export const DARK_GREY = '#172F4D';
 export const DARK_BLUE = '#0747A6';
@@ -46,7 +47,7 @@ export const featureWhat = atom({
 
 export const featureACs = atom({
     key: 'featureACs',
-    default: [{ id: '', value: '', error: '' }],
+    default: [{ id: createId(), value: '', error: '' }],
     /*
   array object shape { id: UUID, value: String }
   */

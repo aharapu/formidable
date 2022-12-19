@@ -68,7 +68,7 @@ export default function FeatureForm() {
         setACs((prevACs) =>
             prevACs.map((ac) => {
                 if (ac.id === critId) {
-                    return { ...ac, value };
+                    return { ...ac, value, error: '' };
                 }
                 return ac;
             }),
@@ -335,7 +335,7 @@ export default function FeatureForm() {
             }}
         >
             <Typography variant="h2" paddingBottom="32px">
-        Feature Form
+                Feature Form
             </Typography>
             <Grid container spacing={3}>
                 <FormTextField
@@ -349,6 +349,7 @@ export default function FeatureForm() {
                     helperText={whatErr}
                 />
                 <BulletContent
+                    title={LABLES.acceptanceCriteriaTitle}
                     textFieldLabel={LABLES.acceptCritInput}
                     textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
                     textFieldOnBlur={handleACsBlur}
@@ -358,6 +359,7 @@ export default function FeatureForm() {
                     onAdd={handleAddCriteria}
                     onChange={handleCriteriaChange}
                     onDelete={handleDelCriteria}
+                    showDelimiter
                 />
                 <FormTextField
                     label={LABLES.techGuide}
@@ -367,7 +369,7 @@ export default function FeatureForm() {
                     onChange={(e) => setTechGuide(e.target.value)}
                 />
                 <BulletContent
-                    textFieldLabel={LABLES.depsInput}
+                    title={LABLES.depsInput}
                     textFieldPlaceholder={PLACEHOLDERS.depsInput}
                     showToggle
                     toggleLabel={LABLES.depsToggle}
@@ -386,14 +388,14 @@ export default function FeatureForm() {
                     onToggleChange={handleToggleFlag}
                 />
                 <BulletContent
-                    textFieldLabel={LABLES.imapctedProj}
+                    title={LABLES.imapctedProj}
                     textFieldPlaceholder={PLACEHOLDERS.imapctedProj}
                     items={impactProjs}
                     onAdd={handleAddProj}
                     onDelete={handleDelProj}
                 />
                 <BulletContent
-                    textFieldLabel={LABLES.editionInput}
+                    title={LABLES.editionInput}
                     textFieldPlaceholder={PLACEHOLDERS.editionInput}
                     showToggle
                     toggleLabel={LABLES.editionToggle}

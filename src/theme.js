@@ -45,159 +45,181 @@ export const theme = createTheme({
                 //       },
             },
         },
-    //   MuiButtonBase: {
-    //     defaultProps: {
-    //       disableRipple: true,
-    //     },
-    //   },
-    //   MuiCardContent: {
-    //     styleOverrides: {
-    //       root: {
-    //         padding: "32px 24px",
-    //         "&:last-child": {
-    //           paddingBottom: "32px",
-    //         },
-    //       },
-    //     },
-    //   },
-    //   MuiCardHeader: {
-    //     defaultProps: {
-    //       titleTypographyProps: {
-    //         variant: "h6",
-    //       },
-    //       subheaderTypographyProps: {
-    //         variant: "body2",
-    //       },
-    //     },
-    //     styleOverrides: {
-    //       root: {
-    //         padding: "32px 24px",
-    //       },
-    //     },
-    //   },
-    //   MuiCssBaseline: {
-    //     styleOverrides: {
-    //       "*": {
-    //         boxSizing: "border-box",
-    //         margin: 0,
-    //         padding: 0,
-    //       },
-    //       html: {
-    //         MozOsxFontSmoothing: "grayscale",
-    //         WebkitFontSmoothing: "antialiased",
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         minHeight: "100%",
-    //         width: "100%",
-    //       },
-    //       body: {
-    //         display: "flex",
-    //         flex: "1 1 auto",
-    //         flexDirection: "column",
-    //         minHeight: "100%",
-    //         width: "100%",
-    //       },
-    //       "#__next": {
-    //         display: "flex",
-    //         flex: "1 1 auto",
-    //         flexDirection: "column",
-    //         height: "100%",
-    //         width: "100%",
-    //       },
-    //     },
-    //   },
-    //   MuiOutlinedInput: {
-    //     styleOverrides: {
-    //       notchedOutline: {
-    //         borderColor: "#E6E8F0",
-    //       },
-    //     },
-    //   },
-    //   MuiTableHead: {
-    //     styleOverrides: {
-    //       root: {
-    //         backgroundColor: "#F3F4F6",
-    //         ".MuiTableCell-root": {
-    //           color: "#374151",
-    //         },
-    //         borderBottom: "none",
-    //         "& .MuiTableCell-root": {
-    //           borderBottom: "none",
-    //           fontSize: "12px",
-    //           fontWeight: 600,
-    //           lineHeight: 1,
-    //           letterSpacing: 0.5,
-    //           textTransform: "uppercase",
-    //         },
-    //         "& .MuiTableCell-paddingCheckbox": {
-    //           paddingTop: 4,
-    //           paddingBottom: 4,
-    //         },
-    //       },
-    //     },
-    //   },
+        //   MuiButtonBase: {
+        //     defaultProps: {
+        //       disableRipple: true,
+        //     },
+        //   },
+        //   MuiCardContent: {
+        //     styleOverrides: {
+        //       root: {
+        //         padding: "32px 24px",
+        //         "&:last-child": {
+        //           paddingBottom: "32px",
+        //         },
+        //       },
+        //     },
+        //   },
+        //   MuiCardHeader: {
+        //     defaultProps: {
+        //       titleTypographyProps: {
+        //         variant: "h6",
+        //       },
+        //       subheaderTypographyProps: {
+        //         variant: "body2",
+        //       },
+        //     },
+        //     styleOverrides: {
+        //       root: {
+        //         padding: "32px 24px",
+        //       },
+        //     },
+        //   },
+        //   MuiCssBaseline: {
+        //     styleOverrides: {
+        //       "*": {
+        //         boxSizing: "border-box",
+        //         margin: 0,
+        //         padding: 0,
+        //       },
+        //       html: {
+        //         MozOsxFontSmoothing: "grayscale",
+        //         WebkitFontSmoothing: "antialiased",
+        //         display: "flex",
+        //         flexDirection: "column",
+        //         minHeight: "100%",
+        //         width: "100%",
+        //       },
+        //       body: {
+        //         display: "flex",
+        //         flex: "1 1 auto",
+        //         flexDirection: "column",
+        //         minHeight: "100%",
+        //         width: "100%",
+        //       },
+        //       "#__next": {
+        //         display: "flex",
+        //         flex: "1 1 auto",
+        //         flexDirection: "column",
+        //         height: "100%",
+        //         width: "100%",
+        //       },
+        //     },
+        //   },
+        //   MuiOutlinedInput: {
+        //     styleOverrides: {
+        //       notchedOutline: {
+        //         borderColor: "#E6E8F0",
+        //       },
+        //     },
+        //   },
+        MuiTooltip: {
+            styleOverrides: {
+                tooltipPlacementTop: {
+                    // overriden by .MuiTooltip-popper[data-popper-placement*="top"] .MuiTooltip-tooltip
+                    // marginBottom: 8,
+                    top: 12,
+                },
+                tooltipPlacementRight: {
+                    right: 10,
+                },
+                tooltip: {
+                    // overriden by .MuiTooltip-popper[data-popper-placement*="top"] .MuiTooltip-tooltip
+                    //marginBottom: 8,
+                },
+                popper: {
+                    // ['&[data-popper-placement*="top"]']: { // did nothing...
+                    //     marginBottom: 8,
+                    // },
+                    // marginBottom: 8, // overriden by element style
+                },
+            },
+        },
+        //   MuiTableHead: {
+        //     styleOverrides: {
+        //       root: {
+        //         backgroundColor: "#F3F4F6",
+        //         ".MuiTableCell-root": {
+        //           color: "#374151",
+        //         },
+        //         borderBottom: "none",
+        //         "& .MuiTableCell-root": {
+        //           borderBottom: "none",
+        //           fontSize: "12px",
+        //           fontWeight: 600,
+        //           lineHeight: 1,
+        //           letterSpacing: 0.5,
+        //           textTransform: "uppercase",
+        //         },
+        //         "& .MuiTableCell-paddingCheckbox": {
+        //           paddingTop: 4,
+        //           paddingBottom: 4,
+        //         },
+        //       },
+        //     },
+        //   },
     },
     palette: {
-    //   neutral: {
-    //     100: "#F3F4F6",
-    //     200: "#E5E7EB",
-    //     300: "#D1D5DB",
-    //     400: "#9CA3AF",
-    //     500: "#6B7280",
-    //     600: "#4B5563",
-    //     700: "#374151",
-    //     800: "#1F2937",
-    //     900: "#111827",
-    //   },
-    //   action: {
-    //     active: "#6B7280",
-    //     focus: "rgba(55, 65, 81, 0.12)",
-    //     hover: "rgba(55, 65, 81, 0.04)",
-    //     selected: "rgba(55, 65, 81, 0.08)",
-    //     disabledBackground: "rgba(55, 65, 81, 0.12)",
-    //     disabled: "rgba(55, 65, 81, 0.26)",
-    //   },
-    //   background: {
-    //     default: "#F9FAFC",
-    //     paper: "#FFFFFF",
-    //   },
-    //   divider: "#E6E8F0",
-    //   primary: {
-    //     main: "#5048E5",
-    //     light: "#828DF8",
-    //     dark: "#3832A0",
-    //     contrastText: "#FFFFFF",
-    //   },
-    //   secondary: {
-    //     main: "#10B981",
-    //     light: "#3FC79A",
-    //     dark: "#0B815A",
-    //     contrastText: "#FFFFFF",
-    //   },
-    //   success: {
-    //     main: "#14B8A6",
-    //     light: "#43C6B7",
-    //     dark: "#0E8074",
-    //     contrastText: "#FFFFFF",
-    //   },
-    //   info: {
-    //     main: "#2196F3",
-    //     light: "#64B6F7",
-    //     dark: "#0B79D0",
-    //     contrastText: "#FFFFFF",
-    //   },
-    //   warning: {
-    //     main: "#FFB020",
-    //     light: "#FFBF4C",
-    //     dark: "#B27B16",
-    //     contrastText: "#FFFFFF",
-    //   },
-    //   error: {
-    //     main: "#D14343",
-    //     light: "#DA6868",
-    //     dark: "#922E2E",
-    //     contrastText: "#FFFFFF",
-    //   },
+        //   neutral: {
+        //     100: "#F3F4F6",
+        //     200: "#E5E7EB",
+        //     300: "#D1D5DB",
+        //     400: "#9CA3AF",
+        //     500: "#6B7280",
+        //     600: "#4B5563",
+        //     700: "#374151",
+        //     800: "#1F2937",
+        //     900: "#111827",
+        //   },
+        //   action: {
+        //     active: "#6B7280",
+        //     focus: "rgba(55, 65, 81, 0.12)",
+        //     hover: "rgba(55, 65, 81, 0.04)",
+        //     selected: "rgba(55, 65, 81, 0.08)",
+        //     disabledBackground: "rgba(55, 65, 81, 0.12)",
+        //     disabled: "rgba(55, 65, 81, 0.26)",
+        //   },
+        //   background: {
+        //     default: "#F9FAFC",
+        //     paper: "#FFFFFF",
+        //   },
+        //   divider: "#E6E8F0",
+        //   primary: {
+        //     main: "#5048E5",
+        //     light: "#828DF8",
+        //     dark: "#3832A0",
+        //     contrastText: "#FFFFFF",
+        //   },
+        //   secondary: {
+        //     main: "#10B981",
+        //     light: "#3FC79A",
+        //     dark: "#0B815A",
+        //     contrastText: "#FFFFFF",
+        //   },
+        //   success: {
+        //     main: "#14B8A6",
+        //     light: "#43C6B7",
+        //     dark: "#0E8074",
+        //     contrastText: "#FFFFFF",
+        //   },
+        //   info: {
+        //     main: "#2196F3",
+        //     light: "#64B6F7",
+        //     dark: "#0B79D0",
+        //     contrastText: "#FFFFFF",
+        //   },
+        //   warning: {
+        //     main: "#FFB020",
+        //     light: "#FFBF4C",
+        //     dark: "#B27B16",
+        //     contrastText: "#FFFFFF",
+        //   },
+        //   error: {
+        //     main: "#D14343",
+        //     light: "#DA6868",
+        //     dark: "#922E2E",
+        //     contrastText: "#FFFFFF",
+        //   },
         text: {
             primary: DARK_GREY,
             //     secondary: "#65748B",
@@ -235,14 +257,13 @@ export const theme = createTheme({
     //   "0px 25px 50px rgba(100, 116, 139, 0.25)",
     // ],
     typography: {
-    // allVariants: {
+        // allVariants: {
 
         // },
         //   button: {
         //     fontWeight: 600,
         //   },
         fontFamily: ['"Source Sans Pro"', 'Helvetica', 'Arial'].join(','),
-        // '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
         body1: {
             fontSize: '12px',
             fontWeight: 400,
@@ -258,11 +279,11 @@ export const theme = createTheme({
             fontWeight: 600,
             lineHeight: '24px',
         },
-        //   subtitle2: {
-        //     fontSize: "0.875rem",
-        //     fontWeight: 500,
-        //     lineHeight: 1.57,
-        //   },
+        subtitle2: {
+            fontSize: '12px',
+            fontWeight: 600,
+            lineHeight: '18px',
+        },
         //   overline: {
         //     fontSize: "0.75rem",
         //     fontWeight: 600,
@@ -300,10 +321,10 @@ export const theme = createTheme({
             fontSize: '14px',
             lineHeight: '18px',
         },
-    //   h6: {
-    //     fontWeight: 600,
-    //     fontSize: "1.125rem",
-    //     lineHeight: 1.375,
-    //   },
+        //   h6: {
+        //     fontWeight: 600,
+        //     fontSize: "1.125rem",
+        //     lineHeight: 1.375,
+        //   },
     },
 });
