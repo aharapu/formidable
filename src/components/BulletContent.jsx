@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
     Grid,
@@ -6,48 +7,32 @@ import {
     IconButton,
     FormControlLabel,
     Switch,
-    InputAdornment,
-    Tooltip,
 } from '@mui/material';
 import {
-    WarningRounded,
     ClearRounded,
     AddCircle,
 } from '@mui/icons-material';
-// import AddCircleIcon from '@mui/icons-material/AddCircle';
-// import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 
-import { getRandomExclamation } from './FeatureForm/utils';
 import { ORANGE } from '../constants';
 
 export function BulletContent({
     textFieldLabel = 'Default Input Label',
     textFieldPlaceholder = 'Default Input Placeholder',
-    textFieldShowError = null,
-    textFieldError = '',
-    textFieldOnBlur = () => {},
-    onAdd = (inputString) => {},
-    onDelete = (id) => {},
-    items = [], // item shape is { id: UUID, value: String }
+    textFieldOnBlur = (/* id, errorMessage */) => {},
+    onAdd: handleAdd = (/* inputString */) => {},
+    onChange: handleTextFieldChange = (/* id, string */) => {},
+    onDelete = (/* id */) => {},
+    items = [],
     showToggle: isUsingToggle = false,
     toggleLabel = 'Default Toggle Label',
-    onToggleChange = (isChecked) => {},
+    onToggleChange = (/* isChecked */) => {},
 }) {
     const [showInput, setShowInput] = useState(false);
-    const [inputContent, setInputContent] = useState('');
-    const [showWarning, setShowWarning] = useState(false);
 
-    const handleAddItem = () => {
-        const trimmedInput = inputContent.trim();
-        if (!trimmedInput) return;
-        onAdd(trimmedInput);
-        setInputContent('');
-        setShowWarning(false);
-    };
-
-    const handleKeyDown = (e) => {
-        e.keyCode === 13 && handleAddItem();
-    };
+    // TODO -> add keydown handling for each input
+    // const handleKeyDown = (e) => {
+    //     e.keyCode === 13 && handleAddItem();
+    // };
 
     const handleSwitchChange = (e) => {
         const isChecked = e.target.checked;
@@ -55,39 +40,36 @@ export function BulletContent({
         onToggleChange(isChecked);
     };
 
-    const handleTextFieldChange = (e) => {
-        console.log('exec handleTextFieldChange');
-        const val = e.target.value;
-        setInputContent(val);
-        setShowWarning(false);
-    };
+    // const handleTextFieldChange = (e) => {
+    //     console.log('exec handleTextFieldChange');
+    //     const val = e.target.value;
+    //     setInputContent(val);
+    //     setShowWarning(false);
+    // };
 
-    const handleTextFieldBlur = () => {
-        const trimmedInput = inputContent.trim();
-        const shouldWarn = Boolean(trimmedInput);
-        if (shouldWarn) {
-            setShowWarning(true);
-        }
-        textFieldOnBlur(shouldWarn);
+    const handleTextFieldBlur = (id) => {
+        const value = items.find((item) => item.id === id).value;
+        const errorMessage = validateInput(value);
+        textFieldOnBlur(id, errorMessage);
     };
 
     const isInputVisible = isUsingToggle ? showInput : true;
 
-    const InputProps = {
-        endAdornment: showWarning ? (
-            <InputAdornment position="end">
-                <Tooltip
-                    arrow
-                    placement="top"
-                    title={`${getRandomExclamation()}This text has not been added!`}
-                >
-                    <WarningRounded
-                        // TODO -> add cursor default?
-                    />
-                </Tooltip>
-            </InputAdornment>
-        ) : undefined,
-    };
+    // const InputProps = {
+    //     endAdornment: showWarning ? (
+    //         <InputAdornment position="end">
+    //             <Tooltip
+    //                 arrow
+    //                 placement="top"
+    //                 title={`${getRandomExclamation()}This text has not been added!`}
+    //             >
+    //                 <WarningRounded
+    //                     // TODO -> add cursor default?
+    //                 />
+    //             </Tooltip>
+    //         </InputAdornment>
+    //     ) : undefined,
+    // };
 
     return (
         <>
@@ -107,7 +89,7 @@ export function BulletContent({
             )}
             {isInputVisible && (
                 <>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <TextField
                             label={textFieldLabel}
                             placeholder={textFieldPlaceholder}
@@ -122,17 +104,8 @@ export function BulletContent({
                             size="small"
                         />
                     </Grid>
-                    <Grid item xs={12} display="flex" justifyContent="center">
-                        <IconButton
-                            onClick={handleAddItem}
-                            style={{ margin: '-30px 0 -16px' }}
-                        >
-                            <AddCircle
-                                style={{ width: '29px', height: '29px', color: ORANGE }}
-                            />
-                        </IconButton>
-                    </Grid>
-                    {items.map(({ id, value }) => (
+                     */}
+                    {items.map(({ id, value, error }) => (
                         <React.Fragment key={id}>
                             <Grid
                                 item
@@ -143,8 +116,15 @@ export function BulletContent({
                             >
                                 <TextField
                                     label={textFieldLabel}
-                                    value={value}
+                                    placeholder={textFieldPlaceholder}
                                     fullWidth
+                                    value={value}
+                                    onChange={(e) => handleTextFieldChange(id, e.target.value)}
+                                    // onKeyDown={handleKeyDown} // TODO -> implement keydown handling
+                                    error={Boolean(error)}
+                                    helperText={error}
+                                    onBlur={() => handleTextFieldBlur(id)}
+                                    // InputProps={InputProps}
                                     size="small"
                                 />
                                 <IconButton onClick={() => onDelete(id)}>
@@ -153,8 +133,44 @@ export function BulletContent({
                             </Grid>
                         </React.Fragment>
                     ))}
+                    <Grid item xs={12} display="flex" justifyContent="center">
+                        <IconButton
+                            onClick={handleAdd}
+                            style={{ margin: '-30px 0 -16px' }}
+                        >
+                            <AddCircle
+                                style={{ width: '29px', height: '29px', color: ORANGE }}
+                            />
+                        </IconButton>
+                    </Grid>
                 </>
             )}
         </>
     );
+}
+
+BulletContent.propTypes = {
+    textFieldLabel: PropTypes.string,
+    textFieldPlaceholder: PropTypes.string,
+    textFieldShowError: PropTypes.bool,
+    textFieldError: PropTypes.string,
+    textFieldOnBlur: PropTypes.func,
+    onAdd: PropTypes.func, // TODO -> remove this
+    onChange: PropTypes.func,
+    onDelete: PropTypes.func,
+    items: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            value: PropTypes.string,
+        }),
+    ),
+    showToggle: PropTypes.bool,
+    toggleLabel: PropTypes.string,
+    onToggleChange: PropTypes.func,
+};
+
+function validateInput(value) {
+    const trimmedValue = value.trim();
+    if (!trimmedValue) return 'This field is required';
+    return '';
 }
