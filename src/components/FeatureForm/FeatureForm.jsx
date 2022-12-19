@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { v4 as createId } from 'uuid';
 import { Box, Grid, Typography } from '@mui/material';
@@ -16,13 +16,15 @@ import {
     formValidationErrors,
 } from '../../constants';
 
-import { BulletContent } from '../BulletContent';
+import { InputList } from '../InputList';
 import { FormTextField } from '../FormTextField';
 import { FormCheckbox } from '../FormCheckbox';
 import { TestingInstructions } from '../TestingInstructions';
+import { FormSwitchButton } from '../FormSwitchButton';
 
 import { LABLES, PLACEHOLDERS } from './featureFormConstants';
 import { validateWhat } from './utils';
+import { DelimiterLine } from '../DelimiterLine/DelimiterLine';
 
 export default function FeatureForm() {
     const [what, setWhat] = useRecoilState(featureWhat);
@@ -40,6 +42,9 @@ export default function FeatureForm() {
     const [validErr, setValidErr] = useRecoilState(formValidationErrors);
 
     const [whatErr, setWhatErr] = useState(null);
+    const [showDependencies, setShowDependencies] = useState(false);
+
+    const cachedDeps = useRef(deps);
 
     const handleWhatChange = (e) => {
         setWhat(e.target.value);
@@ -64,6 +69,7 @@ export default function FeatureForm() {
         setACs((prev) => [...prev, { id: createId(), value: '', error: '' }]);
     };
 
+    // TODO -> criteriaChange or changeCriteria? decide on one!
     const handleCriteriaChange = (critId, value) => {
         setACs((prevACs) =>
             prevACs.map((ac) => {
@@ -90,8 +96,19 @@ export default function FeatureForm() {
         );
     };
 
-    const handleAddDeps = (dep) => {
-        setDeps((prev) => [...prev, { id: createId(), value: dep }]);
+    const handleAddDeps = () => {
+        setDeps((prev) => [...prev, { id: createId(), value: '', error: '' }]);
+    };
+
+    const handleDepsChange = (depId, value) => {
+        setDeps((prevDeps) =>
+            prevDeps.map((dep) => {
+                if (dep.id === depId) {
+                    return { ...dep, value, error: '' };
+                }
+                return dep;
+            }),
+        );
     };
 
     const handleDelDeps = (depId) => {
@@ -116,11 +133,19 @@ export default function FeatureForm() {
         );
     };
 
-    const handleToggleDeps = (isVisible) => {
-        if (!isVisible) {
-            setDeps([]);
+    const handleDepsToggle = () => {
+        const isHiding = showDependencies;
+
+        if(isHiding) {
+            cachedDeps.current = deps;
         }
-    // TODO -> else restore previous state ("keep in ref")
+
+        const depsToSet = isHiding ? [] :
+            cachedDeps.current.length ? cachedDeps.current
+                : [{ id: createId(), value: '', error: '' }];
+
+        setDeps(depsToSet);
+        setShowDependencies((prev) => !prev);
     };
 
     const handleToggleFlag = (isVisible) => {
@@ -348,7 +373,7 @@ export default function FeatureForm() {
                     error={Boolean(whatErr)}
                     helperText={whatErr}
                 />
-                <BulletContent
+                <InputList
                     title={LABLES.acceptanceCriteriaTitle}
                     textFieldLabel={LABLES.acceptCritInput}
                     textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
@@ -368,16 +393,24 @@ export default function FeatureForm() {
                     value={techGuide}
                     onChange={(e) => setTechGuide(e.target.value)}
                 />
-                <BulletContent
+                <Grid item xs={12} style={{ paddingTop: '20px', paddingBottom: '4px' }} >
+                    <DelimiterLine />
+                </Grid>
+                <FormSwitchButton
+                    label={LABLES.depsToggle}
+                    value={showDependencies}
+                    onChange={handleDepsToggle}
+                />
+                {showDependencies && <InputList
                     title={LABLES.depsInput}
                     textFieldPlaceholder={PLACEHOLDERS.depsInput}
                     showToggle
                     toggleLabel={LABLES.depsToggle}
                     items={deps}
                     onAdd={handleAddDeps}
-                    onToggleChange={handleToggleDeps}
+                    onChange={handleDepsChange}
                     onDelete={handleDelDeps}
-                />
+                />}
                 <FormTextField
                     label={LABLES.flagInput}
                     placeholder={PLACEHOLDERS.flagInput}
@@ -387,14 +420,14 @@ export default function FeatureForm() {
                     toggleLabel={LABLES.flagToggle}
                     onToggleChange={handleToggleFlag}
                 />
-                <BulletContent
+                <InputList
                     title={LABLES.imapctedProj}
                     textFieldPlaceholder={PLACEHOLDERS.imapctedProj}
                     items={impactProjs}
                     onAdd={handleAddProj}
                     onDelete={handleDelProj}
                 />
-                <BulletContent
+                <InputList
                     title={LABLES.editionInput}
                     textFieldPlaceholder={PLACEHOLDERS.editionInput}
                     showToggle
