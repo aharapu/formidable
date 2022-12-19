@@ -1,11 +1,19 @@
+* {
+  border-style: unset;
+  margin: 0;
+}
+
 body {
   margin: 0;
   background-color: rgba(255, 255, 255, 0.003);
 }
 
+ul {
+  margin: 0;
+}
+
 .preview-list {
   list-style-type: disc;
-  margin-left: 24px;
 }
 
 .preview-list ::marker {

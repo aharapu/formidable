@@ -23,7 +23,7 @@ import {
     RED,
     DARK_TEAL,
 } from '../../constants';
-import { getValues, updateClipboard } from './utils';
+import { useClipboard } from '../../hooks/useClipboard';
 
 export default function FeaturePreview() {
     const what = useRecoilValue(featureWhat);
@@ -36,18 +36,10 @@ export default function FeaturePreview() {
     const featureTestInstructions = useRecoilValue(featureTestInstruct);
     const automation = useRecoilValue(featureRequireAutomationTest);
 
+    const { copyFeature } = useClipboard();
+
     const handleCopyClick = () => {
-        updateClipboard({
-            what,
-            criterias,
-            techGuidance,
-            dependencies,
-            featureFlag: FF,
-            impactedProjects: getValues(impactedProj),
-            requiredEditions: getValues(edition),
-            testingScenarios: featureTestInstructions,
-            requiresAutomation: automation,
-        });
+        copyFeature();
     };
 
     // TODO -> have a show as html option
@@ -56,8 +48,8 @@ export default function FeaturePreview() {
             style={{
                 padding: '24px',
                 maxWidth: '420px',
-                maxHeight: 'calc(100vh - 92px)',
-                overflow: 'scroll',
+                maxHeight: 'calc(100vh - 164px)',
+                overflowY: 'auto',
             }}
             elevation={3}
         >
@@ -225,11 +217,12 @@ export default function FeaturePreview() {
                 }}
             >
                 <Button
+                // TODO -> place copy button under the scrollable preview, to make it always visible
                     variant="contained"
                     onClick={handleCopyClick}
                     style={{ backgroundColor: '#172F4D', width: '190px', height: '42px' }}
                 >
-          Copy to clipboard
+                    Copy to clipboard
                 </Button>
             </div>
         </Paper>
