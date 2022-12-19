@@ -1,3 +1,4 @@
+// TODO -> move file to component folder
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -53,21 +54,19 @@ export function BulletContent({
         if (!prevItems) return;
 
         if (prevItems.length < items.length) {
+            // TODO -> write a focusLastInput function that builds off a focusInput function
             const lastItem = items[items.length - 1];
-            const input = document.getElementById(lastItem.id);
-            input.focus();
+            focusInput(lastItem.id);
         }
 
         if (prevItems.length > items.length) {
             const wasLastItemDeleted = lastDeletedIndex.current === items.length;
             if (wasLastItemDeleted) {
                 const lastItem = items[items.length - 1];
-                const input = document.getElementById(lastItem.id);
-                input.focus();
+                focusInput(lastItem.id);
             } else {
                 const nextItem = items[lastDeletedIndex.current];
-                const input = document.getElementById(nextItem.id);
-                input.focus();
+                focusInput(nextItem.id);
             }
         }
     }, [items, prevItems]);
@@ -89,6 +88,7 @@ export function BulletContent({
     return (
         <>
             {showDelimiter &&
+                // TODO -> extract to own component
                 <Grid item xs={12} style={{ paddingTop: '20px', paddingBottom: '4px' }} >
                     <hr style={{
                         width: '100%',
@@ -97,6 +97,7 @@ export function BulletContent({
                 </Grid>
             }
             {isUsingToggle && (
+                // TODO -> extract to own component
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={
@@ -164,7 +165,9 @@ export function BulletContent({
                     <Grid item xs={12} display="flex" justifyContent="center">
                         <IconButton
                             onClick={handleAdd}
-                            style={{ margin: '-30px 0 -16px' }}
+                            style={{
+                                margin: '-30px 0 -16px', // TODO -> move up when last item has error
+                            }}
                         >
                             <AddCircle
                                 style={{ width: '29px', height: '29px', color: ORANGE }}
@@ -204,6 +207,11 @@ function validateInput(value) {
     const trimmedValue = value.trim();
     if (!trimmedValue) return 'This field is required';
     return '';
+}
+
+function focusInput(id) {
+    const input = document.getElementById(id);
+    input.focus();
 }
 
 // TODO -> move this to a hooks file
