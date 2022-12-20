@@ -20,7 +20,7 @@ export function InputList({
     textFieldLabel = 'Default Input Label',
     textFieldPlaceholder = 'Default Input Placeholder',
     textFieldOnBlur = (/* id, errorMessage */) => {},
-    onAdd: handleAdd = (/* inputString */) => {},
+    onAdd: handleAdd = () => {},
     onChange: handleTextFieldChange = (/* id, string */) => {},
     onDelete: handleDelete = (/* id */) => {},
     items = [],

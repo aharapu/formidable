@@ -17,6 +17,10 @@ import {
 } from '../../constants';
 
 import { InputList } from '../InputList';
+import {
+    getInputListAdder, getInputListDeleter, getInputListErrorUpdater, getInputListValueUpdater,
+} from '../InputList/utils';
+
 import { FormTextField } from '../FormTextField';
 import { FormCheckbox } from '../FormCheckbox';
 import { TestingInstructions } from '../TestingInstructions';
@@ -67,96 +71,22 @@ export default function FeatureForm() {
         }
     };
 
-    // TODO -> get DRY?
-    const handleAddCriteria = () => {
-        setACs((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
+    const addCriteria = getInputListAdder(setACs);
+    const updateCriteriaValue = getInputListValueUpdater(setACs);
+    const updateCriteriaError = getInputListErrorUpdater(setACs);
+    const deleteCriteria = getInputListDeleter(setACs);
 
-    // TODO -> criteriaChange or changeCriteria? decide on one!
-    const handleCriteriaChange = (critId, value) => {
-        setACs((prevACs) =>
-            prevACs.map((ac) => {
-                if (ac.id === critId) {
-                    return { ...ac, value, error: '' };
-                }
-                return ac;
-            }),
-        );
-    };
+    const addDependency = getInputListAdder(setDeps);
+    const updateDependency = getInputListValueUpdater(setDeps);
+    const deleteDependency = getInputListDeleter(setDeps);
 
-    const handleDelCriteria = (critId) => {
-        setACs((prevACs) => prevACs.filter((ac) => ac.id !== critId));
-    };
+    const addProject = getInputListAdder(setImpactProjs);
+    const updateProject = getInputListValueUpdater(setImpactProjs);
+    const deleteProject = getInputListDeleter(setImpactProjs);
 
-    const handleACsBlur = (id, error) => {
-        setACs((prevACs) =>
-            prevACs.map((ac) => {
-                if (ac.id === id) {
-                    return { ...ac, error };
-                }
-                return ac;
-            }),
-        );
-    };
-
-    const handleAddDeps = () => {
-        setDeps((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
-
-    const handleDepsChange = (depId, value) => {
-        setDeps((prevDeps) =>
-            prevDeps.map((dep) => {
-                if (dep.id === depId) {
-                    return { ...dep, value, error: '' };
-                }
-                return dep;
-            }),
-        );
-    };
-
-    const handleDelDeps = (depId) => {
-        setDeps((prevDeps) => prevDeps.filter((dep) => dep.id !== depId));
-    };
-
-    const handleAddProj = () => {
-        setImpactProjs((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
-
-    const handleProjChange = (projId, value) => {
-        setImpactProjs((prevProjs) =>
-            prevProjs.map((pr) => {
-                if (pr.id === projId) {
-                    return { ...pr, value, error: '' };
-                }
-                return pr;
-            }),
-        );
-    };
-
-    const handleDelProj = (projId) => {
-        setImpactProjs((prevProjs) => prevProjs.filter((pr) => pr.id !== projId));
-    };
-
-    const handleAddEdition = () => {
-        setEditions((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
-
-    const handleEditionChange = (editionId, value) => {
-        setEditions((prevEditions) =>
-            prevEditions.map((edition) => {
-                if (edition.id === editionId) {
-                    return { ...edition, value, error: '' };
-                }
-                return edition;
-            }),
-        );
-    };
-
-    const handleDelEdition = (editionId) => {
-        setEditions((prevEditions) =>
-            prevEditions.filter((edition) => edition.id !== editionId),
-        );
-    };
+    const addEdition = getInputListAdder(setEditions);
+    const updateEdition = getInputListValueUpdater(setEditions);
+    const deleteEdition = getInputListDeleter(setEditions);
 
     const handleDepsToggle = () => {
         const isHiding = showDependencies;
@@ -411,13 +341,13 @@ export default function FeatureForm() {
                     title={LABLES.acceptanceCriteriaTitle}
                     textFieldLabel={LABLES.acceptCritInput}
                     textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
-                    textFieldOnBlur={handleACsBlur}
+                    textFieldOnBlur={updateCriteriaError} // TODO -> rename prop to onBlur
                     items={ACs}
                     // TODO -> use an array and provide pseudorandom placeholders
                     // TODO -> if this is a function, it will auto switch to new random placeholder
-                    onAdd={handleAddCriteria}
-                    onChange={handleCriteriaChange}
-                    onDelete={handleDelCriteria}
+                    onAdd={addCriteria}
+                    onChange={updateCriteriaValue}
+                    onDelete={deleteCriteria}
                 />
                 <FormDelimiterLine />
                 <FormTextField
@@ -439,9 +369,9 @@ export default function FeatureForm() {
                             textFieldPlaceholder={PLACEHOLDERS.depsInput}
                             toggleLabel={LABLES.depsToggle}
                             items={deps}
-                            onAdd={handleAddDeps}
-                            onChange={handleDepsChange}
-                            onDelete={handleDelDeps}
+                            onAdd={addDependency}
+                            onChange={updateDependency}
+                            onDelete={deleteDependency}
                         />
                         <FormDelimiterLine />
                     </>
@@ -469,9 +399,9 @@ export default function FeatureForm() {
                     title={LABLES.imapctedProj}
                     textFieldPlaceholder={PLACEHOLDERS.imapctedProj}
                     items={impactProjs}
-                    onAdd={handleAddProj}
-                    onChange={handleProjChange}
-                    onDelete={handleDelProj}
+                    onAdd={addProject}
+                    onChange={updateProject}
+                    onDelete={deleteProject}
                 />
                 <FormSwitchButton
                     label={LABLES.editionToggle}
@@ -482,9 +412,9 @@ export default function FeatureForm() {
                     title={LABLES.editionInput}
                     textFieldPlaceholder={PLACEHOLDERS.editionInput}
                     items={editions}
-                    onAdd={handleAddEdition}
-                    onChange={handleEditionChange}
-                    onDelete={handleDelEdition}
+                    onAdd={addEdition}
+                    onChange={updateEdition}
+                    onDelete={deleteEdition}
                 />}
                 <TestingInstructions
                     items={testIntructions}
