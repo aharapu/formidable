@@ -14,7 +14,6 @@ import {
 } from '@mui/icons-material';
 
 import { ORANGE } from '../../constants';
-import { DelimiterLine } from '../DelimiterLine';
 
 export function InputList({
     title = 'Default Title',
@@ -25,7 +24,6 @@ export function InputList({
     onChange: handleTextFieldChange = (/* id, string */) => {},
     onDelete: handleDelete = (/* id */) => {},
     items = [],
-    showDelimiter = false,
 }) {
     const prevItems = usePrevious(items);
     const lastDeletedIndex = useRef(null);
@@ -81,15 +79,10 @@ export function InputList({
 
     return (
         <>
-            {showDelimiter &&
-                <Grid item xs={12} style={{ paddingTop: '20px', paddingBottom: '4px' }} >
-                    <DelimiterLine />
-                </Grid>
-            }
             <Grid
                 item
                 xs={12}
-                style={{ paddingTop: '12px' }}
+                style={{ paddingTop: '4px' }}
             >
                 <Typography
                     variant="subtitle2"
@@ -137,9 +130,12 @@ export function InputList({
                     </Grid>
                 </React.Fragment>
             ))}
-            <Grid item xs={12} display="flex" justifyContent="center" style={{
-                paddingTop: isLastItemErrored(items) ? '0px' : '12px',
-            }}>
+            <Grid item xs={12} display="flex" justifyContent="center"
+                style={{
+                    paddingTop: isLastItemErrored(items) ? '0px' : '12px',
+                    marginBottom: isLastItemErrored(items) ? '-36px' : '-24px',
+                }}
+            >
                 <IconButton
                     onClick={handleAdd}
                     style={{

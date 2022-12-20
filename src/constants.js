@@ -73,7 +73,7 @@ export const featureFlag = atom({
 
 export const featureImpactedProj = atom({
     key: 'featureImpactedProj',
-    default: [],
+    default: [{ id: createId(), value: '', error: '' }],
     /*
   array object shape { id: UUID, value: String }
   */
