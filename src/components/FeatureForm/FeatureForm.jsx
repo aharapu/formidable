@@ -35,6 +35,7 @@ import {
 } from '../../state-utils/scenarios';
 
 export default function FeatureForm() {
+    // TODO -> split state into subcomponents to reduce re-renders
     const [what, setWhat] = useRecoilState(featureWhat);
     const [ACs, setACs] = useRecoilState(featureACs);
     const [techGuide, setTechGuide] = useRecoilState(featureTechGuide);
