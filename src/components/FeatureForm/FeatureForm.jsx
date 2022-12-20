@@ -29,6 +29,10 @@ import { FormDelimiterLine } from '../form/FormDelimiterLine';
 
 import { LABLES, PLACEHOLDERS } from './featureFormConstants';
 import { validateWhat } from './utils';
+import {
+    addScenario, addTestInstructionsInput, deleteScenario, deleteTestInstructionsInput,
+    updateScenarioName, updateTestInstructionsInput,
+} from '../../state-utils/scenarios';
 
 export default function FeatureForm() {
     const [what, setWhat] = useRecoilState(featureWhat);
@@ -125,181 +129,33 @@ export default function FeatureForm() {
 
     const handleTestInstructionsChange = (changeType, data) => {
         const scenarioId = data?.scenarioId;
-        const givenId = data?.givenId;
-        const whenId = data?.whenId;
-        const thenId = data?.thenId;
-        const value = data?.value;
+        const scenarioName = data?.scenarioName;
+        const sectionType = data?.sectionType;
+        const inputValue = data?.inputValue;
+        const inputId = data?.inputId;
 
-        let updatedInstructions;
-        let existingScenario;
-        let updatedScenario;
-        let updatedInputArray;
-        let existingInput;
-        let updatedInput;
-        let name;
         switch (changeType) {
-        case 'add-test':
-            setTestInstructions((prev) => [
-                ...prev,
-                {
-                    scenarioName: '',
-                    scenarioId: createId(),
-                    given: [{ id: createId(), value: '' }],
-                    when: [{ id: createId(), value: '' }],
-                    then: [{ id: createId(), value: '' }],
-                },
-            ]);
+        case 'add-scenario':
+            setTestInstructions(addScenario(testIntructions));
             break;
-        case 'delete-test':
-            setTestInstructions((prev) =>
-                prev.filter((t) => t.scenarioId !== scenarioId),
-            );
+        case 'delete-scenario':
+            setTestInstructions(deleteScenario(testIntructions, scenarioId));
             break;
         case 'edit-scenario-name':
-            name = data.scenarioName;
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedScenario = { ...existingScenario, scenarioName: name };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
+            setTestInstructions(updateScenarioName(testIntructions, scenarioId, scenarioName));
             break;
-        case 'edit-given-value':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
+        case 'edit-input-value':
+            setTestInstructions(
+                updateTestInstructionsInput(testIntructions, scenarioId, sectionType, inputId, inputValue),
             );
-            existingInput = existingScenario.given.find((g) => g.id === givenId);
-            updatedInput = { ...existingInput, value };
-            updatedInputArray = existingScenario.given.map((g) =>
-                g.id === givenId ? updatedInput : g,
-            );
-            updatedScenario = { ...existingScenario, given: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
             break;
-        case 'edit-when-value':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            existingInput = existingScenario.when.find((w) => w.id === whenId);
-            updatedInput = { ...existingInput, value };
-            updatedInputArray = existingScenario.when.map((w) =>
-                w.id === whenId ? updatedInput : w,
-            );
-            updatedScenario = { ...existingScenario, when: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
+        case 'add-input':
+            setTestInstructions(addTestInstructionsInput(testIntructions, scenarioId, sectionType));
             break;
-        case 'edit-then-value':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
+        case 'delete-input':
+            setTestInstructions(
+                deleteTestInstructionsInput(testIntructions, scenarioId, sectionType, inputId),
             );
-            existingInput = existingScenario.then.find((t) => t.id === thenId);
-            updatedInput = { ...existingInput, value };
-            updatedInputArray = existingScenario.then.map((t) =>
-                t.id === thenId ? updatedInput : t,
-            );
-            updatedScenario = { ...existingScenario, then: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'add-given':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedInputArray = [
-                ...existingScenario.given,
-                {
-                    id: createId(),
-                    value: '',
-                },
-            ];
-            updatedScenario = { ...existingScenario, given: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'add-when':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedInputArray = [
-                ...existingScenario.when,
-                {
-                    id: createId(),
-                    value: '',
-                },
-            ];
-            updatedScenario = { ...existingScenario, when: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'add-then':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedInputArray = [
-                ...existingScenario.then,
-                {
-                    id: createId(),
-                    value: '',
-                },
-            ];
-            updatedScenario = { ...existingScenario, then: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'delete-given':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            (updatedInputArray = existingScenario.given.filter(
-                (g) => g.id !== givenId,
-            )),
-            (updatedScenario = { ...existingScenario, given: updatedInputArray });
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'delete-when':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            (updatedInputArray = existingScenario.when.filter(
-                (w) => w.id !== whenId,
-            )),
-            (updatedScenario = { ...existingScenario, when: updatedInputArray });
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'delete-then':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            (updatedInputArray = existingScenario.then.filter(
-                (t) => t.id !== thenId,
-            )),
-            (updatedScenario = { ...existingScenario, then: updatedInputArray });
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
             break;
         default:
             break;
@@ -417,7 +273,7 @@ export default function FeatureForm() {
                     onDelete={deleteEdition}
                 />}
                 <TestingInstructions
-                    items={testIntructions}
+                    scenarios={testIntructions} // TODO -> rename state to testScenarios
                     onChange={handleTestInstructionsChange}
                 />
                 <FormCheckbox
