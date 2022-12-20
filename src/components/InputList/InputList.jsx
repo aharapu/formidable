@@ -20,7 +20,7 @@ export function InputList({
     textFieldLabel = 'Default Input Label',
     textFieldPlaceholder = 'Default Input Placeholder',
     textFieldOnBlur = (/* id, errorMessage */) => {},
-    onAdd: handleAdd = (/* inputString */) => {},
+    onAdd: handleAdd = () => {},
     onChange: handleTextFieldChange = (/* id, string */) => {},
     onDelete: handleDelete = (/* id */) => {},
     items = [],
@@ -62,9 +62,7 @@ export function InputList({
         }
 
         const wasLastItemDeleted = prevItems.length > items.length && lastDeletedIndex.current === items.length;
-        console.log('wasLastItemDeleted', wasLastItemDeleted);
         const focusId = wasLastItemDeleted ? items[items.length - 1].id : items[lastDeletedIndex.current].id;
-        console.log('focusId', focusId);
 
         focusInput(focusId);
     }, [items, prevItems]);

@@ -17,6 +17,10 @@ import {
 } from '../../constants';
 
 import { InputList } from '../InputList';
+import {
+    getInputListAdder, getInputListDeleter, getInputListErrorUpdater, getInputListValueUpdater,
+} from '../InputList/utils';
+
 import { FormTextField } from '../FormTextField';
 import { FormCheckbox } from '../FormCheckbox';
 import { TestingInstructions } from '../TestingInstructions';
@@ -25,8 +29,13 @@ import { FormDelimiterLine } from '../form/FormDelimiterLine';
 
 import { LABLES, PLACEHOLDERS } from './featureFormConstants';
 import { validateWhat } from './utils';
+import {
+    addScenario, addTestInstructionsInput, deleteScenario, deleteTestInstructionsInput,
+    updateScenarioName, updateTestInstructionsInput,
+} from '../../state-utils/scenarios';
 
 export default function FeatureForm() {
+    // TODO -> split state into subcomponents to reduce re-renders
     const [what, setWhat] = useRecoilState(featureWhat);
     const [ACs, setACs] = useRecoilState(featureACs);
     const [techGuide, setTechGuide] = useRecoilState(featureTechGuide);
@@ -67,96 +76,22 @@ export default function FeatureForm() {
         }
     };
 
-    // TODO -> get DRY?
-    const handleAddCriteria = () => {
-        setACs((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
+    const addCriteria = getInputListAdder(setACs);
+    const updateCriteriaValue = getInputListValueUpdater(setACs);
+    const updateCriteriaError = getInputListErrorUpdater(setACs);
+    const deleteCriteria = getInputListDeleter(setACs);
 
-    // TODO -> criteriaChange or changeCriteria? decide on one!
-    const handleCriteriaChange = (critId, value) => {
-        setACs((prevACs) =>
-            prevACs.map((ac) => {
-                if (ac.id === critId) {
-                    return { ...ac, value, error: '' };
-                }
-                return ac;
-            }),
-        );
-    };
+    const addDependency = getInputListAdder(setDeps);
+    const updateDependency = getInputListValueUpdater(setDeps);
+    const deleteDependency = getInputListDeleter(setDeps);
 
-    const handleDelCriteria = (critId) => {
-        setACs((prevACs) => prevACs.filter((ac) => ac.id !== critId));
-    };
+    const addProject = getInputListAdder(setImpactProjs);
+    const updateProject = getInputListValueUpdater(setImpactProjs);
+    const deleteProject = getInputListDeleter(setImpactProjs);
 
-    const handleACsBlur = (id, error) => {
-        setACs((prevACs) =>
-            prevACs.map((ac) => {
-                if (ac.id === id) {
-                    return { ...ac, error };
-                }
-                return ac;
-            }),
-        );
-    };
-
-    const handleAddDeps = () => {
-        setDeps((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
-
-    const handleDepsChange = (depId, value) => {
-        setDeps((prevDeps) =>
-            prevDeps.map((dep) => {
-                if (dep.id === depId) {
-                    return { ...dep, value, error: '' };
-                }
-                return dep;
-            }),
-        );
-    };
-
-    const handleDelDeps = (depId) => {
-        setDeps((prevDeps) => prevDeps.filter((dep) => dep.id !== depId));
-    };
-
-    const handleAddProj = () => {
-        setImpactProjs((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
-
-    const handleProjChange = (projId, value) => {
-        setImpactProjs((prevProjs) =>
-            prevProjs.map((pr) => {
-                if (pr.id === projId) {
-                    return { ...pr, value, error: '' };
-                }
-                return pr;
-            }),
-        );
-    };
-
-    const handleDelProj = (projId) => {
-        setImpactProjs((prevProjs) => prevProjs.filter((pr) => pr.id !== projId));
-    };
-
-    const handleAddEdition = () => {
-        setEditions((prev) => [...prev, { id: createId(), value: '', error: '' }]);
-    };
-
-    const handleEditionChange = (editionId, value) => {
-        setEditions((prevEditions) =>
-            prevEditions.map((edition) => {
-                if (edition.id === editionId) {
-                    return { ...edition, value, error: '' };
-                }
-                return edition;
-            }),
-        );
-    };
-
-    const handleDelEdition = (editionId) => {
-        setEditions((prevEditions) =>
-            prevEditions.filter((edition) => edition.id !== editionId),
-        );
-    };
+    const addEdition = getInputListAdder(setEditions);
+    const updateEdition = getInputListValueUpdater(setEditions);
+    const deleteEdition = getInputListDeleter(setEditions);
 
     const handleDepsToggle = () => {
         const isHiding = showDependencies;
@@ -195,181 +130,33 @@ export default function FeatureForm() {
 
     const handleTestInstructionsChange = (changeType, data) => {
         const scenarioId = data?.scenarioId;
-        const givenId = data?.givenId;
-        const whenId = data?.whenId;
-        const thenId = data?.thenId;
-        const value = data?.value;
+        const scenarioName = data?.scenarioName;
+        const sectionType = data?.sectionType;
+        const inputValue = data?.inputValue;
+        const inputId = data?.inputId;
 
-        let updatedInstructions;
-        let existingScenario;
-        let updatedScenario;
-        let updatedInputArray;
-        let existingInput;
-        let updatedInput;
-        let name;
         switch (changeType) {
-        case 'add-test':
-            setTestInstructions((prev) => [
-                ...prev,
-                {
-                    scenarioName: '',
-                    scenarioId: createId(),
-                    given: [{ id: createId(), value: '' }],
-                    when: [{ id: createId(), value: '' }],
-                    then: [{ id: createId(), value: '' }],
-                },
-            ]);
+        case 'add-scenario':
+            setTestInstructions(addScenario(testIntructions));
             break;
-        case 'delete-test':
-            setTestInstructions((prev) =>
-                prev.filter((t) => t.scenarioId !== scenarioId),
-            );
+        case 'delete-scenario':
+            setTestInstructions(deleteScenario(testIntructions, scenarioId));
             break;
         case 'edit-scenario-name':
-            name = data.scenarioName;
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedScenario = { ...existingScenario, scenarioName: name };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
+            setTestInstructions(updateScenarioName(testIntructions, scenarioId, scenarioName));
             break;
-        case 'edit-given-value':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
+        case 'edit-input-value':
+            setTestInstructions(
+                updateTestInstructionsInput(testIntructions, scenarioId, sectionType, inputId, inputValue),
             );
-            existingInput = existingScenario.given.find((g) => g.id === givenId);
-            updatedInput = { ...existingInput, value };
-            updatedInputArray = existingScenario.given.map((g) =>
-                g.id === givenId ? updatedInput : g,
-            );
-            updatedScenario = { ...existingScenario, given: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
             break;
-        case 'edit-when-value':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            existingInput = existingScenario.when.find((w) => w.id === whenId);
-            updatedInput = { ...existingInput, value };
-            updatedInputArray = existingScenario.when.map((w) =>
-                w.id === whenId ? updatedInput : w,
-            );
-            updatedScenario = { ...existingScenario, when: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
+        case 'add-input':
+            setTestInstructions(addTestInstructionsInput(testIntructions, scenarioId, sectionType));
             break;
-        case 'edit-then-value':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
+        case 'delete-input':
+            setTestInstructions(
+                deleteTestInstructionsInput(testIntructions, scenarioId, sectionType, inputId),
             );
-            existingInput = existingScenario.then.find((t) => t.id === thenId);
-            updatedInput = { ...existingInput, value };
-            updatedInputArray = existingScenario.then.map((t) =>
-                t.id === thenId ? updatedInput : t,
-            );
-            updatedScenario = { ...existingScenario, then: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'add-given':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedInputArray = [
-                ...existingScenario.given,
-                {
-                    id: createId(),
-                    value: '',
-                },
-            ];
-            updatedScenario = { ...existingScenario, given: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'add-when':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedInputArray = [
-                ...existingScenario.when,
-                {
-                    id: createId(),
-                    value: '',
-                },
-            ];
-            updatedScenario = { ...existingScenario, when: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'add-then':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            updatedInputArray = [
-                ...existingScenario.then,
-                {
-                    id: createId(),
-                    value: '',
-                },
-            ];
-            updatedScenario = { ...existingScenario, then: updatedInputArray };
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'delete-given':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            (updatedInputArray = existingScenario.given.filter(
-                (g) => g.id !== givenId,
-            )),
-            (updatedScenario = { ...existingScenario, given: updatedInputArray });
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'delete-when':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            (updatedInputArray = existingScenario.when.filter(
-                (w) => w.id !== whenId,
-            )),
-            (updatedScenario = { ...existingScenario, when: updatedInputArray });
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
-            break;
-        case 'delete-then':
-            existingScenario = testIntructions.find(
-                (t) => t.scenarioId === scenarioId,
-            );
-            (updatedInputArray = existingScenario.then.filter(
-                (t) => t.id !== thenId,
-            )),
-            (updatedScenario = { ...existingScenario, then: updatedInputArray });
-            updatedInstructions = testIntructions.map((t) =>
-                t.scenarioId === scenarioId ? updatedScenario : t,
-            );
-            setTestInstructions(updatedInstructions);
             break;
         default:
             break;
@@ -411,13 +198,13 @@ export default function FeatureForm() {
                     title={LABLES.acceptanceCriteriaTitle}
                     textFieldLabel={LABLES.acceptCritInput}
                     textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
-                    textFieldOnBlur={handleACsBlur}
+                    textFieldOnBlur={updateCriteriaError} // TODO -> rename prop to onBlur
                     items={ACs}
                     // TODO -> use an array and provide pseudorandom placeholders
                     // TODO -> if this is a function, it will auto switch to new random placeholder
-                    onAdd={handleAddCriteria}
-                    onChange={handleCriteriaChange}
-                    onDelete={handleDelCriteria}
+                    onAdd={addCriteria}
+                    onChange={updateCriteriaValue}
+                    onDelete={deleteCriteria}
                 />
                 <FormDelimiterLine />
                 <FormTextField
@@ -439,9 +226,9 @@ export default function FeatureForm() {
                             textFieldPlaceholder={PLACEHOLDERS.depsInput}
                             toggleLabel={LABLES.depsToggle}
                             items={deps}
-                            onAdd={handleAddDeps}
-                            onChange={handleDepsChange}
-                            onDelete={handleDelDeps}
+                            onAdd={addDependency}
+                            onChange={updateDependency}
+                            onDelete={deleteDependency}
                         />
                         <FormDelimiterLine />
                     </>
@@ -469,9 +256,9 @@ export default function FeatureForm() {
                     title={LABLES.imapctedProj}
                     textFieldPlaceholder={PLACEHOLDERS.imapctedProj}
                     items={impactProjs}
-                    onAdd={handleAddProj}
-                    onChange={handleProjChange}
-                    onDelete={handleDelProj}
+                    onAdd={addProject}
+                    onChange={updateProject}
+                    onDelete={deleteProject}
                 />
                 <FormSwitchButton
                     label={LABLES.editionToggle}
@@ -482,12 +269,12 @@ export default function FeatureForm() {
                     title={LABLES.editionInput}
                     textFieldPlaceholder={PLACEHOLDERS.editionInput}
                     items={editions}
-                    onAdd={handleAddEdition}
-                    onChange={handleEditionChange}
-                    onDelete={handleDelEdition}
+                    onAdd={addEdition}
+                    onChange={updateEdition}
+                    onDelete={deleteEdition}
                 />}
                 <TestingInstructions
-                    items={testIntructions}
+                    scenarios={testIntructions} // TODO -> rename state to testScenarios
                     onChange={handleTestInstructionsChange}
                 />
                 <FormCheckbox

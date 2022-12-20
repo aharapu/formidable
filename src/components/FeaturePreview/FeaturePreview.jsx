@@ -25,6 +25,10 @@ import {
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
 
+// TODO -> idea
+// 1. make Given, When, Then and And in italics in stead of bold
+// 2. make scenario name bold
+// 3. indent the And steps
 export default function FeaturePreview() {
     const what = useRecoilValue(featureWhat);
     const criterias = useRecoilValue(featureACs);
@@ -164,8 +168,8 @@ export default function FeaturePreview() {
             TESTING SCENARIOS
                     </Typography>
                     {featureTestInstructions.map((ti) => (
-                        <React.Fragment key={ti.scenarioId}>
-                            <Typography>{ti.scenarioName}</Typography>
+                        <React.Fragment key={ti.id}>
+                            <Typography>{ti.name}</Typography>
                             {ti.given.map((g, idx) => (
                                 <ul key={g.id} className="preview-list">
                                     <li>
@@ -180,7 +184,7 @@ export default function FeaturePreview() {
                                 <ul key={w.id} className="preview-list">
                                     <li>
                                         <Typography>
-                                            <strong>{idx === 0 ? 'Then ' : 'And '}</strong>
+                                            <strong>{idx === 0 ? 'When ' : 'And '}</strong>
                                             {w.value}
                                         </Typography>
                                     </li>
@@ -190,7 +194,7 @@ export default function FeaturePreview() {
                                 <ul key={t.id} className="preview-list">
                                     <li>
                                         <Typography>
-                                            <strong>{idx === 0 ? 'When ' : 'And '}</strong>
+                                            <strong>{idx === 0 ? 'Then ' : 'And '}</strong>
                                             {t.value}
                                         </Typography>
                                     </li>
