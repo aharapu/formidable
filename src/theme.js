@@ -106,13 +106,42 @@ export const theme = createTheme({
         //       },
         //     },
         //   },
-        //   MuiOutlinedInput: {
-        //     styleOverrides: {
-        //       notchedOutline: {
-        //         borderColor: "#E6E8F0",
-        //       },
-        //     },
-        //   },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    // fontSize: '14px', // this kinda works
+                    // lineHeight: '16px',
+                    fontWeight: 600,
+                },
+            },
+        },
+        MuiFormLabel: {
+            styleOverrides: {
+                root: {
+                    // fontSize: '45px', // this kinda works
+                },
+            },
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    // ['&.Mui-focused']: { // i want when not focused, and also, wrong place
+                    //     fontSize: 45,
+                    // },
+                },
+
+                // TODO -> when input is not focused, the text should be bold and maybe larger font
+                multiline: {
+                    // ['& span']: { // this was not working
+                    //     fontWeight: 600,
+                    //     fontSize: '35px',
+                    // },
+                },
+                //       notchedOutline: {
+                //         borderColor: "#E6E8F0",
+                //       },
+            },
+        },
         MuiTooltip: {
             styleOverrides: {
                 tooltipPlacementTop: {

@@ -4,7 +4,7 @@ import { FormControlLabel, Grid, Switch } from '@mui/material';
 
 export function FormSwitchButton({ value, onChange, label }) {
     return (
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{}}>
             <FormControlLabel
                 control={
                     <Switch

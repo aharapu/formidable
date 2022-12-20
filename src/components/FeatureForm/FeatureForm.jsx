@@ -21,10 +21,10 @@ import { FormTextField } from '../FormTextField';
 import { FormCheckbox } from '../FormCheckbox';
 import { TestingInstructions } from '../TestingInstructions';
 import { FormSwitchButton } from '../FormSwitchButton';
+import { FormDelimiterLine } from '../form/FormDelimiterLine';
 
 import { LABLES, PLACEHOLDERS } from './featureFormConstants';
 import { validateWhat } from './utils';
-import { DelimiterLine } from '../DelimiterLine/DelimiterLine';
 
 export default function FeatureForm() {
     const [what, setWhat] = useRecoilState(featureWhat);
@@ -43,8 +43,11 @@ export default function FeatureForm() {
 
     const [whatErr, setWhatErr] = useState(null);
     const [showDependencies, setShowDependencies] = useState(false);
+    const [showEditions, setShowEditions] = useState(false);
+    const [showFeatureFlag, setShowFeatureFlag] = useState(false);
 
     const cachedDeps = useRef(deps);
+    const cachedEditions = useRef(editions);
 
     const handleWhatChange = (e) => {
         setWhat(e.target.value);
@@ -115,16 +118,38 @@ export default function FeatureForm() {
         setDeps((prevDeps) => prevDeps.filter((dep) => dep.id !== depId));
     };
 
-    const handleAddProj = (proj) => {
-        setImpactProjs((prev) => [...prev, { id: createId(), value: proj }]);
+    const handleAddProj = () => {
+        setImpactProjs((prev) => [...prev, { id: createId(), value: '', error: '' }]);
+    };
+
+    const handleProjChange = (projId, value) => {
+        setImpactProjs((prevProjs) =>
+            prevProjs.map((pr) => {
+                if (pr.id === projId) {
+                    return { ...pr, value, error: '' };
+                }
+                return pr;
+            }),
+        );
     };
 
     const handleDelProj = (projId) => {
         setImpactProjs((prevProjs) => prevProjs.filter((pr) => pr.id !== projId));
     };
 
-    const handleAddEdition = (edition) => {
-        setEditions((prev) => [...prev, { id: createId(), value: edition }]);
+    const handleAddEdition = () => {
+        setEditions((prev) => [...prev, { id: createId(), value: '', error: '' }]);
+    };
+
+    const handleEditionChange = (editionId, value) => {
+        setEditions((prevEditions) =>
+            prevEditions.map((edition) => {
+                if (edition.id === editionId) {
+                    return { ...edition, value, error: '' };
+                }
+                return edition;
+            }),
+        );
     };
 
     const handleDelEdition = (editionId) => {
@@ -148,18 +173,24 @@ export default function FeatureForm() {
         setShowDependencies((prev) => !prev);
     };
 
-    const handleToggleFlag = (isVisible) => {
-        if (!isVisible) {
-            setFlag('');
-        }
-    // TODO -> else restore previous state ("keep in ref")
+    const handleToggleFlag = () => {
+        setShowFeatureFlag((prev) => !prev);
+        // TODO -> else restore previous state ("keep in ref")
     };
 
-    const handleToggleEditions = (isVisible) => {
-        if (!isVisible) {
-            setEditions([]);
+    const handleToggleEditions = () => {
+        const isHiding = showEditions;
+
+        if(isHiding) {
+            cachedEditions.current = editions;
         }
-    // TODO -> else restore previous state ("keep in ref")
+
+        const editionsToSet = isHiding ? [] :
+            cachedEditions.current.length ? cachedEditions.current
+                : [{ id: createId(), value: '', error: '' }];
+
+        setEditions(editionsToSet);
+        setShowEditions((prev) => !prev);
     };
 
     const handleTestInstructionsChange = (changeType, data) => {
@@ -350,6 +381,8 @@ export default function FeatureForm() {
     };
 
     // TODO -> when focused element is close to screen edge, scroll into view
+    // TODO -> when last input is focused and empty, and ESC is pressed
+    //         delete the input and focus on next element in form
 
     return (
         <Box
@@ -373,6 +406,7 @@ export default function FeatureForm() {
                     error={Boolean(whatErr)}
                     helperText={whatErr}
                 />
+                <FormDelimiterLine />
                 <InputList
                     title={LABLES.acceptanceCriteriaTitle}
                     textFieldLabel={LABLES.acceptCritInput}
@@ -384,8 +418,8 @@ export default function FeatureForm() {
                     onAdd={handleAddCriteria}
                     onChange={handleCriteriaChange}
                     onDelete={handleDelCriteria}
-                    showDelimiter
                 />
+                <FormDelimiterLine />
                 <FormTextField
                     label={LABLES.techGuide}
                     placeholder={PLACEHOLDERS.techGuide}
@@ -393,50 +427,65 @@ export default function FeatureForm() {
                     value={techGuide}
                     onChange={(e) => setTechGuide(e.target.value)}
                 />
-                <Grid item xs={12} style={{ paddingTop: '20px', paddingBottom: '4px' }} >
-                    <DelimiterLine />
-                </Grid>
                 <FormSwitchButton
                     label={LABLES.depsToggle}
                     value={showDependencies}
                     onChange={handleDepsToggle}
                 />
-                {showDependencies && <InputList
-                    title={LABLES.depsInput}
-                    textFieldPlaceholder={PLACEHOLDERS.depsInput}
-                    showToggle
-                    toggleLabel={LABLES.depsToggle}
-                    items={deps}
-                    onAdd={handleAddDeps}
-                    onChange={handleDepsChange}
-                    onDelete={handleDelDeps}
-                />}
-                <FormTextField
-                    label={LABLES.flagInput}
-                    placeholder={PLACEHOLDERS.flagInput}
-                    value={flag}
-                    onChange={(e) => setFlag(e.target.value)}
-                    showToggle
-                    toggleLabel={LABLES.flagToggle}
-                    onToggleChange={handleToggleFlag}
+                {showDependencies && (
+                    <>
+                        <InputList
+                            title={LABLES.depsInput}
+                            textFieldPlaceholder={PLACEHOLDERS.depsInput}
+                            toggleLabel={LABLES.depsToggle}
+                            items={deps}
+                            onAdd={handleAddDeps}
+                            onChange={handleDepsChange}
+                            onDelete={handleDelDeps}
+                        />
+                        <FormDelimiterLine />
+                    </>
+                )}
+                <FormSwitchButton
+                    label={LABLES.flagToggle}
+                    value={showFeatureFlag}
+                    onChange={handleToggleFlag}
                 />
+                {
+                    showFeatureFlag && (
+                        <FormTextField
+                            label={LABLES.flagInput}
+                            placeholder={PLACEHOLDERS.flagInput}
+                            value={flag}
+                            onChange={(e) => setFlag(e.target.value)}
+                            showToggle
+                            toggleLabel={LABLES.flagToggle}
+                            topGap="tiny"
+                        />
+                    )
+                }
+                <FormDelimiterLine isVisible={showFeatureFlag} bottomGap={showFeatureFlag ? 'huge' : 'tiny'} />
                 <InputList
                     title={LABLES.imapctedProj}
                     textFieldPlaceholder={PLACEHOLDERS.imapctedProj}
                     items={impactProjs}
                     onAdd={handleAddProj}
+                    onChange={handleProjChange}
                     onDelete={handleDelProj}
                 />
-                <InputList
+                <FormSwitchButton
+                    label={LABLES.editionToggle}
+                    value={showEditions}
+                    onChange={handleToggleEditions}
+                />
+                {showEditions && <InputList
                     title={LABLES.editionInput}
                     textFieldPlaceholder={PLACEHOLDERS.editionInput}
-                    showToggle
-                    toggleLabel={LABLES.editionToggle}
                     items={editions}
                     onAdd={handleAddEdition}
+                    onChange={handleEditionChange}
                     onDelete={handleDelEdition}
-                    onToggleChange={handleToggleEditions}
-                />
+                />}
                 <TestingInstructions
                     items={testIntructions}
                     onChange={handleTestInstructionsChange}
