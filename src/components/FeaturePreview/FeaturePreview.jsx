@@ -21,7 +21,7 @@ import {
     DARK_TEAL,
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
-import { PreviewWhat } from './components/PreviewWhat/PreviewWhat';
+import { What } from './components/What/What';
 import { AcceptanceCriteria } from './components/AcceptanceCriteria/AcceptanceCriteria';
 
 // TODO -> idea
@@ -57,7 +57,7 @@ export default function FeaturePreview() {
             <Typography variant="h2" style={{ marginBottom: 24 }}>
                 Feature Form Preview
             </Typography>
-            <PreviewWhat />
+            <What />
             <AcceptanceCriteria />
             {techGuidance && (
                 <>

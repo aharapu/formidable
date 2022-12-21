@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { LIGHT_GRAY } from '../../../../constants';
 import { whatAtom } from '../../../../recoil/what-atom';
 
-export function PreviewWhat() {
+export function What() {
     const what = useRecoilValue(whatAtom);
 
     return (
