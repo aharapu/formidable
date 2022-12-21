@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
-import { LIGHT_GRAY } from '../../../../constants';
+import { DARK_GREY} from '../../../../constants';
 
-export function PreviewText({ title = '', what }) {
+export function PreviewText({ title = '', content, titleColor = DARK_GREY }) {
     const showTitle = Boolean(title.trim());
 
     return (
@@ -12,14 +12,14 @@ export function PreviewText({ title = '', what }) {
                 showTitle && (
                     <Typography
                         variant="subtitle1"
-                        style={{ marginTop: 16, color: LIGHT_GRAY }}
+                        style={{ marginTop: 16, color: titleColor }}
                     >
                         {title}
                     </Typography>
                 )
             }
             <Typography variant="body1" color="text.primary">
-                {what}
+                {content}
             </Typography>
         </>
 
@@ -28,5 +28,6 @@ export function PreviewText({ title = '', what }) {
 
 PreviewText.propTypes = {
     title: PropTypes.string,
-    what: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    titleColor: PropTypes.string,
 };

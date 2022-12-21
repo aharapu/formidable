@@ -5,7 +5,6 @@ import { Button, Typography, Paper } from '@mui/material';
 
 import {
     featureDeps,
-    featureTechGuide,
     featureFlag,
     featureImpactedProj,
     featureRequireEdition,
@@ -13,7 +12,6 @@ import {
     featureTestInstruct,
     DARK_GREY,
     LIGHT_GRAY,
-    GREEN,
     BLUE,
     ORANGE,
     DARK_RED,
@@ -21,15 +19,15 @@ import {
     DARK_TEAL,
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
-import { What } from './components/What/What';
-import { AcceptanceCriteria } from './components/AcceptanceCriteria/AcceptanceCriteria';
+import { What } from './components/What';
+import { AcceptanceCriteria } from './components/AcceptanceCriteria';
+import { TechnicalGuidance } from './components/TechnicalGuidance';
 
 // TODO -> idea
 // 1. make Given, When, Then and And in italics in stead of bold
 // 2. make scenario name bold
 // 3. indent the And steps
 export default function FeaturePreview() {
-    const techGuidance = useRecoilValue(featureTechGuide);
     const dependencies = useRecoilValue(featureDeps);
     const FF = useRecoilValue(featureFlag);
     const impactedProj = useRecoilValue(featureImpactedProj);
@@ -60,21 +58,7 @@ export default function FeaturePreview() {
             </Typography>
             <What />
             <AcceptanceCriteria />
-            {techGuidance && (
-                <>
-                    <Typography
-                        variant="subtitle1"
-                        style={{ marginTop: 16, color: GREEN }}
-                    >
-                        TECHNICAL GUIDANCE
-                    </Typography>
-                    <ul className="preview-list">
-                        <li>
-                            <Typography variant="body1">{techGuidance}</Typography>
-                        </li>
-                    </ul>
-                </>
-            )}
+            <TechnicalGuidance />
             {/* TODO -> break into reusable components? */}
             {dependencies.length > 0 && (
                 <>

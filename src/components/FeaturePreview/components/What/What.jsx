@@ -12,7 +12,7 @@ export function What() {
     return (
         <PreviewText
             title="WHAT"
-            what={what}
+            content={what}
             titleColor={LIGHT_GRAY}
         />
     );
