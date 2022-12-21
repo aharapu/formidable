@@ -4,7 +4,7 @@ import { v4 as createId } from 'uuid';
 import { Box, Grid, Typography } from '@mui/material';
 
 import {
-    featureACs,
+    // featureACs,
     featureDeps,
     featureFlag,
     featureImpactedProj,
@@ -16,7 +16,7 @@ import {
 
 import { InputList } from '../InputList';
 import {
-    getInputListAdder, getInputListDeleter, getInputListErrorUpdater, getInputListValueUpdater,
+    getInputListAdder, getInputListDeleter, /* getInputListErrorUpdater, */ getInputListValueUpdater,
 } from '../InputList/utils';
 
 import { FormTextField } from '../FormTextField';
@@ -31,10 +31,11 @@ import {
     updateScenarioName, updateTestInstructionsInput,
 } from '../../state-utils/scenarios';
 import { InputWhat } from './components/InputWhat/InputWhat';
+import { InputListCriteria } from './components/InputListCriteria/InputListCriteria';
 
 export default function FeatureForm() {
     // TODO -> split state into subcomponents to reduce re-renders
-    const [ACs, setACs] = useRecoilState(featureACs);
+    // const [ACs, setACs] = useRecoilState(featureACs);
     const [techGuide, setTechGuide] = useRecoilState(featureTechGuide);
     const [deps, setDeps] = useRecoilState(featureDeps);
     const [flag, setFlag] = useRecoilState(featureFlag);
@@ -53,10 +54,10 @@ export default function FeatureForm() {
     const cachedDeps = useRef(deps);
     const cachedEditions = useRef(editions);
 
-    const addCriteria = getInputListAdder(setACs);
-    const updateCriteriaValue = getInputListValueUpdater(setACs);
-    const updateCriteriaError = getInputListErrorUpdater(setACs);
-    const deleteCriteria = getInputListDeleter(setACs);
+    // const addCriteria = getInputListAdder(setACs);
+    // const updateCriteriaValue = getInputListValueUpdater(setACs);
+    // const updateCriteriaError = getInputListErrorUpdater(setACs);
+    // const deleteCriteria = getInputListDeleter(setACs);
 
     const addDependency = getInputListAdder(setDeps);
     const updateDependency = getInputListValueUpdater(setDeps);
@@ -162,7 +163,8 @@ export default function FeatureForm() {
             <Grid container spacing={3}>
                 <InputWhat />
                 <FormDelimiterLine />
-                <InputList
+                <InputListCriteria />
+                {/* <InputList
                     title={LABLES.acceptanceCriteriaTitle}
                     textFieldLabel={LABLES.acceptCritInput}
                     textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
@@ -173,7 +175,7 @@ export default function FeatureForm() {
                     onAdd={addCriteria}
                     onChange={updateCriteriaValue}
                     onDelete={deleteCriteria}
-                />
+                /> */}
                 <FormDelimiterLine />
                 <FormTextField
                     label={LABLES.techGuide}
