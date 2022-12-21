@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 import { v4 as createId } from 'uuid';
+import { newScenario } from './state-utils/scenarios';
 
 export const DARK_GREY = '#172F4D';
 export const DARK_BLUE = '#0747A6';
@@ -84,7 +85,7 @@ export const featureRequireEdition = atom({
 
 export const featureTestInstruct = atom({
     key: 'featureTestInstruct',
-    default: [],
+    default: [newScenario()],
 });
 /*
 example object
