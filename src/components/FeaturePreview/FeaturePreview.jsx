@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil';
 import { Button, Typography, Paper } from '@mui/material';
 
 import {
-    featureACs,
     featureDeps,
     featureTechGuide,
     featureFlag,
@@ -14,7 +13,6 @@ import {
     featureTestInstruct,
     DARK_GREY,
     LIGHT_GRAY,
-    PURPLE,
     GREEN,
     BLUE,
     ORANGE,
@@ -24,13 +22,13 @@ import {
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
 import { PreviewWhat } from './components/PreviewWhat/PreviewWhat';
+import { AcceptanceCriteria } from './components/AcceptanceCriteria/AcceptanceCriteria';
 
 // TODO -> idea
 // 1. make Given, When, Then and And in italics in stead of bold
 // 2. make scenario name bold
 // 3. indent the And steps
 export default function FeaturePreview() {
-    const criterias = useRecoilValue(featureACs);
     const techGuidance = useRecoilValue(featureTechGuide);
     const dependencies = useRecoilValue(featureDeps);
     const FF = useRecoilValue(featureFlag);
@@ -57,26 +55,17 @@ export default function FeaturePreview() {
             elevation={3}
         >
             <Typography variant="h2" style={{ marginBottom: 24 }}>
-        Feature Form Preview
+                Feature Form Preview
             </Typography>
             <PreviewWhat />
-            <Typography variant="subtitle1" style={{ marginTop: 16, color: PURPLE }}>
-        ACCEPTANCE CRITERIA
-            </Typography>
-            <ul className="preview-list">
-                {criterias.map((c) => (
-                    <li key={c.id}>
-                        <Typography variant="body1">{c.value}</Typography>
-                    </li>
-                ))}
-            </ul>
+            <AcceptanceCriteria />
             {techGuidance && (
                 <>
                     <Typography
                         variant="subtitle1"
                         style={{ marginTop: 16, color: GREEN }}
                     >
-            TECHNICAL GUIDANCE
+                        TECHNICAL GUIDANCE
                     </Typography>
                     <ul className="preview-list">
                         <li>
