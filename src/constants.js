@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 import { v4 as createId } from 'uuid';
+import { newScenario } from './state-utils/scenarios';
 
 export const DARK_GREY = '#172F4D';
 export const DARK_BLUE = '#0747A6';
@@ -40,11 +41,6 @@ export const currentPage = atom({
 });
 
 // Feature states
-export const featureWhat = atom({
-    key: 'featureWhat',
-    default: '',
-});
-
 export const featureACs = atom({
     key: 'featureACs',
     default: [{ id: createId(), value: '', error: '' }],
@@ -66,7 +62,7 @@ export const featureDeps = atom({
   */
 });
 
-export const featureFlag = atom({
+export const featureFlagAtom = atom({
     key: 'featureFlag',
     default: '',
 });
@@ -89,7 +85,7 @@ export const featureRequireEdition = atom({
 
 export const featureTestInstruct = atom({
     key: 'featureTestInstruct',
-    default: [],
+    default: [newScenario()],
 });
 /*
 example object

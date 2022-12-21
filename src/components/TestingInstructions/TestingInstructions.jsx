@@ -12,6 +12,7 @@ import {
     DeleteForever,
 } from '@mui/icons-material';
 import { SECTION_TYPES } from '../../state-utils/scenarios';
+import { capitalizeFirstLetter } from '../../utils/string-utils';
 
 export function TestingInstructions({
     scenarios = [],
@@ -50,7 +51,7 @@ export function TestingInstructions({
         <>
             <Grid item xs={12}>
                 <Button variant="contained" color="primary" onClick={handleAddTest}>
-          Add Test
+                    Add Test
                 </Button>
             </Grid>
             {scenarios.map((scenario) => (
@@ -136,7 +137,3 @@ TestingInstructions.propTypes = {
     scenarios: PropTypes.array,
     onChange: PropTypes.func,
 };
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}

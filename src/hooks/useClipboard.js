@@ -1,30 +1,29 @@
-import { useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilCallback } from 'recoil';
 import { getValues, updateClipboard } from '../components/FeaturePreview/utils';
 import {
     featureACs,
-    featureDeps,
-    featureFlag,
-    featureImpactedProj,
-    featureRequireAutomationTest,
-    featureRequireEdition,
     featureTechGuide,
+    featureDeps,
+    featureFlagAtom,
+    featureImpactedProj,
+    featureRequireEdition,
     featureTestInstruct,
-    featureWhat,
+    featureRequireAutomationTest,
 } from '../constants';
+import { whatAtom } from '../recoil/what-atom';
 
 export function useClipboard() {
-    const what = useRecoilValue(featureWhat);
-    const criterias = useRecoilValue(featureACs);
-    const techGuidance = useRecoilValue(featureTechGuide);
-    const dependencies = useRecoilValue(featureDeps);
-    const FF = useRecoilValue(featureFlag);
-    const impactedProj = useRecoilValue(featureImpactedProj);
-    const edition = useRecoilValue(featureRequireEdition);
-    const featureTestInstructions = useRecoilValue(featureTestInstruct);
-    const automation = useRecoilValue(featureRequireAutomationTest);
+    const copyFeature = useRecoilCallback(({ snapshot }) => () => {
+        const what = snapshot.getLoadable(whatAtom).contents;
+        const criterias = snapshot.getLoadable(featureACs).contents;
+        const techGuidance = snapshot.getLoadable(featureTechGuide).contents;
+        const dependencies = snapshot.getLoadable(featureDeps).contents;
+        const FF = snapshot.getLoadable(featureFlagAtom).contents;
+        const impactedProj = snapshot.getLoadable(featureImpactedProj).contents;
+        const edition = snapshot.getLoadable(featureRequireEdition).contents;
+        const featureTestInstructions = snapshot.getLoadable(featureTestInstruct).contents;
+        const automation = snapshot.getLoadable(featureRequireAutomationTest).contents;
 
-    const copyFeature = useCallback(() => {
         updateClipboard({
             what,
             criterias,
@@ -36,7 +35,7 @@ export function useClipboard() {
             testingScenarios: featureTestInstructions,
             requiresAutomation: automation,
         });
-    }, [what, criterias, techGuidance, dependencies, FF, impactedProj, edition, featureTestInstructions, automation]);
+    });
 
     return { copyFeature };
 }

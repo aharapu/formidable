@@ -4,37 +4,30 @@ import { useRecoilValue } from 'recoil';
 import { Button, Typography, Paper } from '@mui/material';
 
 import {
-    featureACs,
-    featureDeps,
-    featureTechGuide,
-    featureFlag,
+    featureFlagAtom,
     featureImpactedProj,
     featureRequireEdition,
     featureRequireAutomationTest,
-    featureWhat,
     featureTestInstruct,
     DARK_GREY,
     LIGHT_GRAY,
-    PURPLE,
-    GREEN,
-    BLUE,
     ORANGE,
     DARK_RED,
     RED,
     DARK_TEAL,
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
+import { What } from './components/What';
+import { AcceptanceCriteria } from './components/AcceptanceCriteria';
+import { TechnicalGuidance } from './components/TechnicalGuidance';
+import { Dependencies } from './components/Dependencies/Dependencies';
 
 // TODO -> idea
 // 1. make Given, When, Then and And in italics in stead of bold
 // 2. make scenario name bold
 // 3. indent the And steps
 export default function FeaturePreview() {
-    const what = useRecoilValue(featureWhat);
-    const criterias = useRecoilValue(featureACs);
-    const techGuidance = useRecoilValue(featureTechGuide);
-    const dependencies = useRecoilValue(featureDeps);
-    const FF = useRecoilValue(featureFlag);
+    const FF = useRecoilValue(featureFlagAtom);
     const impactedProj = useRecoilValue(featureImpactedProj);
     const edition = useRecoilValue(featureRequireEdition);
     const featureTestInstructions = useRecoilValue(featureTestInstruct);
@@ -47,6 +40,7 @@ export default function FeaturePreview() {
     };
 
     // TODO -> have a show as html option
+    // TODO -> highlight form errors in preview
     return (
         <Paper
             style={{
@@ -58,60 +52,12 @@ export default function FeaturePreview() {
             elevation={3}
         >
             <Typography variant="h2" style={{ marginBottom: 24 }}>
-        Feature Form Preview
+                Feature Form Preview
             </Typography>
-            <Typography
-                variant="subtitle1"
-                style={{ marginTop: 16, color: LIGHT_GRAY }}
-            >
-        WHAT
-            </Typography>
-            <Typography variant="body1" color="text.primary">
-                {what}
-            </Typography>
-            <Typography variant="subtitle1" style={{ marginTop: 16, color: PURPLE }}>
-        ACCEPTANCE CRITERIA
-            </Typography>
-            <ul className="preview-list">
-                {criterias.map((c) => (
-                    <li key={c.id}>
-                        <Typography variant="body1">{c.value}</Typography>
-                    </li>
-                ))}
-            </ul>
-            {techGuidance && (
-                <>
-                    <Typography
-                        variant="subtitle1"
-                        style={{ marginTop: 16, color: GREEN }}
-                    >
-            TECHNICAL GUIDANCE
-                    </Typography>
-                    <ul className="preview-list">
-                        <li>
-                            <Typography variant="body1">{techGuidance}</Typography>
-                        </li>
-                    </ul>
-                </>
-            )}
-            {/* TODO -> break into reusable components? */}
-            {dependencies.length > 0 && (
-                <>
-                    <Typography
-                        variant="subtitle1"
-                        style={{ marginTop: 16, color: BLUE }}
-                    >
-            DEPENDENCIES
-                    </Typography>
-                    <ul className="preview-list">
-                        {dependencies.map((d) => (
-                            <li key={d.id}>
-                                <Typography variant="body1">{d.value}</Typography>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
+            <What />
+            <AcceptanceCriteria />
+            <TechnicalGuidance />
+            <Dependencies />
             {FF && (
                 <>
                     <Typography
