@@ -7,7 +7,7 @@ export const LABLES = {
     depsInput: 'Dependency',
     flagToggle: 'Requires Flag',
     flagInput: 'FlagName',
-    imapctedProj: 'Impacted Project',
+    imapctedProj: 'Impacted Projects',
     editionToggle: 'Requires An Edition',
     editionInput: 'Edition',
     requiresAutomation: 'Requires Automation',
