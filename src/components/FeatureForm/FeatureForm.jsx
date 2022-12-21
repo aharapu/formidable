@@ -12,8 +12,6 @@ import {
     featureRequireEdition,
     featureTechGuide,
     featureTestInstruct,
-    featureWhat,
-    formValidationErrors,
 } from '../../constants';
 
 import { InputList } from '../InputList';
@@ -28,15 +26,14 @@ import { FormSwitchButton } from '../FormSwitchButton';
 import { FormDelimiterLine } from '../form/FormDelimiterLine';
 
 import { LABLES, PLACEHOLDERS } from './featureFormConstants';
-import { validateWhat } from './utils';
 import {
     addScenario, addTestInstructionsInput, deleteScenario, deleteTestInstructionsInput,
     updateScenarioName, updateTestInstructionsInput,
 } from '../../state-utils/scenarios';
+import { InputWhat } from './components/InputWhat/InputWhat';
 
 export default function FeatureForm() {
     // TODO -> split state into subcomponents to reduce re-renders
-    const [what, setWhat] = useRecoilState(featureWhat);
     const [ACs, setACs] = useRecoilState(featureACs);
     const [techGuide, setTechGuide] = useRecoilState(featureTechGuide);
     const [deps, setDeps] = useRecoilState(featureDeps);
@@ -48,33 +45,13 @@ export default function FeatureForm() {
     const [requireAutomation, setRequireAutomation] = useRecoilState(
         featureRequireAutomationTest,
     );
-    const [validErr, setValidErr] = useRecoilState(formValidationErrors);
 
-    const [whatErr, setWhatErr] = useState(null);
     const [showDependencies, setShowDependencies] = useState(false);
     const [showEditions, setShowEditions] = useState(false);
     const [showFeatureFlag, setShowFeatureFlag] = useState(false);
 
     const cachedDeps = useRef(deps);
     const cachedEditions = useRef(editions);
-
-    const handleWhatChange = (e) => {
-        setWhat(e.target.value);
-        if (whatErr) {
-            setWhatErr(null);
-            setValidErr((prev) => prev.filter((err) => err !== 'feature-what'));
-        }
-    };
-
-    const handleWhatBlur = () => {
-        const err = validateWhat(what);
-        if (err) {
-            setWhatErr(err);
-            if (!validErr.includes('feature-what')) {
-                setValidErr((prev) => [...prev, 'feature-what']);
-            }
-        }
-    };
 
     const addCriteria = getInputListAdder(setACs);
     const updateCriteriaValue = getInputListValueUpdater(setACs);
@@ -183,16 +160,7 @@ export default function FeatureForm() {
                 Feature Form
             </Typography>
             <Grid container spacing={3}>
-                <FormTextField
-                    label={LABLES.what}
-                    placeholder={PLACEHOLDERS.what}
-                    multiline
-                    value={what}
-                    onChange={handleWhatChange}
-                    onBlur={handleWhatBlur}
-                    error={Boolean(whatErr)}
-                    helperText={whatErr}
-                />
+                <InputWhat />
                 <FormDelimiterLine />
                 <InputList
                     title={LABLES.acceptanceCriteriaTitle}

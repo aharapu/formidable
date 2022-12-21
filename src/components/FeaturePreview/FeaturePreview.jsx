@@ -11,7 +11,6 @@ import {
     featureImpactedProj,
     featureRequireEdition,
     featureRequireAutomationTest,
-    featureWhat,
     featureTestInstruct,
     DARK_GREY,
     LIGHT_GRAY,
@@ -24,13 +23,14 @@ import {
     DARK_TEAL,
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
+import { whatAtom } from '../../recoil/what-atom';
 
 // TODO -> idea
 // 1. make Given, When, Then and And in italics in stead of bold
 // 2. make scenario name bold
 // 3. indent the And steps
 export default function FeaturePreview() {
-    const what = useRecoilValue(featureWhat);
+    const what = useRecoilValue(whatAtom);
     const criterias = useRecoilValue(featureACs);
     const techGuidance = useRecoilValue(featureTechGuide);
     const dependencies = useRecoilValue(featureDeps);

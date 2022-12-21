@@ -10,11 +10,11 @@ import {
     featureRequireEdition,
     featureTechGuide,
     featureTestInstruct,
-    featureWhat,
 } from '../constants';
+import { whatAtom } from '../recoil/what-atom';
 
 export function useClipboard() {
-    const what = useRecoilValue(featureWhat);
+    const what = useRecoilValue(whatAtom);
     const criterias = useRecoilValue(featureACs);
     const techGuidance = useRecoilValue(featureTechGuide);
     const dependencies = useRecoilValue(featureDeps);

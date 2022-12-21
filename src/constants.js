@@ -40,11 +40,6 @@ export const currentPage = atom({
 });
 
 // Feature states
-export const featureWhat = atom({
-    key: 'featureWhat',
-    default: '',
-});
-
 export const featureACs = atom({
     key: 'featureACs',
     default: [{ id: createId(), value: '', error: '' }],
