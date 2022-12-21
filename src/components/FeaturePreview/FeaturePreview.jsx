@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil';
 import { Button, Typography, Paper } from '@mui/material';
 
 import {
-    featureDeps,
     featureFlag,
     featureImpactedProj,
     featureRequireEdition,
@@ -12,7 +11,6 @@ import {
     featureTestInstruct,
     DARK_GREY,
     LIGHT_GRAY,
-    BLUE,
     ORANGE,
     DARK_RED,
     RED,
@@ -22,13 +20,13 @@ import { useClipboard } from '../../hooks/useClipboard';
 import { What } from './components/What';
 import { AcceptanceCriteria } from './components/AcceptanceCriteria';
 import { TechnicalGuidance } from './components/TechnicalGuidance';
+import { Dependencies } from './components/Dependencies/Dependencies';
 
 // TODO -> idea
 // 1. make Given, When, Then and And in italics in stead of bold
 // 2. make scenario name bold
 // 3. indent the And steps
 export default function FeaturePreview() {
-    const dependencies = useRecoilValue(featureDeps);
     const FF = useRecoilValue(featureFlag);
     const impactedProj = useRecoilValue(featureImpactedProj);
     const edition = useRecoilValue(featureRequireEdition);
@@ -59,24 +57,7 @@ export default function FeaturePreview() {
             <What />
             <AcceptanceCriteria />
             <TechnicalGuidance />
-            {/* TODO -> break into reusable components? */}
-            {dependencies.length > 0 && (
-                <>
-                    <Typography
-                        variant="subtitle1"
-                        style={{ marginTop: 16, color: BLUE }}
-                    >
-            DEPENDENCIES
-                    </Typography>
-                    <ul className="preview-list">
-                        {dependencies.map((d) => (
-                            <li key={d.id}>
-                                <Typography variant="body1">{d.value}</Typography>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
+            <Dependencies />
             {FF && (
                 <>
                     <Typography

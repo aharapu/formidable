@@ -5,7 +5,6 @@ import { PreviewText } from '../PreviewText/PreviewText';
 
 export function TechnicalGuidance() {
     const techincalGuidance = useRecoilValue(featureTechGuide);
-    console.log('techincalGuidance', techincalGuidance);
 
     if (!techincalGuidance) {
         return null;

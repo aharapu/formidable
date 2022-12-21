@@ -7,6 +7,10 @@ export function PreviewList({ title = '', items, titleColor = DARK_GREY}) {
     const showTitle = Boolean(title.trim());
     const nonEmptyItems = items.filter((item) => Boolean(item.value.trim()));
 
+    if (nonEmptyItems.length === 0) {
+        return null;
+    }
+
     return (
         <>
             {showTitle && <Typography variant="subtitle1" style={{ marginTop: 16, color: titleColor }}>
