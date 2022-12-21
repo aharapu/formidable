@@ -44,6 +44,7 @@ export default function FeaturePreview() {
     };
 
     // TODO -> have a show as html option
+    // TODO -> highlight form errors in preview
     return (
         <Paper
             style={{

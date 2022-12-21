@@ -1,24 +1,19 @@
-import { Typography } from '@mui/material';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { LIGHT_GRAY } from '../../../../constants';
 import { whatAtom } from '../../../../recoil/what-atom';
+import { PreviewText } from '../PreviewText/PreviewText';
 
+// The role of this component is to isolate state updates
 export function What() {
     const what = useRecoilValue(whatAtom);
 
     return (
-        <>
-            <Typography
-                variant="subtitle1"
-                style={{ marginTop: 16, color: LIGHT_GRAY }}
-            >
-                WHAT
-            </Typography>
-            <Typography variant="body1" color="text.primary">
-                {what}
-            </Typography>
-        </>
+        <PreviewText
+            title="WHAT"
+            what={what}
+            titleColor={LIGHT_GRAY}
+        />
     );
 }
