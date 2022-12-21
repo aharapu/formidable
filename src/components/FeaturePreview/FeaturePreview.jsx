@@ -23,14 +23,13 @@ import {
     DARK_TEAL,
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
-import { whatAtom } from '../../recoil/what-atom';
+import { PreviewWhat } from './components/PreviewWhat/PreviewWhat';
 
 // TODO -> idea
 // 1. make Given, When, Then and And in italics in stead of bold
 // 2. make scenario name bold
 // 3. indent the And steps
 export default function FeaturePreview() {
-    const what = useRecoilValue(whatAtom);
     const criterias = useRecoilValue(featureACs);
     const techGuidance = useRecoilValue(featureTechGuide);
     const dependencies = useRecoilValue(featureDeps);
@@ -60,15 +59,7 @@ export default function FeaturePreview() {
             <Typography variant="h2" style={{ marginBottom: 24 }}>
         Feature Form Preview
             </Typography>
-            <Typography
-                variant="subtitle1"
-                style={{ marginTop: 16, color: LIGHT_GRAY }}
-            >
-        WHAT
-            </Typography>
-            <Typography variant="body1" color="text.primary">
-                {what}
-            </Typography>
+            <PreviewWhat />
             <Typography variant="subtitle1" style={{ marginTop: 16, color: PURPLE }}>
         ACCEPTANCE CRITERIA
             </Typography>
