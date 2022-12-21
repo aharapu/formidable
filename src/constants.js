@@ -61,7 +61,7 @@ export const featureDeps = atom({
   */
 });
 
-export const featureFlag = atom({
+export const featureFlagAtom = atom({
     key: 'featureFlag',
     default: '',
 });

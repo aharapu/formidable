@@ -4,7 +4,7 @@ import {
     featureACs,
     featureTechGuide,
     featureDeps,
-    featureFlag,
+    featureFlagAtom,
     featureImpactedProj,
     featureRequireEdition,
     featureTestInstruct,
@@ -18,7 +18,7 @@ export function useClipboard() {
         const criterias = snapshot.getLoadable(featureACs).contents;
         const techGuidance = snapshot.getLoadable(featureTechGuide).contents;
         const dependencies = snapshot.getLoadable(featureDeps).contents;
-        const FF = snapshot.getLoadable(featureFlag).contents;
+        const FF = snapshot.getLoadable(featureFlagAtom).contents;
         const impactedProj = snapshot.getLoadable(featureImpactedProj).contents;
         const edition = snapshot.getLoadable(featureRequireEdition).contents;
         const featureTestInstructions = snapshot.getLoadable(featureTestInstruct).contents;

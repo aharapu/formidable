@@ -4,22 +4,17 @@ import { v4 as createId } from 'uuid';
 import { Box, Grid, Typography } from '@mui/material';
 
 import {
-    // featureACs,
-    featureDeps,
-    featureFlag,
     featureImpactedProj,
     featureRequireAutomationTest,
     featureRequireEdition,
-    featureTechGuide,
     featureTestInstruct,
 } from '../../constants';
 
 import { InputList } from '../InputList';
 import {
-    getInputListAdder, getInputListDeleter, /* getInputListErrorUpdater, */ getInputListValueUpdater,
+    getInputListAdder, getInputListDeleter, getInputListValueUpdater,
 } from '../InputList/utils';
 
-import { FormTextField } from '../FormTextField';
 import { FormCheckbox } from '../FormCheckbox';
 import { TestingInstructions } from '../TestingInstructions';
 import { FormSwitchButton } from '../FormSwitchButton';
@@ -32,13 +27,11 @@ import {
 } from '../../state-utils/scenarios';
 import { InputWhat } from './components/InputWhat/InputWhat';
 import { InputListCriteria } from './components/InputListCriteria/InputListCriteria';
+import { TechnicalGuidance } from './components/TechnicalGuidance/TechnicalGuidance';
+import { Dependencies } from './components/Dependencies/Dependencies';
+import { FeatureFlag } from './components/FeatureFlag/FeatureFlag';
 
 export default function FeatureForm() {
-    // TODO -> split state into subcomponents to reduce re-renders
-    // const [ACs, setACs] = useRecoilState(featureACs);
-    const [techGuide, setTechGuide] = useRecoilState(featureTechGuide);
-    const [deps, setDeps] = useRecoilState(featureDeps);
-    const [flag, setFlag] = useRecoilState(featureFlag);
     const [impactProjs, setImpactProjs] = useRecoilState(featureImpactedProj);
     const [editions, setEditions] = useRecoilState(featureRequireEdition);
     const [testIntructions, setTestInstructions] =
@@ -47,21 +40,9 @@ export default function FeatureForm() {
         featureRequireAutomationTest,
     );
 
-    const [showDependencies, setShowDependencies] = useState(false);
     const [showEditions, setShowEditions] = useState(false);
-    const [showFeatureFlag, setShowFeatureFlag] = useState(false);
 
-    const cachedDeps = useRef(deps);
     const cachedEditions = useRef(editions);
-
-    // const addCriteria = getInputListAdder(setACs);
-    // const updateCriteriaValue = getInputListValueUpdater(setACs);
-    // const updateCriteriaError = getInputListErrorUpdater(setACs);
-    // const deleteCriteria = getInputListDeleter(setACs);
-
-    const addDependency = getInputListAdder(setDeps);
-    const updateDependency = getInputListValueUpdater(setDeps);
-    const deleteDependency = getInputListDeleter(setDeps);
 
     const addProject = getInputListAdder(setImpactProjs);
     const updateProject = getInputListValueUpdater(setImpactProjs);
@@ -71,25 +52,7 @@ export default function FeatureForm() {
     const updateEdition = getInputListValueUpdater(setEditions);
     const deleteEdition = getInputListDeleter(setEditions);
 
-    const handleDepsToggle = () => {
-        const isHiding = showDependencies;
 
-        if(isHiding) {
-            cachedDeps.current = deps;
-        }
-
-        const depsToSet = isHiding ? [] :
-            cachedDeps.current.length ? cachedDeps.current
-                : [{ id: createId(), value: '', error: '' }];
-
-        setDeps(depsToSet);
-        setShowDependencies((prev) => !prev);
-    };
-
-    const handleToggleFlag = () => {
-        setShowFeatureFlag((prev) => !prev);
-        // TODO -> else restore previous state ("keep in ref")
-    };
 
     const handleToggleEditions = () => {
         const isHiding = showEditions;
@@ -164,64 +127,10 @@ export default function FeatureForm() {
                 <InputWhat />
                 <FormDelimiterLine />
                 <InputListCriteria />
-                {/* <InputList
-                    title={LABLES.acceptanceCriteriaTitle}
-                    textFieldLabel={LABLES.acceptCritInput}
-                    textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
-                    textFieldOnBlur={updateCriteriaError} // TODO -> rename prop to onBlur
-                    items={ACs}
-                    // TODO -> use an array and provide pseudorandom placeholders
-                    // TODO -> if this is a function, it will auto switch to new random placeholder
-                    onAdd={addCriteria}
-                    onChange={updateCriteriaValue}
-                    onDelete={deleteCriteria}
-                /> */}
                 <FormDelimiterLine />
-                <FormTextField
-                    label={LABLES.techGuide}
-                    placeholder={PLACEHOLDERS.techGuide}
-                    multiline
-                    value={techGuide}
-                    onChange={(e) => setTechGuide(e.target.value)}
-                />
-                <FormSwitchButton
-                    label={LABLES.depsToggle}
-                    value={showDependencies}
-                    onChange={handleDepsToggle}
-                />
-                {showDependencies && (
-                    <>
-                        <InputList
-                            title={LABLES.depsInput}
-                            textFieldPlaceholder={PLACEHOLDERS.depsInput}
-                            toggleLabel={LABLES.depsToggle}
-                            items={deps}
-                            onAdd={addDependency}
-                            onChange={updateDependency}
-                            onDelete={deleteDependency}
-                        />
-                        <FormDelimiterLine />
-                    </>
-                )}
-                <FormSwitchButton
-                    label={LABLES.flagToggle}
-                    value={showFeatureFlag}
-                    onChange={handleToggleFlag}
-                />
-                {
-                    showFeatureFlag && (
-                        <FormTextField
-                            label={LABLES.flagInput}
-                            placeholder={PLACEHOLDERS.flagInput}
-                            value={flag}
-                            onChange={(e) => setFlag(e.target.value)}
-                            showToggle
-                            toggleLabel={LABLES.flagToggle}
-                            topGap="tiny"
-                        />
-                    )
-                }
-                <FormDelimiterLine isVisible={showFeatureFlag} bottomGap={showFeatureFlag ? 'huge' : 'tiny'} />
+                <TechnicalGuidance />
+                <Dependencies />
+                <FeatureFlag />
                 <InputList
                     title={LABLES.imapctedProj}
                     textFieldPlaceholder={PLACEHOLDERS.imapctedProj}

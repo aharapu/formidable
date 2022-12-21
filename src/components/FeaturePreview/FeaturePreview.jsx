@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { Button, Typography, Paper } from '@mui/material';
 
 import {
-    featureFlag,
+    featureFlagAtom,
     featureImpactedProj,
     featureRequireEdition,
     featureRequireAutomationTest,
@@ -27,7 +27,7 @@ import { Dependencies } from './components/Dependencies/Dependencies';
 // 2. make scenario name bold
 // 3. indent the And steps
 export default function FeaturePreview() {
-    const FF = useRecoilValue(featureFlag);
+    const FF = useRecoilValue(featureFlagAtom);
     const impactedProj = useRecoilValue(featureImpactedProj);
     const edition = useRecoilValue(featureRequireEdition);
     const featureTestInstructions = useRecoilValue(featureTestInstruct);
