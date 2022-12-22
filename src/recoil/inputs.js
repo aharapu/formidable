@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 import { v4 as createId } from 'uuid';
 import { KEYS } from './constants';
 
-const inputAtoms = {};
+export const inputAtoms = {};
 
 export const addInput = () => {
     const id = createId();
