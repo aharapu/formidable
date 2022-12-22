@@ -4,9 +4,9 @@ import { useRecoilState } from 'recoil';
 import { getInputAtom } from '../../../../../../recoil/inputs';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { capitalizeFirstLetter } from '../../../../../../utils/string-utils';
-import { SECTION_TYPES } from '../../../../../../state-utils/scenarios';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import { useScenarios } from '../../../../../../recoil/scenarios';
+import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 
 // TODO -> rename to TestStep?
 export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
@@ -65,6 +65,6 @@ export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
 Input.propTypes = {
     id: PropTypes.string.isRequired,
     scenarioId: PropTypes.string.isRequired,
-    sectionType: PropTypes.oneOf(SECTION_TYPES).isRequired,
+    sectionType: PropTypes.oneOf(SCENARIO_SECTIONS).isRequired,
     isFirst: PropTypes.bool.isRequired,
 };

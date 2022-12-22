@@ -4,9 +4,9 @@ import { useRecoilValue } from 'recoil';
 import { Grid } from '@mui/material';
 
 import { getScenarioAtom } from '../../../../../../recoil/scenarios';
-import { SECTION_TYPES } from '../../../../../../state-utils/scenarios';
 import { Input } from '../Input/Input';
 import { Name } from './components/Name';
+import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 
 export function Scenario({id : scenarioId}) {
     const scenario = useRecoilValue(getScenarioAtom(scenarioId));
@@ -17,7 +17,7 @@ export function Scenario({id : scenarioId}) {
                 scenarioId={scenarioId}
                 nameInputId={scenario.nameInputId}
             />
-            {SECTION_TYPES.map((sectionType) => (
+            {SCENARIO_SECTIONS.map((sectionType) => (
                 <React.Fragment key={sectionType}>
                     {scenario[sectionType].map((inputId, idx) => (
                         <Grid

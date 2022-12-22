@@ -14,6 +14,9 @@ import { Editions } from './components/Editions/Editions';
 import { TestScenariosV3 } from './components/TestScenariosV3/TestScenariosV3';
 import { RequiresAutomation } from './components/RequiresAutomation/RequiresAutomation';
 
+// TODO -> when typing while focused on an icon, switch focus to an input and append the key pressed
+// TODO -> pressing delete should move focuse to somewhere relevant
+
 // TODO -> multiple inputs on the screen trigger numerous rerenders
 //         perhaps use formik to manage state?
 export default function FeatureForm() {

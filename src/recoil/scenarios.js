@@ -1,7 +1,6 @@
-import { atom, useRecoilCallback } from 'recoil';
+import { atom, useRecoilCallback, selector } from 'recoil';
 import { v4 as createId } from 'uuid';
-import { SECTION_TYPE } from '../state-utils/scenarios';
-import { KEYS } from './constants';
+import { KEYS, SCENARIO_SECTION } from './constants';
 import { addInput, inputAtoms } from './inputs';
 
 const scenarioAtoms = {};
@@ -32,9 +31,9 @@ export function useScenarios() {
         const newScenario = {
             id,
             nameInputId: addInput(),
-            [SECTION_TYPE.GIVEN]: [addInput()],
-            [SECTION_TYPE.WHEN]: [addInput()],
-            [SECTION_TYPE.THEN]: [addInput()],
+            [SCENARIO_SECTION.GIVEN]: [addInput()],
+            [SCENARIO_SECTION.WHEN]: [addInput()],
+            [SCENARIO_SECTION.THEN]: [addInput()],
         };
 
         scenarioAtoms[id] = atom({
@@ -45,6 +44,7 @@ export function useScenarios() {
         const testScenarios = snapshot.getLoadable(testScenariosAtom).contents;
 
         set(testScenariosAtom, [...testScenarios, id]);
+        return id;
     });
 
     const removeScenario = useRecoilCallback(({ snapshot, set }) => (scenarioId) => {
@@ -71,7 +71,7 @@ export function useScenarios() {
             throw new Error(`Scenario with id ${scenarioId} does not exist`);
         }
 
-        if (!Object.values(SECTION_TYPE).includes(sectionType)) {
+        if (!Object.values(SCENARIO_SECTION).includes(sectionType)) {
             throw new Error(`Invalid section type ${sectionType}`);
         }
 
@@ -97,7 +97,7 @@ export function useScenarios() {
             throw new Error(`Scenario with id ${scenarioId} does not exist`);
         }
 
-        if (!Object.values(SECTION_TYPE).includes(sectionType)) {
+        if (!Object.values(SCENARIO_SECTION).includes(sectionType)) {
             throw new Error(`Invalid section type ${sectionType}`);
         }
 
@@ -115,3 +115,20 @@ export function useScenarios() {
 
     return { addScenario, removeScenario, addScenarioInput, removeScenarioInput };
 }
+
+export const testScenariosSelector = selector({
+    key: KEYS.scenario.selector.testScenarios,
+    get: ({ get }) => {
+        const testScenarios = get(testScenariosAtom);
+
+        return testScenarios
+            .map((id) => get(getScenarioAtom(id)))
+            .map((scenario) => ({
+                ...scenario,
+                name: get(inputAtoms[scenario.nameInputId]),
+                [SCENARIO_SECTION.GIVEN]: scenario[SCENARIO_SECTION.GIVEN].map((id) => get(inputAtoms[id])),
+                [SCENARIO_SECTION.WHEN]: scenario[SCENARIO_SECTION.WHEN].map((id) => get(inputAtoms[id])),
+                [SCENARIO_SECTION.THEN]: scenario[SCENARIO_SECTION.THEN].map((id) => get(inputAtoms[id])),
+            }));
+    },
+});
