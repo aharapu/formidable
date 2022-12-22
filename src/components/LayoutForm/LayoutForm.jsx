@@ -9,6 +9,7 @@ import {
     FEATURE_PAGE,
     HOME_PAGE,
 } from '../../constants';
+import { PreviewFooter } from '../PreviewFooter/PreviewFooter';
 
 export function LayoutForm({ form, preview }) {
     return (
@@ -17,7 +18,7 @@ export function LayoutForm({ form, preview }) {
             flexWrap: 'wrap',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            width: '100vw',
+            width: '100%',
         }}>
             <div
                 id="banner-container"
@@ -53,9 +54,11 @@ export function LayoutForm({ form, preview }) {
                     position: 'sticky',
                     top: '0px',
                     paddingTop: '24px',
+                    paddingRight: '24px',
                 }}
             >
                 {preview}
+                <PreviewFooter />
             </div>
         </div>
     );

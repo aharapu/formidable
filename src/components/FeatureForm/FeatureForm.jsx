@@ -16,6 +16,8 @@ import { RequiresAutomation } from './components/RequiresAutomation/RequiresAuto
 
 // TODO -> when typing while focused on an icon, switch focus to an input and append the key pressed
 // TODO -> pressing delete should move focuse to somewhere relevant
+// TODO -> when on an input list and pressing enter on an input different than the last one
+//         should focus on the next input
 
 // TODO -> multiple inputs on the screen trigger numerous rerenders
 //         perhaps use formik to manage state?

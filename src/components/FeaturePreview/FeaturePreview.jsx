@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Button, Typography, Paper } from '@mui/material';
+import { Typography, Paper } from '@mui/material';
 
-import { useClipboard } from '../../hooks/useClipboard';
 import { What } from './components/What';
 import { AcceptanceCriteria } from './components/AcceptanceCriteria';
 import { TechnicalGuidance } from './components/TechnicalGuidance';
@@ -20,11 +19,7 @@ import { RequiredEditions } from './components/RequiredEditions/RequiredEditions
 
 export default function FeaturePreview() {
 
-    const { copyFeature } = useClipboard();
 
-    const handleCopyClick = () => {
-        copyFeature();
-    };
 
     // TODO -> have a show as html option
     // TODO -> highlight form errors in preview
@@ -32,7 +27,6 @@ export default function FeaturePreview() {
         <Paper
             style={{
                 padding: '24px',
-                maxWidth: '420px',
                 maxHeight: 'calc(100vh - 164px)',
                 overflowY: 'auto',
             }}
@@ -49,22 +43,7 @@ export default function FeaturePreview() {
             <ImpactedProjects />
             <RequiredEditions />
             <TestScenarios />
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    padding: '36px',
-                }}
-            >
-                <Button
-                // TODO -> place copy button under the scrollable preview, to make it always visible
-                    variant="contained"
-                    onClick={handleCopyClick}
-                    style={{ backgroundColor: '#172F4D', width: '190px', height: '42px' }}
-                >
-                    Copy to clipboard
-                </Button>
-            </div>
+
         </Paper>
     );
 }
