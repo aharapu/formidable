@@ -125,3 +125,11 @@ export const bugIncludeScreenshots = atom({
     key: 'bugIncludeScreenshots',
     default: false,
 });
+
+export const FEATURE = {
+    preview: {
+        title: {
+            requiresAutomation: 'REQUIRES AUTOMATION - ',
+        },
+    },
+};
