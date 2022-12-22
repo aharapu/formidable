@@ -22,31 +22,32 @@ export const getScenarioAtom = (scenarioId) => {
 };
 
 export function useScenarios() {
-    const addScenario = useRecoilCallback(({ snapshot, set }) => async () => {
-        console.log('in add scenario');
+    const addScenario = useRecoilCallback(({ snapshot, set }) => () => {
         const id = createId();
 
         if (scenarioAtoms[id]) {
             throw new Error(`Scenario with id ${id} already exists`);
         }
 
+        const newScenario = {
+            id,
+            nameInputId: addInput(),
+            [SECTION_TYPE.GIVEN]: [addInput()],
+            [SECTION_TYPE.WHEN]: [addInput()],
+            [SECTION_TYPE.THEN]: [addInput()],
+        };
+
         scenarioAtoms[id] = atom({
             key: KEYS.scenario.atom.prefix + id,
-            default: {
-                id: createId(),
-                name: 'scenario with id ' + id,
-                [SECTION_TYPE.GIVEN]: [addInput()],
-                [SECTION_TYPE.WHEN]: [addInput()],
-                [SECTION_TYPE.THEN]: [addInput()],
-            },
+            default: newScenario,
         });
+
         const testScenarios = snapshot.getLoadable(testScenariosAtom).contents;
-        console.log('testScenarios', testScenarios);
 
         set(testScenariosAtom, [...testScenarios, id]);
     });
 
-    const removeScenario = useRecoilCallback(({ snapshot, set }) => async (scenarioId) => {
+    const removeScenario = useRecoilCallback(({ snapshot, set }) => (scenarioId) => {
         const scenarioAtom = scenarioAtoms[scenarioId];
 
         if (!scenarioAtom) {
@@ -63,7 +64,7 @@ export function useScenarios() {
         delete scenarioAtoms[scenarioId];
     });
 
-    const addScenarioInput = useRecoilCallback(({ snapshot, set }) => async ({ scenarioId, sectionType, position }) => {
+    const addScenarioInput = useRecoilCallback(({ snapshot, set }) => ({ scenarioId, sectionType, position }) => {
         const scenarioAtom = scenarioAtoms[scenarioId];
 
         if (!scenarioAtom) {
@@ -89,31 +90,28 @@ export function useScenarios() {
         set(scenarioAtom, { ...scenario, [sectionType]: inputIds });
     });
 
-    const removeScenarioInput = useRecoilCallback(
-        ({ snapshot, set }) =>
-            async ({ scenarioId, sectionType, inputId }) => {
-                const scenarioAtom = scenarioAtoms[scenarioId];
+    const removeScenarioInput = useRecoilCallback(({ snapshot, set }) => ({ scenarioId, sectionType, inputId }) => {
+        const scenarioAtom = scenarioAtoms[scenarioId];
 
-                if (!scenarioAtom) {
-                    throw new Error(`Scenario with id ${scenarioId} does not exist`);
-                }
+        if (!scenarioAtom) {
+            throw new Error(`Scenario with id ${scenarioId} does not exist`);
+        }
 
-                if (!Object.values(SECTION_TYPE).includes(sectionType)) {
-                    throw new Error(`Invalid section type ${sectionType}`);
-                }
+        if (!Object.values(SECTION_TYPE).includes(sectionType)) {
+            throw new Error(`Invalid section type ${sectionType}`);
+        }
 
-                if (!inputAtoms[inputId]) {
-                    throw new Error(`Input with id ${inputId} does not exist`);
-                }
+        if (!inputAtoms[inputId]) {
+            throw new Error(`Input with id ${inputId} does not exist`);
+        }
 
-                const scenario = snapshot.getLoadable(scenarioAtom).contents;
+        const scenario = snapshot.getLoadable(scenarioAtom).contents;
 
-                const inputIds = [sectionType].filter((id) => id !== inputId);
+        const inputIds = scenario[sectionType].filter((id) => id !== inputId);
 
-                set(scenarioAtom, { ...scenario, [sectionType]: inputIds });
-                delete inputAtoms[inputId];
-            },
-    );
+        set(scenarioAtom, { ...scenario, [sectionType]: inputIds });
+        delete inputAtoms[inputId];
+    });
 
     return { addScenario, removeScenario, addScenarioInput, removeScenarioInput };
 }

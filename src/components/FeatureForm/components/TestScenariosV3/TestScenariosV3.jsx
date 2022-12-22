@@ -7,8 +7,6 @@ export function TestScenariosV3() {
     const { addScenario } = useScenarios();
     const testScenarios = useRecoilValue(testScenariosAtom);
 
-    console.log('testScenarios' , testScenarios );
-
     return (
         <>
             <button onClick={addScenario}>Add Scenario</button>

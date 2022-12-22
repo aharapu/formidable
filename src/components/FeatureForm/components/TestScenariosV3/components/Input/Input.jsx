@@ -8,6 +8,7 @@ import { SECTION_TYPES } from '../../../../../../state-utils/scenarios';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import { useScenarios } from '../../../../../../recoil/scenarios';
 
+// TODO -> rename to TestStep?
 export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
     const [input, setInput] = useRecoilState(getInputAtom(inputId));
     const { addScenarioInput, removeScenarioInput } = useScenarios();

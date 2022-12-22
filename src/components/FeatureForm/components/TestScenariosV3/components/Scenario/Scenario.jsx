@@ -1,39 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState } from 'recoil';
-import { Grid, IconButton, TextField } from '@mui/material';
-import { DeleteForever } from '@mui/icons-material';
+import { useRecoilValue } from 'recoil';
+import { Grid } from '@mui/material';
 
-import { getScenarioAtom, useScenarios } from '../../../../../../recoil/scenarios';
+import { getScenarioAtom } from '../../../../../../recoil/scenarios';
 import { SECTION_TYPES } from '../../../../../../state-utils/scenarios';
 import { Input } from '../Input/Input';
+import { Name } from './components/Name';
 
 export function Scenario({id : scenarioId}) {
-    const [scenario, setScenario] = useRecoilState(getScenarioAtom(scenarioId));
-    const { removeScenario } = useScenarios();
-
-    // TODO -> use input atom for scenario name to avoid rerendering entire scenario
-    const handleScenarioNameChange = (e) => {
-        setScenario((prevScenario) => ({
-            ...prevScenario,
-            name: e.target.value,
-        }));
-    };
+    const scenario = useRecoilValue(getScenarioAtom(scenarioId));
 
     return (
         <>
-            <Grid item xs={12} display="flex" alignItems="center">
-                <IconButton onClick={() => removeScenario(scenarioId)}>
-                    <DeleteForever />
-                </IconButton>
-                <TextField
-                    label="scenario name"
-                    value={scenario.name}
-                    fullWidth
-                    onChange={handleScenarioNameChange}
-                    size="small"
-                />
-            </Grid>
+            <Name
+                scenarioId={scenarioId}
+                nameInputId={scenario.nameInputId}
+            />
             {SECTION_TYPES.map((sectionType) => (
                 <React.Fragment key={sectionType}>
                     {scenario[sectionType].map((inputId, idx) => (
