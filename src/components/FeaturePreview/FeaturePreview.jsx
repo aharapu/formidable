@@ -8,19 +8,18 @@ import {
     featureImpactedProj,
     featureRequireEdition,
     featureRequireAutomationTest,
-    featureTestInstruct,
     DARK_GREY,
     LIGHT_GRAY,
     ORANGE,
     DARK_RED,
     RED,
-    DARK_TEAL,
 } from '../../constants';
 import { useClipboard } from '../../hooks/useClipboard';
 import { What } from './components/What';
 import { AcceptanceCriteria } from './components/AcceptanceCriteria';
 import { TechnicalGuidance } from './components/TechnicalGuidance';
 import { Dependencies } from './components/Dependencies/Dependencies';
+import { TestScenarios } from './components/TestScenarios/TestScenarios';
 
 // TODO -> idea
 // 1. make Given, When, Then and And in italics in stead of bold
@@ -30,7 +29,6 @@ export default function FeaturePreview() {
     const FF = useRecoilValue(featureFlagAtom);
     const impactedProj = useRecoilValue(featureImpactedProj);
     const edition = useRecoilValue(featureRequireEdition);
-    const featureTestInstructions = useRecoilValue(featureTestInstruct);
     const automation = useRecoilValue(featureRequireAutomationTest);
 
     const { copyFeature } = useClipboard();
@@ -105,51 +103,7 @@ export default function FeaturePreview() {
                     </ul>
                 </>
             )}
-            {featureTestInstructions.length > 0 && (
-                <>
-                    <Typography
-                        variant="subtitle1"
-                        style={{ marginTop: 16, color: DARK_TEAL }}
-                    >
-            TESTING SCENARIOS
-                    </Typography>
-                    {featureTestInstructions.map((ti) => (
-                        <React.Fragment key={ti.id}>
-                            <Typography>{ti.name}</Typography>
-                            {ti.given.map((g, idx) => (
-                                <ul key={g.id} className="preview-list">
-                                    <li>
-                                        <Typography>
-                                            <strong>{idx === 0 ? 'Given ' : 'And '}</strong>
-                                            {g.value}
-                                        </Typography>
-                                    </li>
-                                </ul>
-                            ))}
-                            {ti.when.map((w, idx) => (
-                                <ul key={w.id} className="preview-list">
-                                    <li>
-                                        <Typography>
-                                            <strong>{idx === 0 ? 'When ' : 'And '}</strong>
-                                            {w.value}
-                                        </Typography>
-                                    </li>
-                                </ul>
-                            ))}
-                            {ti.then.map((t, idx) => (
-                                <ul key={t.id} className="preview-list">
-                                    <li>
-                                        <Typography>
-                                            <strong>{idx === 0 ? 'Then ' : 'And '}</strong>
-                                            {t.value}
-                                        </Typography>
-                                    </li>
-                                </ul>
-                            ))}
-                        </React.Fragment>
-                    ))}
-                </>
-            )}
+            <TestScenarios />
             <Typography
                 variant="subtitle1"
                 style={{ marginTop: 16, color: LIGHT_GRAY }}

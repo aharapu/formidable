@@ -7,7 +7,9 @@ import {
     featureFlagAtom,
     featureImpactedProj,
     featureRequireEdition,
-    featureTestInstruct,
+    // TODO -> replace with new selector
+    // TODO -> replace with new selector
+    // featureTestInstruct,
     featureRequireAutomationTest,
 } from '../constants';
 import { whatAtom } from '../recoil/what-atom';
@@ -21,7 +23,8 @@ export function useClipboard() {
         const FF = snapshot.getLoadable(featureFlagAtom).contents;
         const impactedProj = snapshot.getLoadable(featureImpactedProj).contents;
         const edition = snapshot.getLoadable(featureRequireEdition).contents;
-        const featureTestInstructions = snapshot.getLoadable(featureTestInstruct).contents;
+        // TODO -> replace with new selector
+        // const featureTestInstructions = snapshot.getLoadable(featureTestInstruct).contents;
         const automation = snapshot.getLoadable(featureRequireAutomationTest).contents;
 
         updateClipboard({
@@ -32,7 +35,8 @@ export function useClipboard() {
             featureFlag: FF,
             impactedProjects: getValues(impactedProj),
             requiredEditions: getValues(edition),
-            testingScenarios: featureTestInstructions,
+            // testingScenarios: featureTestInstructions,
+            testingScenarios: [],
             requiresAutomation: automation,
         });
     });

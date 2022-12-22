@@ -1,6 +1,5 @@
 import { atom } from 'recoil';
 import { v4 as createId } from 'uuid';
-import { newScenario } from './state-utils/scenarios';
 
 export const DARK_GREY = '#172F4D';
 export const DARK_BLUE = '#0747A6';
@@ -82,24 +81,6 @@ export const featureRequireEdition = atom({
   array object shape { id: UUID, value: String }
   */
 });
-
-export const featureTestInstruct = atom({
-    key: 'featureTestInstruct',
-    default: [newScenario()],
-});
-/*
-example object
-{
-  scenarioName: "",
-  scenarioId: 1, // TODO -> rename to id
-  given: [
-    { id: 1, value: "first given" },
-    { id: 2, value: "second given" },
-  ],
-  when: [{ id: 1, value: "one when" }],
-  then: [{ id: 1, value: "this then" }],
-},
-*/
 
 export const featureRequireAutomationTest = atom({
     key: 'featureRequireAutomationTest',
