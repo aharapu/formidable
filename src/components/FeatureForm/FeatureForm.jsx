@@ -10,7 +10,8 @@ import { FeatureFlag } from './components/FeatureFlag/FeatureFlag';
 import { ImpactedProjects } from './components/ImpactedProjects/ImpactedProjects';
 import { Editions } from './components/Editions/Editions';
 // import { TestScenarios } from './components/TestScenarios/TestScenarios';
-import { TestScenariosV2 } from './components/TestScenarios/TestScenariosV2';
+// import { TestScenariosV2 } from './components/TestScenarios/TestScenariosV2';
+import { TestScenariosV3 } from './components/TestScenariosV3/TestScenariosV3';
 import { RequiresAutomation } from './components/RequiresAutomation/RequiresAutomation';
 
 // TODO -> multiple inputs on the screen trigger numerous rerenders
@@ -42,7 +43,8 @@ export default function FeatureForm() {
                 <ImpactedProjects />
                 <Editions />
                 {/* <TestScenarios /> */}
-                <TestScenariosV2 />
+                {/* <TestScenariosV2 /> */}
+                <TestScenariosV3 />
                 <RequiresAutomation />
             </Grid>
         </Box>
