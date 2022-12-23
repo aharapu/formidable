@@ -7,17 +7,35 @@ import { capitalizeFirstLetter } from '../../../../../../utils/string-utils';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import { useScenarios } from '../../../../../../recoil/scenarios';
 import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
+import { focusInput } from '../../../../../../hooks/useFocus';
 
 // TODO -> rename to TestStep?
-export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
+export function Input({id: inputId, scenarioId, sectionType, index, sectionItems }) {
     const [input, setInput] = useRecoilState(getInputAtom(inputId));
     const { addScenarioInput, removeScenarioInput } = useScenarios();
+
+    const isFirst = index === 0;
+    const isLast = index === sectionItems.length - 1;
 
     const handleChange = (value) => {
         setInput((prevInput) => ({
             ...prevInput,
             value,
         }));
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (isLast) {
+                addScenarioInput({
+                    scenarioId,
+                    sectionType,
+                });
+            } else {
+                focusInput(sectionItems[index + 1]);
+            }
+        }
     };
 
     return (
@@ -34,6 +52,7 @@ export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
                 id={inputId}
                 value={input.value}
                 onChange={(e) => handleChange(e.target.value)}
+                onKeyPress={handleKeyPress}
                 style={{
                     flexGrow: 1,
                     paddingLeft: isFirst ? '48px' : '92px',
@@ -70,5 +89,6 @@ Input.propTypes = {
     id: PropTypes.string.isRequired,
     scenarioId: PropTypes.string.isRequired,
     sectionType: PropTypes.oneOf(SCENARIO_SECTIONS).isRequired,
-    isFirst: PropTypes.bool.isRequired,
+    index: PropTypes.number.isRequired,
+    sectionItems: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

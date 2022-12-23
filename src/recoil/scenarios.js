@@ -88,6 +88,8 @@ export function useScenarios() {
         inputIds.splice(position, 0, inputId);
 
         set(scenarioAtom, { ...scenario, [sectionType]: inputIds });
+
+        return inputId;
     });
 
     const removeScenarioInput = useRecoilCallback(({ snapshot, set }) => ({ scenarioId, sectionType, inputId }) => {

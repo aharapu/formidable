@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilValue } from 'recoil';
 
@@ -7,9 +7,40 @@ import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 
 import { Input } from '../Input/Input';
 import { Name } from './components/Name';
+import { usePrevious } from '../../../../../../hooks/usePrevious';
+import { focusInput } from '../../../../../../hooks/useFocus';
 
 export function Scenario({id : scenarioId}) {
     const scenario = useRecoilValue(getScenarioAtom(scenarioId));
+
+    const sectionLengths = useMemo(
+        () => SCENARIO_SECTIONS.reduce((acc, sectionType) => {
+            acc = { ...acc, [sectionType]: scenario[sectionType].length };
+            return acc;
+        }, {}),
+        [scenario],
+    );
+
+    const prevSectionLengths = usePrevious(sectionLengths);
+
+    useLayoutEffect(() => {
+        if (!prevSectionLengths) {
+            return;
+        }
+
+        SCENARIO_SECTIONS.forEach((sectionType) => {
+            const prevLength = prevSectionLengths[sectionType];
+            const currLength = sectionLengths[sectionType];
+
+            if (prevLength < currLength) {
+                const newInputId = scenario[sectionType][currLength - 1];
+                focusInput(newInputId);
+            }
+        });
+
+
+    }, [sectionLengths, prevSectionLengths, scenario]);
+
 
     return (
         <>
@@ -24,9 +55,10 @@ export function Scenario({id : scenarioId}) {
                             <Input
                                 key={inputId}
                                 id={inputId}
+                                index={idx}
                                 scenarioId={scenarioId}
                                 sectionType={sectionType}
-                                isFirst={idx === 0}
+                                sectionItems={scenario[sectionType]}
                             />
                         ))
                     }
