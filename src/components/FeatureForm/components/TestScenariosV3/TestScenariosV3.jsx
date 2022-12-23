@@ -10,6 +10,9 @@ export function TestScenariosV3() {
 
     return (
         <>
+            {testScenarios.map((scenarioId) => (
+                <Scenario key={scenarioId} id={scenarioId} />
+            ))}
             <Grid container item xs={12} justifyContent="center">
                 <Button
                     variant="contained"
@@ -20,9 +23,6 @@ export function TestScenariosV3() {
                     Add Testing Scenario
                 </Button>
             </Grid>
-            {testScenarios.map((scenarioId) => (
-                <Scenario key={scenarioId} id={scenarioId} />
-            ))}
         </>
     );
 }

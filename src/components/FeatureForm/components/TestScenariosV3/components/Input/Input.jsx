@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
 import { getInputAtom } from '../../../../../../recoil/inputs';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
+import { Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import { capitalizeFirstLetter } from '../../../../../../utils/string-utils';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import { useScenarios } from '../../../../../../recoil/scenarios';
@@ -21,31 +21,34 @@ export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
     };
 
     return (
-        <>
-            <TextField
-                value={capitalizeFirstLetter(sectionType)}
-                disabled
-                style={{
-                    width: '80px',
-                    opacity: isFirst ? 1 : 0,
-                    marginRight: '10px',
-                }}
-                size="small"
-            />
+        <Grid
+            item
+            xs={12}
+            style={{
+                paddingTop: isFirst ? '8px' : '4px',
+                display: 'flex',
+                alignItems: 'center',
+            }}
+        >
             <TextField
                 value={input.value}
                 onChange={(e) => handleChange(e.target.value)}
-                style={{ flexGrow: 1 }}
+                style={{
+                    flexGrow: 1,
+                    paddingLeft: isFirst ? '48px' : '92px',
+                }}
                 InputProps={{
                     startAdornment:
-                        !isFirst ? (
+                        (
                             <InputAdornment
                                 position="start"
                                 style={{ paddingRight: '10px' }}
                             >
-                                <strong>AND</strong>
+                                <strong>
+                                    {isFirst ? capitalizeFirstLetter(sectionType) : 'And'}
+                                </strong>
                             </InputAdornment>
-                        ) : null,
+                        ),
                 }}
                 size="small"
             />
@@ -58,7 +61,7 @@ export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
             >
                 {isFirst ? <AddCircleOutline /> : <DeleteForever />}
             </IconButton>
-        </>
+        </Grid>
     );
 }
 

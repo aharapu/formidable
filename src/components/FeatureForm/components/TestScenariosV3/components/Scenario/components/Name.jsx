@@ -24,10 +24,7 @@ export function Name({ scenarioId, nameInputId}) {
     };
 
     return (
-        <Grid item xs={12} display="flex" alignItems="center">
-            <IconButton onClick={() => removeScenario(scenarioId)}>
-                <DeleteForever />
-            </IconButton>
+        <Grid item xs={12} display="flex" alignItems="center" marginTop={3}>
             <TextField
                 label="scenario name"
                 value={input.value}
@@ -35,6 +32,9 @@ export function Name({ scenarioId, nameInputId}) {
                 onChange={handleInputChange}
                 size="small"
             />
+            <IconButton onClick={() => removeScenario(scenarioId)}>
+                <DeleteForever />
+            </IconButton>
         </Grid>
     );
 }
