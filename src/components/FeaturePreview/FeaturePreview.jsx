@@ -10,6 +10,7 @@ import { TestScenarios } from './components/TestScenarios/TestScenarios';
 import { FeatureFlag } from './components/FeatureFlag/FeatureFlag';
 import { ImpactedProjects } from './components/ImpactedProjects/ImpactedProjects';
 import { RequiredEditions } from './components/RequiredEditions/RequiredEditions';
+import { RequiresAutomation } from '../RequiresAutomation/RequiresAutomation';
 
 // TODO -> add plural only when applicable
 // TODO -> idea
@@ -18,8 +19,6 @@ import { RequiredEditions } from './components/RequiredEditions/RequiredEditions
 // 3. indent the And steps
 
 export default function FeaturePreview() {
-
-
 
     // TODO -> have a show as html option
     // TODO -> highlight form errors in preview
@@ -44,7 +43,7 @@ export default function FeaturePreview() {
             <ImpactedProjects />
             <RequiredEditions />
             <TestScenarios />
-
+            <RequiresAutomation />
         </Paper>
     );
 }

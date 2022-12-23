@@ -8,6 +8,8 @@ export function TestScenariosV3() {
     const { addScenario } = useScenarios();
     const testScenarios = useRecoilValue(testScenariosAtom);
 
+    // TODO -> switch focus to scenario name when a new scenario is added
+
     return (
         <>
             {testScenarios.map((scenarioId) => (
