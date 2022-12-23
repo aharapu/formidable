@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useRecoilCallback, useRecoilState } from 'recoil';
 import { v4 as createId } from 'uuid';
 
-import { featureDeps } from '../../../../constants';
+import { BLUE, featureDeps } from '../../../../constants';
 import { FormDelimiterLine } from '../../../form/FormDelimiterLine';
 import { FormSwitchButton } from '../../../FormSwitchButton/FormSwitchButton';
 import { InputList } from '../../../InputList/InputList';
@@ -41,6 +41,7 @@ export function Dependencies() {
                 label={LABLES.depsToggle}
                 value={showDependencies}
                 onChange={handleDepsToggle}
+                checkedColor={BLUE}
             />
             {
                 showDependencies && (

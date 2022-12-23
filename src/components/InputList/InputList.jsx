@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -14,6 +14,8 @@ import {
 } from '@mui/icons-material';
 
 import { ORANGE } from '../../constants';
+import { focusInput } from '../../hooks/useFocus';
+import { usePrevious } from '../../hooks/usePrevious';
 
 export function InputList({
     title = 'Default Title',
@@ -32,6 +34,8 @@ export function InputList({
         if (e.keyCode !== 13) return;
         if (idx === items.length - 1) {
             handleAdd();
+        } else {
+            focusInput(items[idx + 1].id);
         }
     };
 
@@ -175,11 +179,6 @@ function validateInput(value) {
     return '';
 }
 
-function focusInput(id) {
-    const input = document.getElementById(id);
-    input.focus();
-}
-
 function focusLastInput(items) {
     const lastItem = items[items.length - 1];
     focusInput(lastItem.id);
@@ -190,13 +189,4 @@ function isLastItemErrored (items = []) {
 
     const lastItem = items[items.length - 1];
     return Boolean(lastItem.error);
-}
-
-// TODO -> move this to a hooks file
-function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-        ref.current = value;
-    });
-    return ref.current;
 }

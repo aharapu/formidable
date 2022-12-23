@@ -9,12 +9,17 @@ import {
     FEATURE_PAGE,
     HOME_PAGE,
 } from '../../constants';
+import { PreviewFooter } from '../PreviewFooter/PreviewFooter';
 
 export function LayoutForm({ form, preview }) {
-    const [page, setPage] = useRecoilState(currentPage);
-
     return (
-        <>
+        <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            width: '100%',
+        }}>
             <div
                 id="banner-container"
                 style={{
@@ -23,64 +28,19 @@ export function LayoutForm({ form, preview }) {
                     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.1)',
                     display: 'flex',
                     alignItems: 'center',
+                    flex: '1 1 100vw',
                 }}
             >
                 <FormidableLogo
                     style={{ height: '42px', marginLeft: '-24px', marginTop: '4px' }}
                 />
             </div>
-            <div
-                id="menu-container"
-                style={{
-                    width: '11vw',
-                    height: 'calc(100vh - 116px)',
-                    position: 'fixed',
-                    top: '80px',
-                    left: '0px',
-                    padding: '24px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}
-            >
-                <Typography
-                    onClick={() => setPage(HOME_PAGE)}
-                    style={{
-                        cursor: 'pointer',
-                        padding: '16px',
-                        backgroundColor: page === HOME_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
-                    }}
-                >
-                    Back to Home
-                </Typography>
-                <Typography
-                    onClick={() => setPage(FEATURE_PAGE)}
-                    style={{
-                        cursor: 'pointer',
-                        padding: '16px',
-                        backgroundColor: page === FEATURE_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
-                    }}
-                >
-                    Create a Feature
-                </Typography>
-                <Typography
-                    onClick={() => setPage(BUG_PAGE)}
-                    style={{
-                        cursor: 'pointer',
-                        padding: '16px',
-                        backgroundColor:
-              page === BUG_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
-                    }}
-                >
-          Report a Bug
-                </Typography>
-            </div>
+            <Menu />
             <div
                 id="content-container"
                 style={{
-                    marginLeft: 'calc(13vw + 40px)',
-                    width: '46vw',
-                    paddingTop: '48px',
-                    paddingBottom: '38vh',
+                    flex: '0 1 40vw',
+                    padding: '24px 24px 38vh 24px',
                 }}
             >
                 {form}
@@ -88,21 +48,73 @@ export function LayoutForm({ form, preview }) {
             <div
                 id="preview-container"
                 style={{
-                    width: '33vw',
+                    flex: '1 1 33vw',
+                    maxWidth: '500px',
+                    marginRight: 'auto',
                     minHeight: '550px',
-                    position: 'fixed',
-                    top: '68px',
-                    right: '0px',
-                    paddingTop: '24px',
+                    position: 'sticky',
+                    top: '0px',
+                    padding: '24px',
                 }}
             >
                 {preview}
+                <PreviewFooter />
             </div>
-        </>
+        </div>
     );
 }
 
 LayoutForm.propTypes = {
     form : PropTypes.element.isRequired,
     preview: PropTypes.element.isRequired,
+};
+
+const Menu = () => {
+    const [page, setPage] = useRecoilState(currentPage);
+
+    return (
+        <div
+            id="menu-container"
+            style={{
+                flex: '0 0 11vw',
+                position: 'sticky',
+                top: '0px',
+                padding: '24px',
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
+            <Typography
+                onClick={() => setPage(HOME_PAGE)}
+                style={{
+                    cursor: 'pointer',
+                    padding: '16px',
+                    backgroundColor: page === HOME_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
+                }}
+            >
+                Back to Home
+            </Typography>
+            <Typography
+                onClick={() => setPage(FEATURE_PAGE)}
+                style={{
+                    cursor: 'pointer',
+                    padding: '16px',
+                    backgroundColor: page === FEATURE_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
+                }}
+            >
+                Create a Feature
+            </Typography>
+            <Typography
+                onClick={() => setPage(BUG_PAGE)}
+                style={{
+                    cursor: 'pointer',
+                    padding: '16px',
+                    backgroundColor:
+                        page === BUG_PAGE ? 'rgba(0, 0, 0, 0.04)' : undefined,
+                }}
+            >
+                Report a Bug
+            </Typography>
+        </div>
+    );
 };

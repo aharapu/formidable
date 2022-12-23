@@ -12,6 +12,14 @@ export const theme = createTheme({
     //   },
     // },
     components: {
+        // TODO -> this might be a way to "fix" the sad looking ripple on focus
+        MuiTouchRipple: {
+            styleOverrides: {
+                root: {
+                    color: 'orange',
+                },
+            },
+        },
         MuiButton: {
             //     defaultProps: {
             //       disableElevation: true,
@@ -23,6 +31,7 @@ export const theme = createTheme({
                     fontStyle: 'medium',
                     fontSize: '15px',
                     lineHeight: '26px',
+                    letterSpacing: '0.46px',
                     //         textTransform: "none",
                 },
                 //       sizeSmall: {

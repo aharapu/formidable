@@ -8,12 +8,16 @@ import { Grid, IconButton, TextField } from '@mui/material';
 
 import { getInputAtom } from '../../../../../../../recoil/inputs';
 import { useScenarios } from '../../../../../../../recoil/scenarios';
+import { useFocus } from '../../../../../../../hooks/useFocus';
+import { SCENARIO_SECTION } from '../../../../../../../recoil/constants';
+
 
 // TODO -> rename to header?
 export function Name({ scenarioId, nameInputId}) {
     const [input, setInput] = useRecoilState(getInputAtom(nameInputId));
 
     const { removeScenario } = useScenarios();
+    const { focusScenarioInput } = useFocus();
 
     // TODO -> add some blur validation?
     const handleInputChange = (e) => {
@@ -23,18 +27,30 @@ export function Name({ scenarioId, nameInputId}) {
         }));
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            focusScenarioInput({
+                scenarioId,
+                sectionType: SCENARIO_SECTION.GIVEN,
+                index: 0,
+            });
+        }
+    };
+
     return (
-        <Grid item xs={12} display="flex" alignItems="center">
-            <IconButton onClick={() => removeScenario(scenarioId)}>
-                <DeleteForever />
-            </IconButton>
+        <Grid item xs={12} display="flex" alignItems="center" marginTop={3}>
             <TextField
                 label="scenario name"
                 value={input.value}
                 fullWidth
                 onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
                 size="small"
             />
+            <IconButton onClick={() => removeScenario(scenarioId)}>
+                <DeleteForever />
+            </IconButton>
         </Grid>
     );
 }

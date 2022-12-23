@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilValue } from 'recoil';
-import { Grid } from '@mui/material';
 
 import { getScenarioAtom } from '../../../../../../recoil/scenarios';
+import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
+
 import { Input } from '../Input/Input';
 import { Name } from './components/Name';
-import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
+import { usePrevious } from '../../../../../../hooks/usePrevious';
+import { focusInput } from '../../../../../../hooks/useFocus';
 
 export function Scenario({id : scenarioId}) {
     const scenario = useRecoilValue(getScenarioAtom(scenarioId));
+
+    const sectionLengths = useMemo(
+        () => SCENARIO_SECTIONS.reduce((acc, sectionType) => {
+            acc = { ...acc, [sectionType]: scenario[sectionType].length };
+            return acc;
+        }, {}),
+        [scenario],
+    );
+
+    const prevSectionLengths = usePrevious(sectionLengths);
+
+    useLayoutEffect(() => {
+        if (!prevSectionLengths) {
+            return;
+        }
+
+        SCENARIO_SECTIONS.forEach((sectionType) => {
+            const prevLength = prevSectionLengths[sectionType];
+            const currLength = sectionLengths[sectionType];
+
+            if (prevLength < currLength) {
+                const newInputId = scenario[sectionType][currLength - 1];
+                focusInput(newInputId);
+            }
+        });
+
+
+    }, [sectionLengths, prevSectionLengths, scenario]);
+
 
     return (
         <>
@@ -19,25 +50,18 @@ export function Scenario({id : scenarioId}) {
             />
             {SCENARIO_SECTIONS.map((sectionType) => (
                 <React.Fragment key={sectionType}>
-                    {scenario[sectionType].map((inputId, idx) => (
-                        <Grid
-                            key={inputId}
-                            item
-                            xs={12}
-                            style={{
-                                paddingLeft: '100px',
-                                display: 'flex',
-                                alignItems: 'center',
-                            }}
-                        >
+                    {
+                        scenario[sectionType].map((inputId, idx) => (
                             <Input
+                                key={inputId}
                                 id={inputId}
+                                index={idx}
                                 scenarioId={scenarioId}
                                 sectionType={sectionType}
-                                isFirst={idx === 0}
+                                sectionItems={scenario[sectionType]}
                             />
-                        </Grid>
-                    ))}
+                        ))
+                    }
                 </React.Fragment>
             ))}
         </>

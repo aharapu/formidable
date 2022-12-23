@@ -9,6 +9,10 @@ import { PreviewText } from '../PreviewText/PreviewText';
 export function What() {
     const what = useRecoilValue(whatAtom);
 
+    if (!what) {
+        return null;
+    }
+
     return (
         <PreviewText
             title="WHAT"

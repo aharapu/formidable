@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { featureFlagAtom } from '../../../../constants';
+import { featureFlagAtom, ORANGE } from '../../../../constants';
 import { FormDelimiterLine } from '../../../form/FormDelimiterLine';
 import { FormSwitchButton } from '../../../FormSwitchButton/FormSwitchButton';
 import { FormTextField } from '../../../FormTextField/FormTextField';
@@ -33,6 +33,7 @@ export function FeatureFlag() {
                 label={LABLES.flagToggle}
                 value={showInput}
                 onChange={handleToggleFlag}
+                checkedColor={ORANGE}
             />
             {
                 showInput && (
