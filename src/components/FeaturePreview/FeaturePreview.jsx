@@ -27,6 +27,7 @@ export default function FeaturePreview() {
         <Paper
             style={{
                 padding: '24px',
+                minHeight: '50vh',
                 maxHeight: 'calc(100vh - 164px)',
                 overflowY: 'auto',
             }}

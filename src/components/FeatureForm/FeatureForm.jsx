@@ -30,7 +30,7 @@ export default function FeatureForm() {
             style={{
                 margin: '0 auto',
                 maxWidth: '800px',
-                padding: '0 20px 100px',
+                padding: '24px 24px 100px',
                 backgroundColor: `${LIGHT_GRAY}08`,
             }}
             elevation={3}

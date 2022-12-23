@@ -39,9 +39,8 @@ export function LayoutForm({ form, preview }) {
             <div
                 id="content-container"
                 style={{
-                    width: '46vw',
-                    paddingTop: '48px',
-                    paddingBottom: '38vh',
+                    flex: '0 1 40vw',
+                    padding: '24px 24px 38vh 24px',
                 }}
             >
                 {form}
@@ -49,12 +48,13 @@ export function LayoutForm({ form, preview }) {
             <div
                 id="preview-container"
                 style={{
-                    width: '33vw',
+                    flex: '1 1 33vw',
+                    maxWidth: '500px',
+                    marginRight: 'auto',
                     minHeight: '550px',
                     position: 'sticky',
                     top: '0px',
-                    paddingTop: '24px',
-                    paddingRight: '24px',
+                    padding: '24px',
                 }}
             >
                 {preview}
