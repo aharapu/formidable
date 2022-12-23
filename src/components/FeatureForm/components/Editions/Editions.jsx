@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { v4 as createId } from 'uuid';
 
-import { featureRequireEdition } from '../../../../constants';
+import { featureRequireEdition, RED } from '../../../../constants';
 import { FormSwitchButton } from '../../../FormSwitchButton/FormSwitchButton';
 import { InputList } from '../../../InputList/InputList';
 import { getInputListAdder, getInputListDeleter, getInputListValueUpdater } from '../../../InputList/utils';
@@ -40,6 +40,7 @@ export function Editions() {
                 label={LABLES.editionToggle}
                 value={showEditions}
                 onChange={handleToggleEditions}
+                checkedColor={RED}
             />
             {showEditions && (
                 <InputList
