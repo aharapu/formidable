@@ -14,6 +14,7 @@ import {
 } from '@mui/icons-material';
 
 import { ORANGE } from '../../constants';
+import { focusInput } from '../../hooks/useFocus';
 
 export function InputList({
     title = 'Default Title',
@@ -173,11 +174,6 @@ function validateInput(value) {
     const trimmedValue = value.trim();
     if (!trimmedValue) return 'This field is required';
     return '';
-}
-
-function focusInput(id) {
-    const input = document.getElementById(id);
-    input.focus();
 }
 
 function focusLastInput(items) {

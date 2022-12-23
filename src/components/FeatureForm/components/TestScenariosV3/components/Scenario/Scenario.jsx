@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { useRecoilValue } from 'recoil';
 
 import { getScenarioAtom } from '../../../../../../recoil/scenarios';
+import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
+
 import { Input } from '../Input/Input';
 import { Name } from './components/Name';
-import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 
 export function Scenario({id : scenarioId}) {
     const scenario = useRecoilValue(getScenarioAtom(scenarioId));

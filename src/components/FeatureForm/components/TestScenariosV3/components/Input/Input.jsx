@@ -31,6 +31,7 @@ export function Input({id: inputId, scenarioId, sectionType, isFirst}) {
             }}
         >
             <TextField
+                id={inputId}
                 value={input.value}
                 onChange={(e) => handleChange(e.target.value)}
                 style={{
