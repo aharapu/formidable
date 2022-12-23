@@ -17,7 +17,7 @@ export function PreviewFooter() {
             <Button
                 variant="contained"
                 onClick={copyFeature}
-                style={{ backgroundColor: '#172F4D', width: '190px', height: '42px' }}
+                style={{ backgroundColor: '#172F4D', width: '220px', height: '42px' }}
             >
                     Copy to clipboard
             </Button>

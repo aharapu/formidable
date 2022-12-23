@@ -31,6 +31,7 @@ export const theme = createTheme({
                     fontStyle: 'medium',
                     fontSize: '15px',
                     lineHeight: '26px',
+                    letterSpacing: '0.46px',
                     //         textTransform: "none",
                 },
                 //       sizeSmall: {

@@ -4,21 +4,11 @@ import { FormControlLabel, Grid, Switch } from '@mui/material';
 import styled from '@emotion/styled';
 
 // TODO -> make highlight on focus a lot more visible
-/*
- '&:hover, &.Mui-focusVisible': {
-      boxShadow: `0px 0px 0px 8px red`,
-    },
-*/
-// COMPLETE CHAOS
 const StyledSwitch = styled(Switch)(({ checkedColor }) => {
     return {
         '& .MuiSwitch-switchBase': {
-            // margin: 1,
-            // padding: 0,
-            // transform: 'translateX(6px)',
             '&.Mui-checked': {
                 color: checkedColor,
-                // transform: 'translateX(22px)',
                 // },
                 // '& + .MuiSwitch-track': {
                 //     opacity: 1,

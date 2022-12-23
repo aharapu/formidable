@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil';
 import { v4 as createId } from 'uuid';
 
 import { featureRequireEdition, RED } from '../../../../constants';
+import { FormDelimiterLine } from '../../../form/FormDelimiterLine';
 import { FormSwitchButton } from '../../../FormSwitchButton/FormSwitchButton';
 import { InputList } from '../../../InputList/InputList';
 import { getInputListAdder, getInputListDeleter, getInputListValueUpdater } from '../../../InputList/utils';
@@ -42,16 +43,21 @@ export function Editions() {
                 onChange={handleToggleEditions}
                 checkedColor={RED}
             />
-            {showEditions && (
-                <InputList
-                    title={LABLES.editionInput}
-                    textFieldPlaceholder={PLACEHOLDERS.editionInput}
-                    items={editions}
-                    onAdd={addEdition}
-                    onChange={updateEdition}
-                    onDelete={deleteEdition}
-                />
-            )}
+            {
+                showEditions && (
+                    <>
+                        <InputList
+                            title={LABLES.editionInput}
+                            textFieldPlaceholder={PLACEHOLDERS.editionInput}
+                            items={editions}
+                            onAdd={addEdition}
+                            onChange={updateEdition}
+                            onDelete={deleteEdition}
+                        />
+                        <FormDelimiterLine />
+
+                    </>
+                )}
         </>
     );
 }
