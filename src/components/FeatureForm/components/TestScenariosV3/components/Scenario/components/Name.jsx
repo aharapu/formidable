@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
 
 import { DeleteForever } from '@mui/icons-material';
-import { Grid, IconButton, TextField } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 
 import { getInputAtom } from '../../../../../../../recoil/inputs';
 import { useScenarios } from '../../../../../../../recoil/scenarios';
 import { useFocus } from '../../../../../../../hooks/useFocus';
 import { SCENARIO_SECTION } from '../../../../../../../recoil/constants';
+import { FFTextField } from '../../../../../../mui-wrappers/FFTextField/FFTextField';
 
 
 // TODO -> rename to header?
@@ -40,7 +41,7 @@ export function Name({ scenarioId, nameInputId}) {
 
     return (
         <Grid item xs={12} display="flex" alignItems="center" marginTop={3}>
-            <TextField
+            <FFTextField
                 label="scenario name"
                 value={input.value}
                 fullWidth

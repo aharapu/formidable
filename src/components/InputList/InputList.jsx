@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
     Grid,
-    TextField,
     IconButton,
     Tooltip,
     Typography,
@@ -16,6 +15,7 @@ import {
 import { ORANGE } from '../../constants';
 import { focusInput } from '../../hooks/useFocus';
 import { usePrevious } from '../../hooks/usePrevious';
+import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
 
 export function InputList({
     title = 'Default Title',
@@ -101,7 +101,7 @@ export function InputList({
                         alignItems="start"
                         style={{ paddingTop: '12px' }}
                     >
-                        <TextField
+                        <FFTextField
                             id={id}
                             label={`${textFieldLabel} No. ${idx + 1}`}
                             placeholder={textFieldPlaceholder}
