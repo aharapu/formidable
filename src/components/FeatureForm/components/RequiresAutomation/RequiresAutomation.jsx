@@ -9,6 +9,7 @@ export function RequiresAutomation() {
     const [needsAutomation, setNeedsAutomation] = useRecoilState(featureRequireAutomationTest);
 
     const handleRequireAutoChange = (isRequired) => {
+        console.log('isRequired', isRequired);
         setNeedsAutomation(isRequired);
     };
     return (

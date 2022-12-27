@@ -1,1 +1,4 @@
 - move form components to src/components/form
+- focus scroll buttons and switches (see input wrapper FFTextField)
+- add a confirmation dialog when clicking copy to clipboard if there are input errors
+    and list those errors in the dialog

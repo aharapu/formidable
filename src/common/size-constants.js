@@ -1,4 +1,3 @@
-// TODO -> move to constants file
 export const PIXEL_SIZE = {
     tiny: 'tiny',
     small: 'small',

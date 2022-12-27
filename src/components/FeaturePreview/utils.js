@@ -1,6 +1,6 @@
 import { ClipboardContent } from '../../classes/ClipboardContent';
 
-import { LIGHT_GRAY, PURPLE, GREEN, BLUE, ORANGE, DARK_RED, RED, DARK_TEAL } from '../../constants';
+import { LIGHT_GRAY, PURPLE, GREEN, BLUE, ORANGE, DARK_RED, RED, DARK_TEAL, DARK_GREY } from '../../constants';
 
 export function updateClipboard({
     what,
@@ -56,12 +56,15 @@ export function updateClipboard({
         }).addTestScenarios(testingScenarios);
     }
 
-    if (requiresAutomation) {
-        cc.addHeading({
-            content: 'Requires Automation',
-            color: LIGHT_GRAY,
-        });
-    }
+    const automationContent =
+        'Requires Automation -> ' +
+        `<span style="color: ${requiresAutomation ? DARK_RED : DARK_GREY};">` +
+        `${requiresAutomation ? 'YES' : 'NO'}` +
+        '</span>';
+    cc.addHeading({
+        content: automationContent,
+        color: LIGHT_GRAY,
+    });
 
     const content = cc.getContent();
 
