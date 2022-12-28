@@ -1,4 +1,4 @@
-import { ClipboardContent } from '../../classes/ClipboardContent';
+import { HtmlContentBuilder } from '../../classes/HtmlContentBuilder';
 
 import { LIGHT_GRAY, PURPLE, GREEN, BLUE, ORANGE, DARK_RED, RED, DARK_TEAL, DARK_GREY } from '../../constants';
 
@@ -16,44 +16,49 @@ export function updateClipboard({
     const criteriaValues = getValues(criterias);
     const depValues = getValues(dependencies);
 
-    const cc = new ClipboardContent();
+    const contentBuilder = new HtmlContentBuilder();
 
-    cc.addHeading({ content: 'What:', color: LIGHT_GRAY })
+    contentBuilder
+        .addHeading({ content: 'What:', color: LIGHT_GRAY })
         .addParagraph({ content: what })
         .addHeading({ content: 'Acceptance Criteria:', color: PURPLE })
         .addList(criteriaValues);
 
     // TODO -> trim and capitalize?
     if (techGuidance) {
-        cc.addHeading({
-            content: 'Technical Guidance:',
-            color: GREEN,
-        }).addParagraph({
-            content: techGuidance,
-        });
+        contentBuilder
+            .addHeading({
+                content: 'Technical Guidance:',
+                color: GREEN,
+            })
+            .addParagraph({
+                content: techGuidance,
+            });
     }
 
     if (dependencies.length > 0) {
-        cc.addHeading({ content: 'Dependencies:', color: BLUE }).addList(depValues);
+        contentBuilder.addHeading({ content: 'Dependencies:', color: BLUE }).addList(depValues);
     }
 
     if (featureFlag) {
-        cc.addHeading({ content: 'Feature Flag:', color: ORANGE }).addParagraph({
+        contentBuilder.addHeading({ content: 'Feature Flag:', color: ORANGE }).addParagraph({
             content: featureFlag,
         });
     }
 
-    cc.addHeading({ content: 'Impacted Projects:', color: DARK_RED }).addList(impactedProjects);
+    contentBuilder.addHeading({ content: 'Impacted Projects:', color: DARK_RED }).addList(impactedProjects);
 
     if (requiredEditions.length > 0) {
-        cc.addHeading({ content: 'Required Editions:', color: RED }).addList(requiredEditions);
+        contentBuilder.addHeading({ content: 'Required Editions:', color: RED }).addList(requiredEditions);
     }
 
     if (testingScenarios.length > 0) {
-        cc.addHeading({
-            content: 'Testing Scenarios:',
-            color: DARK_TEAL,
-        }).addTestScenarios(testingScenarios);
+        contentBuilder
+            .addHeading({
+                content: 'Testing Scenarios:',
+                color: DARK_TEAL,
+            })
+            .addTestScenarios(testingScenarios);
     }
 
     const automationContent =
@@ -61,12 +66,12 @@ export function updateClipboard({
         `<span style="color: ${requiresAutomation ? DARK_RED : DARK_GREY};">` +
         `${requiresAutomation ? 'YES' : 'NO'}` +
         '</span>';
-    cc.addHeading({
+    contentBuilder.addHeading({
         content: automationContent,
         color: LIGHT_GRAY,
     });
 
-    const content = cc.getContent();
+    const content = contentBuilder.getContent();
 
     console.log('content', content);
 
