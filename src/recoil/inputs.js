@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
 import { v4 as createId } from 'uuid';
 import { KEYS } from './constants';
+import { createInput } from './utils';
 
 export const inputAtoms = {};
 
@@ -13,7 +14,7 @@ export const addInput = () => {
 
     inputAtoms[id] = atom({
         key: KEYS.input.atom.prefix + id,
-        default: { id: createId(), value: '', error: '' },
+        default: createInput(),
     });
 
     return id;

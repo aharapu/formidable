@@ -26,7 +26,6 @@ export function InputListCriteria() {
             textFieldPlaceholder={randomStringGenerator.getAcceptanceCriteriaPlaceholder()}
             onInputBlur={updateCriteriaError}
             items={ACs}
-            // TODO -> if this is a function, it will auto switch to new random placeholder
             onAdd={addCriteria}
             onChange={updateCriteriaValue}
             onDelete={deleteCriteria}
