@@ -27,12 +27,6 @@ export const HOME_PAGE = 'HOME_PAGE';
 export const FEATURE_PAGE = 'FEATURE_PAGE';
 export const BUG_PAGE = 'BUG_PAGE';
 
-// Validation state
-export const formValidationErrors = atom({
-    key: 'formValidationErrors',
-    default: [],
-});
-
 // Navigation state
 export const currentPage = atom({
     key: 'currentPage', // unique ID (with respect to other atoms/selectors)

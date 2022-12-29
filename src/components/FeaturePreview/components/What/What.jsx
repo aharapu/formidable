@@ -9,14 +9,14 @@ import { PreviewText } from '../PreviewText/PreviewText';
 export function What() {
     const what = useRecoilValue(whatAtom);
 
-    if (!what) {
+    if (!what.value) {
         return null;
     }
 
     return (
         <PreviewText
             title="WHAT"
-            content={what}
+            content={what.value}
             titleColor={LIGHT_GRAY}
         />
     );

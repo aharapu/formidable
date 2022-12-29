@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
-import { formValidationErrors } from '../../../../constants';
 import { whatAtom } from '../../../../recoil/what-atom';
 import { FormTextField } from '../../../FormTextField/FormTextField';
 
@@ -9,27 +8,16 @@ import { validateWhat } from '../../utils';
 
 export function InputWhat() {
     const [what, setWhat] = useRecoilState(whatAtom);
-    const [whatErr, setWhatErr] = useState(null);
-
-    // TODO -> use a selector? do I even need the value of this? perhaps the setter is sufficient
-    // Use an Input like object, with an error value?
-    const [validErr, setValidErr] = useRecoilState(formValidationErrors);
 
     const handleWhatChange = (e) => {
-        setWhat(e.target.value);
-        if (whatErr) {
-            setWhatErr(null);
-            setValidErr((prev) => prev.filter((err) => err !== 'feature-what'));
-        }
+        setWhat(prev => ({ ...prev, value: e.target.value, error: '' }));
+
     };
 
     const handleWhatBlur = () => {
-        const err = validateWhat(what);
+        const err = validateWhat(what.value);
         if (err) {
-            setWhatErr(err);
-            if (!validErr.includes('feature-what')) {
-                setValidErr((prev) => [...prev, 'feature-what']);
-            }
+            setWhat(prev => ({ ...prev, error: err }));
         }
     };
 
@@ -38,11 +26,11 @@ export function InputWhat() {
             label={LABLES.what}
             placeholder={PLACEHOLDERS.what}
             multiline
-            value={what}
+            value={what.value}
             onChange={handleWhatChange}
             onBlur={handleWhatBlur}
-            error={Boolean(whatErr)}
-            helperText={whatErr}
+            error={Boolean(what.error)}
+            helperText={what.error}
         />
     );
 }
