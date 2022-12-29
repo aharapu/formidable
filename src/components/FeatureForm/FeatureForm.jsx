@@ -9,7 +9,7 @@ import { Dependencies } from './components/Dependencies/Dependencies';
 import { FeatureFlag } from './components/FeatureFlag/FeatureFlag';
 import { ImpactedProjects } from './components/ImpactedProjects/ImpactedProjects';
 import { Editions } from './components/Editions/Editions';
-import { TestScenarios } from './components/TestScenariosV3/TestScenarios';
+import { TestScenarios } from './components/TestScenarios/TestScenarios';
 import { RequiresAutomation } from './components/RequiresAutomation/RequiresAutomation';
 import { LIGHT_GRAY } from '../../constants';
 

@@ -6,7 +6,7 @@ import { getScenarioAtom } from '../../../../../../recoil/scenarios';
 import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 
 import { TestStep } from '../TestStep/TestStep';
-import { Name } from './components/Name';
+import { Header } from './components/Header';
 import { usePrevious } from '../../../../../../hooks/usePrevious';
 import { focusInput } from '../../../../../../hooks/useFocus';
 
@@ -44,7 +44,7 @@ export function Scenario({id : scenarioId}) {
 
     return (
         <>
-            <Name
+            <Header
                 scenarioId={scenarioId}
                 nameInputId={scenario.nameInputId}
             />

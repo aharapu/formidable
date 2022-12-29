@@ -14,7 +14,7 @@ import { FFTextField } from '../../../../../../mui-wrappers/FFTextField/FFTextFi
 
 
 // TODO -> rename to header?
-export function Name({ scenarioId, nameInputId}) {
+export function Header({ scenarioId, nameInputId}) {
     const [input, setInput] = useRecoilState(getInputAtom(nameInputId));
 
     const { removeScenario } = useScenarios();
@@ -56,7 +56,7 @@ export function Name({ scenarioId, nameInputId}) {
     );
 }
 
-Name.propTypes = {
+Header.propTypes = {
     scenarioId: PropTypes.string.isRequired,
     nameInputId: PropTypes.string.isRequired,
 };
