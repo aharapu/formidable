@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { testScenariosAtom, useScenarios } from '../../../../recoil/scenarios';
 import { Scenario } from './components/Scenario/Scenario';
 
-export function TestScenariosV3() {
+export function TestScenarios() {
     const { addScenario } = useScenarios();
     const testScenarios = useRecoilValue(testScenariosAtom);
 

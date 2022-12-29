@@ -9,7 +9,7 @@ import { Dependencies } from './components/Dependencies/Dependencies';
 import { FeatureFlag } from './components/FeatureFlag/FeatureFlag';
 import { ImpactedProjects } from './components/ImpactedProjects/ImpactedProjects';
 import { Editions } from './components/Editions/Editions';
-import { TestScenariosV3 } from './components/TestScenariosV3/TestScenariosV3';
+import { TestScenarios } from './components/TestScenariosV3/TestScenarios';
 import { RequiresAutomation } from './components/RequiresAutomation/RequiresAutomation';
 import { LIGHT_GRAY } from '../../constants';
 
@@ -49,7 +49,7 @@ export default function FeatureForm() {
                 <ImpactedProjects />
                 <FormDelimiterLine />
                 <Editions />
-                <TestScenariosV3 />
+                <TestScenarios />
                 <FormDelimiterLine />
                 <RequiresAutomation />
             </Grid>
