@@ -12,14 +12,6 @@ ul {
   margin: 0;
 }
 
-.preview-list {
-  list-style-type: disc;
-}
-
-.preview-list ::marker {
-  font-size: 10px;
-}
-
 /* source-sans-pro-200 - latin */
 @font-face {
   font-family: "Source Sans Pro";

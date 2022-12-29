@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { v4 as createId } from 'uuid';
 
-export const DARK_GREY = '#172F4D';
+export const DARK_GREY = '#172B4D';
 export const DARK_BLUE = '#0747A6';
 export const DARK_TEAL = '#008DA6';
 export const DARK_GREEN = '#006644';

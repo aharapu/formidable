@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { Typography } from '@mui/material';
+
 import { DARK_GREY } from '../../../../constants';
+
+import './PreviewList.css';
 
 export function PreviewList({ title = '', items, titleColor = DARK_GREY}) {
     const showTitle = Boolean(title.trim());
@@ -17,7 +21,11 @@ export function PreviewList({ title = '', items, titleColor = DARK_GREY}) {
                 {title}
             </Typography>}
             <ul
-                className="preview-list" // TODO -> use mui styles
+                className='preview-list'
+                style={{
+                    listStyleType: 'disc',
+                    paddingLeft: '20px',
+                }}
             >
                 {nonEmptyItems.map((item) => (
                     <li key={item.id}>

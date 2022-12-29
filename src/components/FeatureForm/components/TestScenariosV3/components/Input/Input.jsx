@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
 import { getInputAtom } from '../../../../../../recoil/inputs';
-import { Grid, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Grid, IconButton, InputAdornment } from '@mui/material';
 import { capitalizeFirstLetter } from '../../../../../../utils/string-utils';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import { useScenarios } from '../../../../../../recoil/scenarios';
 import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 import { focusInput } from '../../../../../../hooks/useFocus';
+import { FFTextField } from '../../../../../mui-wrappers/FFTextField/FFTextField';
 
 // TODO -> rename to TestStep?
 export function Input({id: inputId, scenarioId, sectionType, index, sectionItems }) {
@@ -48,7 +49,7 @@ export function Input({id: inputId, scenarioId, sectionType, index, sectionItems
                 alignItems: 'center',
             }}
         >
-            <TextField
+            <FFTextField
                 id={inputId}
                 value={input.value}
                 onChange={(e) => handleChange(e.target.value)}

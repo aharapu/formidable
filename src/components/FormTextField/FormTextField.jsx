@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
-import { Grid, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
+
 import { getPixelsFromSize } from '../../common/size-utils';
 import { PIXEL_SIZE, PIXEL_SIZES } from '../../common/size-constants';
+
+import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
 
 export function FormTextField({
     label,
@@ -18,7 +21,7 @@ export function FormTextField({
 
     return (
         <Grid item xs={12} style={{ paddingTop }}>
-            <TextField
+            <FFTextField
                 label={label}
                 placeholder={placeholder}
                 value={value}

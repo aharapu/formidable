@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
+import { randomStringGenerator } from '../../../../classes/RandomStringGenerator';
 import { featureACs } from '../../../../constants';
 import { InputList } from '../../../InputList/InputList';
 import {
@@ -8,7 +9,7 @@ import {
     getInputListErrorUpdater,
     getInputListValueUpdater,
 } from '../../../InputList/utils';
-import { LABLES, PLACEHOLDERS } from '../../featureFormConstants';
+import { LABLES } from '../../featureFormConstants';
 
 export function InputListCriteria() {
     const [ACs, setACs] = useRecoilState(featureACs);
@@ -22,11 +23,9 @@ export function InputListCriteria() {
         <InputList
             title={LABLES.acceptanceCriteriaTitle}
             textFieldLabel={LABLES.acceptCritInput}
-            textFieldPlaceholder={PLACEHOLDERS.acceptCritInput}
-            textFieldOnBlur={updateCriteriaError} // TODO -> rename prop to onBlur
+            textFieldPlaceholder={randomStringGenerator.getAcceptanceCriteriaPlaceholder()}
+            onInputBlur={updateCriteriaError}
             items={ACs}
-            // TODO -> use an array and provide pseudorandom placeholders
-            // TODO -> if this is a function, it will auto switch to new random placeholder
             onAdd={addCriteria}
             onChange={updateCriteriaValue}
             onDelete={deleteCriteria}

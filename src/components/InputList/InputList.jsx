@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
     Grid,
-    TextField,
     IconButton,
     Tooltip,
     Typography,
@@ -16,12 +15,13 @@ import {
 import { ORANGE } from '../../constants';
 import { focusInput } from '../../hooks/useFocus';
 import { usePrevious } from '../../hooks/usePrevious';
+import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
 
 export function InputList({
     title = 'Default Title',
     textFieldLabel = 'Default Input Label',
     textFieldPlaceholder = 'Default Input Placeholder',
-    textFieldOnBlur = (/* id, errorMessage */) => {},
+    onInputBlur = (/* id, errorMessage */) => {},
     onAdd: handleAdd = () => {},
     onChange: handleTextFieldChange = (/* id, string */) => {},
     onDelete: handleDelete = (/* id */) => {},
@@ -74,7 +74,7 @@ export function InputList({
     const handleTextFieldBlur = (id) => {
         const value = items.find((item) => item.id === id).value;
         const errorMessage = validateInput(value);
-        textFieldOnBlur(id, errorMessage);
+        onInputBlur(id, errorMessage);
     };
 
 
@@ -101,7 +101,7 @@ export function InputList({
                         alignItems="start"
                         style={{ paddingTop: '12px' }}
                     >
-                        <TextField
+                        <FFTextField
                             id={id}
                             label={`${textFieldLabel} No. ${idx + 1}`}
                             placeholder={textFieldPlaceholder}
@@ -159,7 +159,7 @@ InputList.propTypes = {
     title: PropTypes.string,
     textFieldLabel: PropTypes.string,
     textFieldPlaceholder: PropTypes.string,
-    textFieldOnBlur: PropTypes.func,
+    onInputBlur: PropTypes.func,
     onAdd: PropTypes.func,
     onChange: PropTypes.func,
     onDelete: PropTypes.func,

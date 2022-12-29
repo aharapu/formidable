@@ -12,6 +12,7 @@ export function InputWhat() {
     const [whatErr, setWhatErr] = useState(null);
 
     // TODO -> use a selector? do I even need the value of this? perhaps the setter is sufficient
+    // Use an Input like object, with an error value?
     const [validErr, setValidErr] = useRecoilState(formValidationErrors);
 
     const handleWhatChange = (e) => {
