@@ -21,7 +21,6 @@ export function Header({ scenarioId, nameInputId}) {
     const { removeScenario } = useScenarios();
     const { focusScenarioInput } = useFocus();
 
-    // TODO -> add some blur validation?
     const handleInputChange = (e) => {
         setInput((prevInput) => ({
             ...prevInput,
@@ -52,6 +51,7 @@ export function Header({ scenarioId, nameInputId}) {
     return (
         <Grid item xs={12} display="flex" alignItems="center" marginTop={3}>
             <FFTextField
+                id={nameInputId}
                 label="scenario name"
                 placeholder={randomStringGenerator.getScenarioNamePlaceholder()}
                 value={input.value}

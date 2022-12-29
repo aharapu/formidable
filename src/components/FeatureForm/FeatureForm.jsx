@@ -18,8 +18,6 @@ import { LIGHT_GRAY } from '../../constants';
 // TODO -> when on an input list and pressing enter on an input different than the last one
 //         should focus on the next input
 
-// TODO -> multiple inputs on the screen trigger numerous rerenders
-//         perhaps use formik to manage state?
 export default function FeatureForm() {
     // TODO -> when focused element is close to screen edge, scroll into view
     // TODO -> when last input is focused and empty, and ESC is pressed

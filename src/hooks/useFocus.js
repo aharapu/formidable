@@ -2,6 +2,16 @@ import { useRecoilCallback } from 'recoil';
 import { getScenarioAtom } from '../recoil/scenarios';
 
 export function useFocus() {
+    const focusScenarioName = useRecoilCallback(
+        ({ snapshot }) =>
+            (scenarioId) => {
+                const scenario = snapshot.getLoadable(getScenarioAtom(scenarioId)).contents;
+                console.log('scenario.nameInputId', scenario.nameInputId);
+                focusInput(scenario.nameInputId);
+            },
+        [],
+    );
+
     const focusScenarioInput = useRecoilCallback(
         ({ snapshot }) =>
             ({ scenarioId, sectionType, index }) => {
@@ -15,10 +25,17 @@ export function useFocus() {
 
     return {
         focusScenarioInput,
+        focusScenarioName,
     };
 }
 
 export function focusInput(id) {
     const input = document.getElementById(id);
+
+    if (!input) {
+        console.warn('Input not found', id);
+        return;
+    }
+
     input.focus();
 }
