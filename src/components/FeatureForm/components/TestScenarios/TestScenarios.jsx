@@ -18,8 +18,6 @@ export function TestScenarios() {
         }
 
         if (prevNumOfScenarios < testScenarios.length) {
-            console.log('focus on scenario name');
-            console.log('testScenarios', testScenarios);
             focusScenarioName(testScenarios[testScenarios.length - 1]);
         }
     }, [testScenarios.length, prevNumOfScenarios, focusScenarioName, testScenarios]);

@@ -1,17 +1,14 @@
 import { Grid, Paper, Typography } from '@mui/material';
 
+import { LIGHT_GRAY } from '../../constants';
+
 import { FormDelimiterLine } from '../form/FormDelimiterLine';
 
-import { InputWhat } from './components/InputWhat/InputWhat';
-import { InputListCriteria } from './components/InputListCriteria/InputListCriteria';
-import { TechnicalGuidance } from './components/TechnicalGuidance/TechnicalGuidance';
-import { Dependencies } from './components/Dependencies/Dependencies';
-import { FeatureFlag } from './components/FeatureFlag/FeatureFlag';
-import { ImpactedProjects } from './components/ImpactedProjects/ImpactedProjects';
-import { Editions } from './components/Editions/Editions';
-import { TestScenarios } from './components/TestScenarios/TestScenarios';
-import { RequiresAutomation } from './components/RequiresAutomation/RequiresAutomation';
-import { LIGHT_GRAY } from '../../constants';
+import {
+    Dependencies, Editions, FeatureFlag,
+    ImpactedProjects, InputListCriteria, InputWhat,
+    RequiresAutomation, TechnicalGuidance, TestScenarios,
+} from './components';
 
 // TODO -> when typing while focused on an icon, switch focus to an input and append the key pressed
 // TODO -> pressing delete should move focuse to somewhere relevant
