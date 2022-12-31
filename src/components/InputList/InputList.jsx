@@ -32,12 +32,14 @@ export function InputList({
 
     const handleTextFieldKeyDown = (e, idx) => {
         const isLastItem = idx === items.length - 1;
+        const isEmpty = items[idx].value.trim() === '';
+        const isAlone = items.length === 1;
 
         if (isEnterKey(e.key) && isLastItem) {
             handleAdd();
         } else if (isEnterKey(e.key) && !isLastItem) {
             focusInput(items[idx + 1].id);
-        } else if (isEscapeKey(e.key) && isLastItem && items[idx].value.trim() === '' && items.length > 1) {
+        } else if (isEscapeKey(e.key) && isLastItem && isEmpty && !isAlone) {
             handleTextFieldDelete(items[idx].id, idx);
         }
     };
