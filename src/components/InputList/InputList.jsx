@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import {
     Grid,
     IconButton,
-    Tooltip,
+    // Tooltip,
     Typography,
 } from '@mui/material';
 import {
-    ClearRounded,
+    // ClearRounded,
     AddCircle,
 } from '@mui/icons-material';
 
@@ -16,6 +16,7 @@ import { ORANGE } from '../../constants';
 import { focusInput } from '../../hooks/useFocus';
 import { usePrevious } from '../../hooks/usePrevious';
 import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
+import { DeleteButton } from '../DeleteButton/DeleteButton';
 
 export function InputList({
     title = 'Default Title',
@@ -77,7 +78,14 @@ export function InputList({
         onInputBlur(id, errorMessage);
     };
 
-
+    const handleDeleteBtnKeyDown = (e, id, idx) => {
+        console.log('handleDeleteBtnKeyDown');
+        if (isCharacterKey(e.key)) {
+            focusInput(id);
+        } else if (isEnterKey(e.key)) {
+            handleTextFieldDelete(id, idx);
+        }
+    };
 
     return (
         <>
@@ -114,21 +122,12 @@ export function InputList({
                             onBlur={() => handleTextFieldBlur(id)}
                             size="small"
                         />
-                        <Tooltip
-                            placement='right'
-                            arrow
-                            title={items.length === 1 ? 'Must have at least one item' : 'Delete'}
-                        >
-                            <span
-                                // span is required for tooltip to work when IconButton is disabled
-                            >
-                                <IconButton onClick={() => handleTextFieldDelete(id, idx)}
-                                    disabled={items.length === 1}
-                                >
-                                    <ClearRounded style={{ width: '18.25px', height: '18.25px' }} />
-                                </IconButton>
-                            </span>
-                        </Tooltip>
+                        <DeleteButton
+                            tooltipTitle={items.length === 1 ? 'Must have at least one item' : 'Delete'}
+                            disabled={items.length === 1}
+                            onClick={() => handleTextFieldDelete(id, idx)}
+                            onKeyDown={(e) => handleDeleteBtnKeyDown(e, id, idx)}
+                        />
                     </Grid>
                 </React.Fragment>
             ))}
@@ -189,4 +188,12 @@ function isLastItemErrored (items = []) {
 
     const lastItem = items[items.length - 1];
     return Boolean(lastItem.error);
+}
+
+function isCharacterKey(key) {
+    return key.length === 1;
+}
+
+function isEnterKey(key) {
+    return key === 'Enter';
 }
