@@ -37,5 +37,7 @@ export function focusInput(id) {
         return;
     }
 
+    const end = input.value.length;
+    input.setSelectionRange(end, end);
     input.focus();
 }
