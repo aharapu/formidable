@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import {
     Grid,
     IconButton,
-    // Tooltip,
     Typography,
 } from '@mui/material';
 import {
-    // ClearRounded,
     AddCircle,
 } from '@mui/icons-material';
 
@@ -17,6 +15,7 @@ import { focusInput } from '../../hooks/useFocus';
 import { usePrevious } from '../../hooks/usePrevious';
 import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
 import { DeleteButton } from '../DeleteButton/DeleteButton';
+import { isCharacterKey, isEnterKey, isEscapeKey } from '../../utils/keyboard-utils';
 
 export function InputList({
     title = 'Default Title',
@@ -31,12 +30,15 @@ export function InputList({
     const prevItems = usePrevious(items);
     const lastDeletedIndex = useRef(null);
 
-    const handleKeyDown = (e, idx) => {
-        if (e.keyCode !== 13) return;
-        if (idx === items.length - 1) {
+    const handleTextFieldKeyDown = (e, idx) => {
+        const isLastItem = idx === items.length - 1;
+
+        if (isEnterKey(e.key) && isLastItem) {
             handleAdd();
-        } else {
+        } else if (isEnterKey(e.key) && !isLastItem) {
             focusInput(items[idx + 1].id);
+        } else if (isEscapeKey(e.key) && isLastItem && items[idx].value.trim() === '' && items.length > 1) {
+            handleTextFieldDelete(items[idx].id, idx);
         }
     };
 
@@ -116,7 +118,7 @@ export function InputList({
                             fullWidth
                             value={value}
                             onChange={(e) => handleTextFieldChange(id, e.target.value)}
-                            onKeyDown={(e) => handleKeyDown(e, idx)}
+                            onKeyDown={(e) => handleTextFieldKeyDown(e, idx)}
                             error={Boolean(error)}
                             helperText={error}
                             onBlur={() => handleTextFieldBlur(id)}
@@ -188,12 +190,4 @@ function isLastItemErrored (items = []) {
 
     const lastItem = items[items.length - 1];
     return Boolean(lastItem.error);
-}
-
-function isCharacterKey(key) {
-    return key.length === 1;
-}
-
-function isEnterKey(key) {
-    return key === 'Enter';
 }
