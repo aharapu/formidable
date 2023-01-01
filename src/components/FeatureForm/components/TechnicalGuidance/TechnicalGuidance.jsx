@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
-import { FORM_SECTION, randomStringGenerator } from '../../../../classes/RandomStringGenerator';
+import { RANDOM_STRING_KEY, randomStringGenerator } from '../../../../classes/RandomStringGenerator';
 import { featureTechGuide } from '../../../../constants';
 import { FormTextField } from '../../../FormTextField/FormTextField';
 import { LABLES } from '../../featureFormConstants';
@@ -8,7 +8,7 @@ import { LABLES } from '../../featureFormConstants';
 export function TechnicalGuidance() {
     const [techGuide, setTechGuide] = useRecoilState(featureTechGuide);
 
-    const placeholder = useMemo(() => randomStringGenerator.getPlaceholder(FORM_SECTION.technicalGuidance), []);
+    const placeholder = useMemo(() => randomStringGenerator.getPlaceholder(RANDOM_STRING_KEY.technicalGuidance), []);
 
     return (
         <FormTextField

@@ -1,41 +1,43 @@
 import { getRandomIndex } from './utils';
 
-const ACCEPTANCE_CRITERIA = {
-    placeholders: [
-        'UI displays new shiny button',
-        'Shiny button displays "Click me!"',
-        'Save button is diabled while saving',
-        'User without permission cannot see the button',
-    ],
-};
-
-const SCENARIO_NAME = {
-    placeholders: [
-        'Verify that user can login',
-        'Verify that user can logout',
-        'Verify that user can register',
-        'Verify that user can reset password',
-    ],
-    errors: [
-        'I think you can do better than that!',
-        'Scenario name is required, yo!',
-        'Don\'t forget to name your scenario!',
-    ],
-};
-
-const SHORT_INPUT_ERRORS = [
-    'Input is too short!',
-    'Input is too short, yo!',
-    'Input is too short, bro!',
-    'Input is too short, dude!',
-];
-
-export const FORM_SECTION = {
+export const RANDOM_STRING_KEY = {
+    acceptanceCriteria: 'Acceptance Criteria',
+    scenarioName: 'Scenario Name',
+    shortInput: 'Short Input',
     technicalGuidance: 'Technical Guidance',
 };
 
-const STRINGS = {
-    [FORM_SECTION.technicalGuidance]: {
+const RANDOM_STRINGS = {
+    [RANDOM_STRING_KEY.acceptanceCriteria]: {
+        placeholders: [
+            'UI displays new shiny button',
+            'Shiny button displays "Click me!"',
+            'Save button is diabled while saving',
+            'User without permission cannot see the button',
+        ],
+    },
+    [RANDOM_STRING_KEY.scenarioName]: {
+        placeholders: [
+            'Verify that user can login',
+            'Verify that user can logout',
+            'Verify that user can register',
+            'Verify that user can reset password',
+        ],
+        errors: [
+            'I think you can do better than that!',
+            'Scenario name is required, yo!',
+            'Don\'t forget to name your scenario!',
+        ],
+    },
+    [RANDOM_STRING_KEY.shortInput]: {
+        errors: [
+            'Input is too short!',
+            'Input is too short, yo!',
+            'Input is too short, bro!',
+            'Input is too short, dude!',
+        ],
+    },
+    [RANDOM_STRING_KEY.technicalGuidance]: {
         placeholders: [
             'There is an existing backend endpoint that can be updated to provide what we need.',
             'Make sure the the database migrations are promoted to all environments.',
@@ -46,35 +48,36 @@ const STRINGS = {
 
 class RandomStringGenerator {
     getShortInputError(charCount) {
-        const randomIndex = getRandomIndex(SHORT_INPUT_ERRORS.length);
-        return `${charCount} characters? ` + SHORT_INPUT_ERRORS[randomIndex];
-    }
+        const prefix = `${charCount} character${charCount > 1 ? 's' : ''}? `;
 
-    getAcceptanceCriteriaPlaceholder() {
-        const randomIndex = getRandomIndex(ACCEPTANCE_CRITERIA.placeholders.length);
-        return ACCEPTANCE_CRITERIA.placeholders[randomIndex];
-    }
-
-    getScenarioNamePlaceholder() {
-        const randomIndex = getRandomIndex(SCENARIO_NAME.placeholders.length);
-        return SCENARIO_NAME.placeholders[randomIndex];
-    }
-
-    getScenarionNameError() {
-        const randomIndex = getRandomIndex(SCENARIO_NAME.errors.length);
-        return SCENARIO_NAME.errors[randomIndex];
+        return prefix + this.getError(RANDOM_STRING_KEY.shortInput);
     }
 
     getPlaceholder(key) {
-        if (!STRINGS[key]) {
+        if (!RANDOM_STRINGS[key]) {
             throw new Error(`Key not found: ${key}`);
         }
 
-        if (!STRINGS[key].placeholders) {
+        if (!RANDOM_STRINGS[key].placeholders) {
             throw new Error(`No placeholder found for key: ${key}`);
         }
 
-        const options = STRINGS[key].placeholders;
+        const options = RANDOM_STRINGS[key].placeholders;
+
+        const randomIndex = getRandomIndex(options.length);
+        return options[randomIndex];
+    }
+
+    getError(key) {
+        if (!RANDOM_STRINGS[key]) {
+            throw new Error(`Key not found: ${key}`);
+        }
+
+        if (!RANDOM_STRINGS[key].errors) {
+            throw new Error(`No error found for key: ${key}`);
+        }
+
+        const options = RANDOM_STRINGS[key].errors;
 
         const randomIndex = getRandomIndex(options.length);
         return options[randomIndex];

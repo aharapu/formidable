@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
 
@@ -12,7 +12,7 @@ import { useFocus } from '../../../../../../../hooks/useFocus';
 import { SCENARIO_SECTION } from '../../../../../../../recoil/constants';
 import { FFTextField } from '../../../../../../mui-wrappers/FFTextField/FFTextField';
 import { validateScenarioName } from './utils';
-import { randomStringGenerator } from '../../../../../../../classes/RandomStringGenerator';
+import { randomStringGenerator, RANDOM_STRING_KEY } from '../../../../../../../classes/RandomStringGenerator';
 
 
 export function Header({ scenarioId, nameInputId}) {
@@ -20,6 +20,8 @@ export function Header({ scenarioId, nameInputId}) {
 
     const { removeScenario } = useScenarios();
     const { focusScenarioInput } = useFocus();
+
+    const placeholder = useMemo(() => randomStringGenerator.getPlaceholder(RANDOM_STRING_KEY.scenarioName), []);
 
     const handleInputChange = (e) => {
         setInput((prevInput) => ({
@@ -53,7 +55,7 @@ export function Header({ scenarioId, nameInputId}) {
             <FFTextField
                 id={nameInputId}
                 label="scenario name"
-                placeholder={randomStringGenerator.getScenarioNamePlaceholder()}
+                placeholder={placeholder}
                 value={input.value}
                 fullWidth
                 onChange={handleInputChange}
