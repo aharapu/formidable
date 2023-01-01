@@ -17,14 +17,18 @@ export function TestScenarios() {
             >
                 TESTING SCENARIOS
             </Typography>
-            {testScenarios.map((scenario) => (
+            {testScenarios.map((scenario, scenarioIdx) => (
                 <React.Fragment key={scenario.id}>
-                    <Typography>{scenario.name.value}</Typography>
+                    <Typography
+                        sx={{ fontWeight: 600, fontSize: '14px', marginBottom: '2px', marginTop: '4px' }}
+                    >
+                        {`Scenario no. ${scenarioIdx + 1}: ${scenario.name.value}`}
+                    </Typography>
                     {SCENARIO_SECTIONS.map((section) => (
                         <React.Fragment key={section}>
                             {scenario[section].map((step, idx) => (
                                 <ul key={step.id} className="preview-list">
-                                    <li>
+                                    <li style={{ paddingLeft: idx === 0 ? '0px' : '16px' }} >
                                         <Typography>
                                             <strong>
                                                 {idx === 0 ? capitalizeFirstLetter(section) + ' ' : 'And '}

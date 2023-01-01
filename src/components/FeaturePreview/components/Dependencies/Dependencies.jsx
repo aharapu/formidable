@@ -7,7 +7,7 @@ export function Dependencies() {
     const dependencies = useRecoilValue(featureDeps);
 
     return <PreviewList
-        title="DEPENDENCIES"
+        title={dependencies.length > 1 ? 'DEPENDENCIES' : 'DEPENDENCY' }
         titleColor={BLUE}
         items={dependencies}
     />;

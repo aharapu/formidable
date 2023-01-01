@@ -12,12 +12,6 @@ import { ImpactedProjects } from './components/ImpactedProjects/ImpactedProjects
 import { RequiredEditions } from './components/RequiredEditions/RequiredEditions';
 import { RequiresAutomation } from '../RequiresAutomation/RequiresAutomation';
 
-// TODO -> add plural only when applicable
-// TODO -> idea
-// 1. make Given, When, Then and And in italics in stead of bold
-// 2. make scenario name bold
-// 3. indent the And steps
-
 export default function FeaturePreview() {
 
     // TODO -> have a show as html option
