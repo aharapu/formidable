@@ -30,6 +30,20 @@ const SHORT_INPUT_ERRORS = [
     'Input is too short, dude!',
 ];
 
+export const FORM_SECTION = {
+    technicalGuidance: 'Technical Guidance',
+};
+
+const STRINGS = {
+    [FORM_SECTION.technicalGuidance]: {
+        placeholders: [
+            'There is an existing backend endpoint that can be updated to provide what we need.',
+            'Make sure the the database migrations are promoted to all environments.',
+            'The UI is already built, so we just need to update the API to return the new data.',
+        ],
+    },
+};
+
 class RandomStringGenerator {
     getShortInputError(charCount) {
         const randomIndex = getRandomIndex(SHORT_INPUT_ERRORS.length);
@@ -49,6 +63,21 @@ class RandomStringGenerator {
     getScenarionNameError() {
         const randomIndex = getRandomIndex(SCENARIO_NAME.errors.length);
         return SCENARIO_NAME.errors[randomIndex];
+    }
+
+    getPlaceholder(key) {
+        if (!STRINGS[key]) {
+            throw new Error(`Key not found: ${key}`);
+        }
+
+        if (!STRINGS[key].placeholders) {
+            throw new Error(`No placeholder found for key: ${key}`);
+        }
+
+        const options = STRINGS[key].placeholders;
+
+        const randomIndex = getRandomIndex(options.length);
+        return options[randomIndex];
     }
 }
 
