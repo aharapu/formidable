@@ -32,7 +32,7 @@ export const theme = createTheme({
                     fontSize: '15px',
                     lineHeight: '26px',
                     letterSpacing: '0.46px',
-                    //         textTransform: "none",
+                    textTransform: 'none',
                 },
                 //       sizeSmall: {
                 //         padding: "6px 16px",
