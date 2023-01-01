@@ -6,7 +6,6 @@ export function useFocus() {
         ({ snapshot }) =>
             (scenarioId) => {
                 const scenario = snapshot.getLoadable(getScenarioAtom(scenarioId)).contents;
-                console.log('scenario.nameInputId', scenario.nameInputId);
                 focusInput(scenario.nameInputId);
             },
         [],
