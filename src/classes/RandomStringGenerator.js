@@ -14,6 +14,8 @@ export const RANDOM_STRING_TYPE = {
     placeholder: 'placeholder',
 };
 
+const VALID_RANDOM_STRING_TYPES = Object.values(RANDOM_STRING_TYPE);
+
 const RANDOM_STRINGS = {
     [RANDOM_STRING_KEY.acceptanceCriteria]: {
         [RANDOM_STRING_TYPE.placeholder]: [
@@ -63,37 +65,20 @@ class RandomStringGenerator {
         return prefix + this.getError(RANDOM_STRING_KEY.shortInput);
     }
 
-    getPlaceholder(key) {
-        if (!RANDOM_STRINGS[key]) {
-            throw new Error(`Key not found: ${key}`);
-        }
-
-        if (!RANDOM_STRINGS[key].placeholder) {
-            throw new Error(`No placeholder found for key: ${key}`);
-        }
-
-        const options = RANDOM_STRINGS[key].placeholder;
-
-        const randomIndex = getRandomIndex(options.length);
-        return options[randomIndex];
+    getDefault(key) {
+        return this.#getString(key, RANDOM_STRING_TYPE.default);
     }
 
     getError(key) {
-        if (!RANDOM_STRINGS[key]) {
-            throw new Error(`Key not found: ${key}`);
-        }
-
-        if (!RANDOM_STRINGS[key].error) {
-            throw new Error(`No error found for key: ${key}`);
-        }
-
-        const options = RANDOM_STRINGS[key].error;
-
-        const randomIndex = getRandomIndex(options.length);
-        return options[randomIndex];
+        return this.#getString(key, RANDOM_STRING_TYPE.error);
     }
 
-    getString(key, type) {
+    getPlaceholder(key) {
+        return this.#getString(key, RANDOM_STRING_TYPE.placeholder);
+    }
+
+    // this is a private method
+    #getString(key, type) {
         if (!RANDOM_STRINGS[key]) {
             throw new Error(`Key not found: ${key}`);
         }
@@ -109,19 +94,11 @@ class RandomStringGenerator {
     }
 
     get(key, type) {
-        if (type === RANDOM_STRING_TYPE.error) {
-            return this.getError(key);
+        if (!VALID_RANDOM_STRING_TYPES.includes(type)) {
+            throw new Error(`Invalid type: ${type}`);
         }
 
-        if (type === RANDOM_STRING_TYPE.placeholder) {
-            return this.getPlaceholder(key);
-        }
-
-        if (type === RANDOM_STRING_TYPE.default) {
-            return this.getString(key, type);
-        }
-
-        throw new Error(`Invalid type: ${type}`);
+        return this.#getString(key, type);
     }
 }
 
