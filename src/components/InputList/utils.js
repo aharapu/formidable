@@ -1,5 +1,5 @@
-// TODO -> move these to utils/state
 import { v4 as createId } from 'uuid';
+import { focusInput } from '../../hooks/useFocus';
 
 export const getInputListAdder = (setter) => () => {
     setter((prevItems) => [...prevItems, { id: createId(), value: '', error: '' }]);
@@ -30,3 +30,21 @@ export const getInputListErrorUpdater = (setter) => (id, error) => {
 export const getInputListDeleter = (setter) => (id) => {
     setter((prevItems) => prevItems.filter((item) => item.id !== id));
 };
+
+export function validateInput(value) {
+    const trimmedValue = value.trim();
+    if (!trimmedValue) return 'This field is required';
+    return '';
+}
+
+export function focusLastInput(items) {
+    const lastItem = items[items.length - 1];
+    focusInput(lastItem.id);
+}
+
+export function isLastItemErrored(items = []) {
+    if (items.length === 0) return false;
+
+    const lastItem = items[items.length - 1];
+    return Boolean(lastItem.error);
+}

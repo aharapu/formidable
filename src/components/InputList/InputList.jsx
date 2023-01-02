@@ -13,9 +13,12 @@ import {
 import { ORANGE } from '../../constants';
 import { focusInput } from '../../hooks/useFocus';
 import { usePrevious } from '../../hooks/usePrevious';
+import { isCharacterKey, isEnterKey, isEscapeKey } from '../../utils/keyboard-utils';
+
 import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
 import { DeleteButton } from '../DeleteButton/DeleteButton';
-import { isCharacterKey, isEnterKey, isEscapeKey } from '../../utils/keyboard-utils';
+
+import { focusLastInput, isLastItemErrored, validateInput } from './utils';
 
 export function InputList({
     title = 'Default Title',
@@ -174,22 +177,3 @@ InputList.propTypes = {
     ),
     showDelimiter: PropTypes.bool,
 };
-
-// TODO -> move this to a utils file
-function validateInput(value) {
-    const trimmedValue = value.trim();
-    if (!trimmedValue) return 'This field is required';
-    return '';
-}
-
-function focusLastInput(items) {
-    const lastItem = items[items.length - 1];
-    focusInput(lastItem.id);
-}
-
-function isLastItemErrored (items = []) {
-    if (items.length === 0) return false;
-
-    const lastItem = items[items.length - 1];
-    return Boolean(lastItem.error);
-}
