@@ -11,11 +11,3 @@ export function updateClipboard(content) {
 export function getValues(objects = []) {
     return objects.map((o) => o.value);
 }
-
-// TODO -> check use cases
-export function buildHtmlTagString({ tag, content, color }) {
-    // TODO -> tag should be limited to certain strings
-    const style = color ? `style="color:${color};"` : '';
-
-    return `<${tag} ${style}>${content}</${tag}>`;
-}
