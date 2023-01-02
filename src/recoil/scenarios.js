@@ -1,12 +1,12 @@
 import { atom, useRecoilCallback, selector } from 'recoil';
 import { v4 as createId } from 'uuid';
-import { KEYS, SCENARIO_SECTION } from './constants';
-import { addInput, inputAtoms } from './inputs';
+import { RECOIL_KEY, SCENARIO_SECTION } from './constants';
+import { addInput, inputAtoms } from './atoms/inputs';
 
 const scenarioAtoms = {};
 
 export const testScenariosAtom = atom({
-    key: KEYS.scenario.atom.testScenarios,
+    key: RECOIL_KEY.scenario.atom.testScenarios,
     default: [],
 });
 
@@ -37,7 +37,7 @@ export function useScenarios() {
         };
 
         scenarioAtoms[id] = atom({
-            key: KEYS.scenario.atom.prefix + id,
+            key: RECOIL_KEY.scenario.atom.prefix + id,
             default: newScenario,
         });
 
@@ -119,7 +119,7 @@ export function useScenarios() {
 }
 
 export const testScenariosSelector = selector({
-    key: KEYS.scenario.selector.testScenarios,
+    key: RECOIL_KEY.scenario.selector.testScenarios,
     get: ({ get }) => {
         const testScenarios = get(testScenariosAtom);
 

@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { DeleteForever } from '@mui/icons-material';
 import { Grid, IconButton } from '@mui/material';
 
-import { getInputAtom } from '../../../../../../../recoil/inputs';
+import { getInputAtom } from '../../../../../../../recoil/atoms/inputs';
 import { useScenarios } from '../../../../../../../recoil/scenarios';
 import { useFocus } from '../../../../../../../hooks/useFocus';
 import { SCENARIO_SECTION } from '../../../../../../../recoil/constants';

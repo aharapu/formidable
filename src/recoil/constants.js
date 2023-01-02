@@ -1,5 +1,5 @@
 // TODO -> place all keys here
-export const KEYS = {
+export const RECOIL_KEY = {
     input: {
         atom: {
             prefix: 'input-atom-',

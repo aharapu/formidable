@@ -26,7 +26,6 @@ export function useClipboard() {
                 const featureFlag = snapshot.getLoadable(featureFlagAtom).contents;
                 const impactedProjects = snapshot.getLoadable(featureImpactedProj).contents;
                 const requiredEditions = snapshot.getLoadable(featureRequireEdition).contents;
-                // TODO -> replace with new selector
                 const testingScenarios = snapshot.getLoadable(testScenariosSelector).contents;
                 const requiresAutomation = snapshot.getLoadable(featureRequireAutomationTest).contents;
 
@@ -41,7 +40,6 @@ export function useClipboard() {
                     .addHeading({ content: 'Acceptance Criteria:', color: PURPLE })
                     .addList(criteriaValues);
 
-                // TODO -> trim and capitalize?
                 if (techGuidance) {
                     contentBuilder
                         .addHeading({

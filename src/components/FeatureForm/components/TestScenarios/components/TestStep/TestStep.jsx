@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
-import { getInputAtom } from '../../../../../../recoil/inputs';
+import { getInputAtom } from '../../../../../../recoil/atoms/inputs';
 import { Grid, IconButton, InputAdornment } from '@mui/material';
 import { capitalizeFirstLetter } from '../../../../../../utils/string-utils';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
