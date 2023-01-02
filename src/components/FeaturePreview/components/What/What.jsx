@@ -18,6 +18,7 @@ export function What() {
             title="WHAT"
             content={what.value}
             titleColor={LIGHT_GRAY}
+            isErrored={Boolean(what.error)}
         />
     );
 }

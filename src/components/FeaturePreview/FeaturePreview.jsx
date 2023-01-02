@@ -29,7 +29,6 @@ export default function FeaturePreview() {
         );
     };
 
-    // TODO -> highlight form errors in preview
     return (
         <Paper
             style={{
