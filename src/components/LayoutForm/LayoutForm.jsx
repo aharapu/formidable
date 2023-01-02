@@ -5,11 +5,11 @@ import { useRecoilState } from 'recoil';
 import { FormidableLogo } from '../../assets/FormidableLogo';
 import {
     BUG_PAGE,
-    currentPage,
     FEATURE_PAGE,
     HOME_PAGE,
 } from '../../constants';
 import { PreviewFooter } from '../PreviewFooter/PreviewFooter';
+import { navigationAtom } from '../../recoil/atoms/navigation';
 
 export function LayoutForm({ form, preview }) {
     return (
@@ -70,7 +70,7 @@ LayoutForm.propTypes = {
 };
 
 const Menu = () => {
-    const [page, setPage] = useRecoilState(currentPage);
+    const [page, setPage] = useRecoilState(navigationAtom);
 
     return (
         <div

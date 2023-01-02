@@ -12,7 +12,6 @@ export const theme = createTheme({
     //   },
     // },
     components: {
-        // TODO -> this might be a way to "fix" the sad looking ripple on focus
         MuiTouchRipple: {
             styleOverrides: {
                 root: {
@@ -32,7 +31,7 @@ export const theme = createTheme({
                     fontSize: '15px',
                     lineHeight: '26px',
                     letterSpacing: '0.46px',
-                    //         textTransform: "none",
+                    textTransform: 'none',
                 },
                 //       sizeSmall: {
                 //         padding: "6px 16px",
@@ -139,7 +138,6 @@ export const theme = createTheme({
                     // },
                 },
 
-                // TODO -> when input is not focused, the text should be bold and maybe larger font
                 multiline: {
                     // ['& span']: { // this was not working
                     //     fontWeight: 600,

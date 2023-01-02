@@ -7,13 +7,14 @@ import FeaturePreview from './components/FeaturePreview';
 import LayoutHome from './components/LayoutHome/LayoutHome';
 import { LayoutForm } from './components/LayoutForm/LayoutForm';
 
-import { BUG_PAGE, currentPage, FEATURE_PAGE, HOME_PAGE } from './constants';
+import { navigationAtom } from './recoil/atoms/navigation';
+import BugPreview from './components/BugPreview';
+import { BUG_PAGE, FEATURE_PAGE, HOME_PAGE } from './constants';
 
 import './index.css';
-import BugPreview from './components/BugPreview';
 
 function App() {
-    const pageName = useRecoilValue(currentPage);
+    const pageName = useRecoilValue(navigationAtom);
 
     return (
         <>

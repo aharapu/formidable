@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
-import { randomStringGenerator } from '../../../../classes/RandomStringGenerator';
-import { featureACs } from '../../../../constants';
+import { RANDOM_STRING_KEY, randomStringGenerator } from '../../../../classes/RandomStringGenerator';
+import { acceptanceCriteriasAtom } from '../../../../recoil/atoms/acceptanceCriterias';
 import { InputList } from '../../../InputList/InputList';
 import {
     getInputListAdder,
@@ -12,18 +12,23 @@ import {
 import { LABLES } from '../../featureFormConstants';
 
 export function InputListCriteria() {
-    const [ACs, setACs] = useRecoilState(featureACs);
+    const [ACs, setACs] = useRecoilState(acceptanceCriteriasAtom);
 
     const addCriteria = getInputListAdder(setACs);
     const updateCriteriaValue = getInputListValueUpdater(setACs);
     const updateCriteriaError = getInputListErrorUpdater(setACs);
     const deleteCriteria = getInputListDeleter(setACs);
 
+    const textFieldPlaceholder = useMemo(
+        () => randomStringGenerator.getPlaceholder(RANDOM_STRING_KEY.acceptanceCriteria),
+        [],
+    );
+
     return (
         <InputList
             title={LABLES.acceptanceCriteriaTitle}
             textFieldLabel={LABLES.acceptCritInput}
-            textFieldPlaceholder={randomStringGenerator.getAcceptanceCriteriaPlaceholder()}
+            textFieldPlaceholder={textFieldPlaceholder}
             onInputBlur={updateCriteriaError}
             items={ACs}
             onAdd={addCriteria}

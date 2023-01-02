@@ -5,8 +5,8 @@ import { useRecoilValue } from 'recoil';
 import { getScenarioAtom } from '../../../../../../recoil/scenarios';
 import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 
-import { Input } from '../Input/Input';
-import { Name } from './components/Name';
+import { TestStep } from '../TestStep/TestStep';
+import { Header } from './components/Header';
 import { usePrevious } from '../../../../../../hooks/usePrevious';
 import { focusInput } from '../../../../../../hooks/useFocus';
 
@@ -44,7 +44,7 @@ export function Scenario({id : scenarioId}) {
 
     return (
         <>
-            <Name
+            <Header
                 scenarioId={scenarioId}
                 nameInputId={scenario.nameInputId}
             />
@@ -52,7 +52,7 @@ export function Scenario({id : scenarioId}) {
                 <React.Fragment key={sectionType}>
                     {
                         scenario[sectionType].map((inputId, idx) => (
-                            <Input
+                            <TestStep
                                 key={inputId}
                                 id={inputId}
                                 index={idx}

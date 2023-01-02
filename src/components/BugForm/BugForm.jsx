@@ -21,7 +21,6 @@ export default function BugForm() {
     const [reproducible, setReproducible] = useRecoilState(bugReproducible);
     const [includeScreenshots, setIncludeScreenshots] = useRecoilState(bugIncludeScreenshots);
 
-    // TODO -> get DRY?
     const handleAddStep= (step) => {
         setSteps((prev) => [...prev, { id: createId(), value: step }]);
     };
@@ -34,7 +33,6 @@ export default function BugForm() {
         if (!isVisible) {
             setReproducible('');
         }
-    // TODO -> else restore previous state ("keep in ref")
     };
 
     const handleIncludeScreenshotsChange = (include) => {
@@ -65,8 +63,6 @@ export default function BugForm() {
                     textFieldLabel={LABLES.steps}
                     textFieldPlaceholder={PLACEHOLDERS.steps}
                     items={steps}
-                    // TODO -> use an array and provide pseudorandom placeholders
-                    // TODO -> if this is a function, it will auto switch to new random placeholder
                     onAdd={handleAddStep}
                     onDelete={handleDelStep}
                 />

@@ -18,12 +18,8 @@ export function FormDelimiterLine({ topGap = 'large', bottomGap = 'tiny', isVisi
     );
 }
 
-
-
 FormDelimiterLine.propTypes = {
     topGap: PropTypes.oneOf(PIXEL_SIZES),
     bottomGap: PropTypes.oneOf(PIXEL_SIZES),
     isVisible: PropTypes.bool,
 };
-
-// TODO -> move to utils file

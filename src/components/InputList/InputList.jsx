@@ -4,18 +4,21 @@ import PropTypes from 'prop-types';
 import {
     Grid,
     IconButton,
-    Tooltip,
     Typography,
 } from '@mui/material';
 import {
-    ClearRounded,
     AddCircle,
 } from '@mui/icons-material';
 
 import { ORANGE } from '../../constants';
 import { focusInput } from '../../hooks/useFocus';
 import { usePrevious } from '../../hooks/usePrevious';
+import { isCharacterKey, isEnterKey, isEscapeKey } from '../../utils/keyboard-utils';
+
 import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
+import { DeleteButton } from '../DeleteButton/DeleteButton';
+
+import { focusLastInput, isLastItemErrored, validateInput } from './utils';
 
 export function InputList({
     title = 'Default Title',
@@ -30,12 +33,17 @@ export function InputList({
     const prevItems = usePrevious(items);
     const lastDeletedIndex = useRef(null);
 
-    const handleKeyDown = (e, idx) => {
-        if (e.keyCode !== 13) return;
-        if (idx === items.length - 1) {
+    const handleTextFieldKeyDown = (e, idx) => {
+        const isLastItem = idx === items.length - 1;
+        const isEmpty = items[idx].value.trim() === '';
+        const isAlone = items.length === 1;
+
+        if (isEnterKey(e.key) && isLastItem) {
             handleAdd();
-        } else {
+        } else if (isEnterKey(e.key) && !isLastItem) {
             focusInput(items[idx + 1].id);
+        } else if (isEscapeKey(e.key) && isLastItem && isEmpty && !isAlone) {
+            handleTextFieldDelete(items[idx].id, idx);
         }
     };
 
@@ -77,7 +85,14 @@ export function InputList({
         onInputBlur(id, errorMessage);
     };
 
-
+    const handleDeleteBtnKeyDown = (e, id, idx) => {
+        console.log('handleDeleteBtnKeyDown');
+        if (isCharacterKey(e.key)) {
+            focusInput(id);
+        } else if (isEnterKey(e.key)) {
+            handleTextFieldDelete(id, idx);
+        }
+    };
 
     return (
         <>
@@ -108,27 +123,18 @@ export function InputList({
                             fullWidth
                             value={value}
                             onChange={(e) => handleTextFieldChange(id, e.target.value)}
-                            onKeyDown={(e) => handleKeyDown(e, idx)}
+                            onKeyDown={(e) => handleTextFieldKeyDown(e, idx)}
                             error={Boolean(error)}
                             helperText={error}
                             onBlur={() => handleTextFieldBlur(id)}
                             size="small"
                         />
-                        <Tooltip
-                            placement='right'
-                            arrow
-                            title={items.length === 1 ? 'Must have at least one item' : 'Delete'}
-                        >
-                            <span
-                                // span is required for tooltip to work when IconButton is disabled
-                            >
-                                <IconButton onClick={() => handleTextFieldDelete(id, idx)}
-                                    disabled={items.length === 1}
-                                >
-                                    <ClearRounded style={{ width: '18.25px', height: '18.25px' }} />
-                                </IconButton>
-                            </span>
-                        </Tooltip>
+                        <DeleteButton
+                            tooltipTitle={items.length === 1 ? 'Must have at least one item' : 'Delete'}
+                            disabled={items.length === 1}
+                            onClick={() => handleTextFieldDelete(id, idx)}
+                            onKeyDown={(e) => handleDeleteBtnKeyDown(e, id, idx)}
+                        />
                     </Grid>
                 </React.Fragment>
             ))}
@@ -171,22 +177,3 @@ InputList.propTypes = {
     ),
     showDelimiter: PropTypes.bool,
 };
-
-// TODO -> move this to a utils file
-function validateInput(value) {
-    const trimmedValue = value.trim();
-    if (!trimmedValue) return 'This field is required';
-    return '';
-}
-
-function focusLastInput(items) {
-    const lastItem = items[items.length - 1];
-    focusInput(lastItem.id);
-}
-
-function isLastItemErrored (items = []) {
-    if (items.length === 0) return false;
-
-    const lastItem = items[items.length - 1];
-    return Boolean(lastItem.error);
-}

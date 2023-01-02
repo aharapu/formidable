@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
-import { getInputAtom } from '../../../../../../recoil/inputs';
+import { getInputAtom } from '../../../../../../recoil/atoms/inputs';
 import { Grid, IconButton, InputAdornment } from '@mui/material';
 import { capitalizeFirstLetter } from '../../../../../../utils/string-utils';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
@@ -10,8 +10,7 @@ import { SCENARIO_SECTIONS } from '../../../../../../recoil/constants';
 import { focusInput } from '../../../../../../hooks/useFocus';
 import { FFTextField } from '../../../../../mui-wrappers/FFTextField/FFTextField';
 
-// TODO -> rename to TestStep?
-export function Input({id: inputId, scenarioId, sectionType, index, sectionItems }) {
+export function TestStep({id: inputId, scenarioId, sectionType, index, sectionItems }) {
     const [input, setInput] = useRecoilState(getInputAtom(inputId));
     const { addScenarioInput, removeScenarioInput } = useScenarios();
 
@@ -86,7 +85,7 @@ export function Input({id: inputId, scenarioId, sectionType, index, sectionItems
     );
 }
 
-Input.propTypes = {
+TestStep.propTypes = {
     id: PropTypes.string.isRequired,
     scenarioId: PropTypes.string.isRequired,
     sectionType: PropTypes.oneOf(SCENARIO_SECTIONS).isRequired,

@@ -4,10 +4,11 @@ import { useRecoilState } from 'recoil';
 
 import { FormidableLogo } from '../../assets/FormidableLogo';
 
-import { BUG_PAGE, currentPage, FEATURE_PAGE } from '../../constants';
+import { BUG_PAGE, FEATURE_PAGE } from '../../constants';
+import { navigationAtom } from '../../recoil/atoms/navigation';
 
 export default function LayoutHome() {
-    const [, setPage] = useRecoilState(currentPage);
+    const [, setPage] = useRecoilState(navigationAtom);
 
     return (
         <>

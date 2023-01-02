@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FormControlLabel, Grid, Switch } from '@mui/material';
 import styled from '@emotion/styled';
 
-// TODO -> make highlight on focus a lot more visible
 const StyledSwitch = styled(
     Switch,
     {
@@ -37,7 +36,6 @@ const StyledSwitch = styled(
             // color: checkedColor, // kinda does it, but can't change the ripple
             // backgroundColor: 'purple',
             },
-            // TODO -> can these be used in theme?
             '& .MuiTocuhRipple-root': {
             // color: RED,
             },

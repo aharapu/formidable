@@ -27,27 +27,7 @@ export const HOME_PAGE = 'HOME_PAGE';
 export const FEATURE_PAGE = 'FEATURE_PAGE';
 export const BUG_PAGE = 'BUG_PAGE';
 
-// Validation state
-export const formValidationErrors = atom({
-    key: 'formValidationErrors',
-    default: [],
-});
-
-// Navigation state
-export const currentPage = atom({
-    key: 'currentPage', // unique ID (with respect to other atoms/selectors)
-    default: HOME_PAGE, // default value (aka initial value)
-});
-
 // Feature states
-export const featureACs = atom({
-    key: 'featureACs',
-    default: [{ id: createId(), value: '', error: '' }],
-    /*
-  array object shape { id: UUID, value: String }
-  */
-});
-
 export const featureTechGuide = atom({
     key: 'featureTechGuide',
     default: '',

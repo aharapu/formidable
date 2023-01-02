@@ -1,14 +1,26 @@
 import { Button, Grid } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useFocus } from '../../../../hooks/useFocus';
+import { usePrevious } from '../../../../hooks/usePrevious';
 import { testScenariosAtom, useScenarios } from '../../../../recoil/scenarios';
 import { Scenario } from './components/Scenario/Scenario';
 
-export function TestScenariosV3() {
+export function TestScenarios() {
     const { addScenario } = useScenarios();
     const testScenarios = useRecoilValue(testScenariosAtom);
+    const prevNumOfScenarios = usePrevious(testScenarios.length);
+    const { focusScenarioName } = useFocus();
 
-    // TODO -> switch focus to scenario name when a new scenario is added
+    useEffect(() => {
+        if (prevNumOfScenarios === null) {
+            return;
+        }
+
+        if (prevNumOfScenarios < testScenarios.length) {
+            focusScenarioName(testScenarios[testScenarios.length - 1]);
+        }
+    }, [testScenarios.length, prevNumOfScenarios, focusScenarioName, testScenarios]);
 
     return (
         <>

@@ -1,1 +1,9 @@
-// TODO -> reexport all components from this folder
+export { Dependencies } from './Dependencies';
+export { Editions } from './Editions';
+export { FeatureFlag } from './FeatureFlag';
+export { ImpactedProjects } from './ImpactedProjects';
+export { InputListCriteria } from './InputListCriteria';
+export { InputWhat } from './InputWhat';
+export { RequiresAutomation } from './RequiresAutomation';
+export { TechnicalGuidance } from './TechnicalGuidance';
+export { TestScenarios } from './TestScenarios';

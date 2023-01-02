@@ -1,7 +1,9 @@
 import { useRecoilCallback } from 'recoil';
+import { HtmlContentBuilder } from '../classes/HtmlContentBuilder';
 import { getValues, updateClipboard } from '../components/FeaturePreview/utils';
+import { LIGHT_GRAY, PURPLE, GREEN, BLUE, ORANGE, DARK_RED, RED, DARK_TEAL, DARK_GREY } from '../constants';
+
 import {
-    featureACs,
     featureTechGuide,
     featureDeps,
     featureFlagAtom,
@@ -10,35 +12,94 @@ import {
     featureRequireAutomationTest,
 } from '../constants';
 import { testScenariosSelector } from '../recoil/scenarios';
-import { whatAtom } from '../recoil/what-atom';
+import { whatAtom } from '../recoil/atoms/what';
+import { acceptanceCriteriasAtom } from '../recoil/atoms/acceptanceCriterias';
 
 export function useClipboard() {
-    const copyFeature = useRecoilCallback(({ snapshot }) => () => {
-        const what = snapshot.getLoadable(whatAtom).contents;
-        const criterias = snapshot.getLoadable(featureACs).contents;
-        const techGuidance = snapshot.getLoadable(featureTechGuide).contents;
-        const dependencies = snapshot.getLoadable(featureDeps).contents;
-        const FF = snapshot.getLoadable(featureFlagAtom).contents;
-        const impactedProj = snapshot.getLoadable(featureImpactedProj).contents;
-        const edition = snapshot.getLoadable(featureRequireEdition).contents;
-        // TODO -> replace with new selector
-        const testScenarios = snapshot.getLoadable(testScenariosSelector).contents;
-        const automation = snapshot.getLoadable(featureRequireAutomationTest).contents;
+    const buildContent = useRecoilCallback(
+        ({ snapshot }) =>
+            () => {
+                const what = snapshot.getLoadable(whatAtom).contents;
+                const criterias = snapshot.getLoadable(acceptanceCriteriasAtom).contents;
+                const techGuidance = snapshot.getLoadable(featureTechGuide).contents;
+                const dependencies = snapshot.getLoadable(featureDeps).contents;
+                const featureFlag = snapshot.getLoadable(featureFlagAtom).contents;
+                const impactedProjects = snapshot.getLoadable(featureImpactedProj).contents;
+                const requiredEditions = snapshot.getLoadable(featureRequireEdition).contents;
+                const testingScenarios = snapshot.getLoadable(testScenariosSelector).contents;
+                const requiresAutomation = snapshot.getLoadable(featureRequireAutomationTest).contents;
 
-        console.log('automation', automation);
+                const criteriaValues = getValues(criterias);
+                const depValues = getValues(dependencies);
 
-        updateClipboard({
-            what,
-            criterias,
-            techGuidance,
-            dependencies,
-            featureFlag: FF,
-            impactedProjects: getValues(impactedProj),
-            requiredEditions: getValues(edition),
-            testingScenarios: testScenarios,
-            requiresAutomation: automation,
-        });
-    });
+                const contentBuilder = new HtmlContentBuilder();
 
-    return { copyFeature };
+                contentBuilder
+                    .addHeading({ content: 'What:', color: LIGHT_GRAY })
+                    .addParagraph({ content: what.value })
+                    .addHeading({ content: 'Acceptance Criteria:', color: PURPLE })
+                    .addList(criteriaValues);
+
+                if (techGuidance) {
+                    contentBuilder
+                        .addHeading({
+                            content: 'Technical Guidance:',
+                            color: GREEN,
+                        })
+                        .addParagraph({
+                            content: techGuidance,
+                        });
+                }
+
+                if (dependencies.length > 0) {
+                    contentBuilder.addHeading({ content: 'Dependencies:', color: BLUE }).addList(depValues);
+                }
+
+                if (featureFlag) {
+                    contentBuilder.addHeading({ content: 'Feature Flag:', color: ORANGE }).addParagraph({
+                        content: featureFlag,
+                    });
+                }
+
+                contentBuilder
+                    .addHeading({ content: 'Impacted Projects:', color: DARK_RED })
+                    .addList(getValues(impactedProjects));
+
+                if (requiredEditions.length > 0) {
+                    contentBuilder
+                        .addHeading({ content: 'Required Editions:', color: RED })
+                        .addList(getValues(requiredEditions));
+                }
+
+                if (testingScenarios.length > 0) {
+                    contentBuilder
+                        .addHeading({
+                            content: 'Testing Scenarios:',
+                            color: DARK_TEAL,
+                        })
+                        .addTestScenarios(testingScenarios);
+                }
+
+                const automationContent =
+                    'Requires Automation -> ' +
+                    `<span style="color: ${requiresAutomation ? DARK_RED : DARK_GREY};">` +
+                    `${requiresAutomation ? 'YES' : 'NO'}` +
+                    '</span>';
+                contentBuilder.addHeading({
+                    content: automationContent,
+                    color: LIGHT_GRAY,
+                });
+
+                return contentBuilder.getContent();
+            },
+        [],
+    );
+
+    const copyFeature = () => {
+        const content = buildContent();
+
+        updateClipboard(content);
+    };
+
+    return { buildContent, copyFeature };
 }
