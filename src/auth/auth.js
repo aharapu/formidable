@@ -14,7 +14,8 @@ class AuthService {
     }
 
     getUser() {
-        return this.auth.currentUser;
+        const auth = getAuth(firebaseApp);
+        return auth.currentUser;
     }
 
     onAuthenticationChange(callback) {
@@ -34,7 +35,8 @@ class AuthService {
     }
 
     signOut() {
-        return this.auth.signOut();
+        const auth = getAuth(firebaseApp);
+        return auth.signOut();
     }
 
     isAuthenticated() {

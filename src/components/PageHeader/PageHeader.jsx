@@ -74,6 +74,13 @@ export default function PageHeader() {
             >
                 Sign Up
             </Button>
+            <Button
+                variant="contained"
+                onClick={() => authClient.signOut()}
+                size="small"
+            >
+                Sign Out
+            </Button>
         </div>
     );
 }

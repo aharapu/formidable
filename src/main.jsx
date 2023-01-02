@@ -27,17 +27,11 @@ function AppContainer() {
             return;
         }
 
-        const authenthicated = authClient.isAuthenticated();
-        console.log('authenthicated', authenthicated);
-
-        const user = authClient.getUser();
-        console.log('user', user);
-
-        if (authenthicated) {
-            // TODO -> set user in app state
-        }
-
-        setInitialized(true);
+        const unsubscribe = authClient.onAuthenticationChange((user) => {
+            console.log('user', user);
+            setInitialized(true);
+            unsubscribe();
+        });
     });
 
     if (!initialized) {
