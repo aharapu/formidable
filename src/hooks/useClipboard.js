@@ -4,7 +4,6 @@ import { getValues, updateClipboard } from '../components/FeaturePreview/utils';
 import { LIGHT_GRAY, PURPLE, GREEN, BLUE, ORANGE, DARK_RED, RED, DARK_TEAL, DARK_GREY } from '../constants';
 
 import {
-    featureACs,
     featureTechGuide,
     featureDeps,
     featureFlagAtom,
@@ -14,13 +13,14 @@ import {
 } from '../constants';
 import { testScenariosSelector } from '../recoil/scenarios';
 import { whatAtom } from '../recoil/atoms/what';
+import { acceptanceCriteriasAtom } from '../recoil/atoms/acceptanceCriterias';
 
 export function useClipboard() {
     const buildContent = useRecoilCallback(
         ({ snapshot }) =>
             () => {
                 const what = snapshot.getLoadable(whatAtom).contents;
-                const criterias = snapshot.getLoadable(featureACs).contents;
+                const criterias = snapshot.getLoadable(acceptanceCriteriasAtom).contents;
                 const techGuidance = snapshot.getLoadable(featureTechGuide).contents;
                 const dependencies = snapshot.getLoadable(featureDeps).contents;
                 const featureFlag = snapshot.getLoadable(featureFlagAtom).contents;

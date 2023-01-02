@@ -28,14 +28,6 @@ export const FEATURE_PAGE = 'FEATURE_PAGE';
 export const BUG_PAGE = 'BUG_PAGE';
 
 // Feature states
-export const featureACs = atom({
-    key: 'featureACs',
-    default: [{ id: createId(), value: '', error: '' }],
-    /*
-  array object shape { id: UUID, value: String }
-  */
-});
-
 export const featureTechGuide = atom({
     key: 'featureTechGuide',
     default: '',

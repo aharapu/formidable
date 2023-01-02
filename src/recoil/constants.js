@@ -1,4 +1,3 @@
-// TODO -> place all keys here
 export const RECOIL_KEY = {
     input: {
         atom: {
@@ -9,6 +8,9 @@ export const RECOIL_KEY = {
         what: {
             atom: 'feature-what-atom',
             selector: 'feature-what-selector',
+        },
+        acceptanceCriterias: {
+            atom: 'feature-acceptance-criterias-atom',
         },
     },
     navigation: {

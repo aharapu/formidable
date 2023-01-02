@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { RANDOM_STRING_KEY, randomStringGenerator } from '../../../../classes/RandomStringGenerator';
-import { featureACs } from '../../../../constants';
+import { acceptanceCriteriasAtom } from '../../../../recoil/atoms/acceptanceCriterias';
 import { InputList } from '../../../InputList/InputList';
 import {
     getInputListAdder,
@@ -12,7 +12,7 @@ import {
 import { LABLES } from '../../featureFormConstants';
 
 export function InputListCriteria() {
-    const [ACs, setACs] = useRecoilState(featureACs);
+    const [ACs, setACs] = useRecoilState(acceptanceCriteriasAtom);
 
     const addCriteria = getInputListAdder(setACs);
     const updateCriteriaValue = getInputListValueUpdater(setACs);
