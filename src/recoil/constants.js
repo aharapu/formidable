@@ -11,6 +11,9 @@ export const RECOIL_KEY = {
             selector: 'feature-what-selector',
         },
     },
+    navigation: {
+        atom: 'navigation-atom',
+    },
     scenario: {
         atom: {
             prefix: 'scenario-atom-',
