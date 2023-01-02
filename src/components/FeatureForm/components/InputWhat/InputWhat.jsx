@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { whatAtom } from '../../../../recoil/what-atom';
+import { whatAtom } from '../../../../recoil/atoms/what';
 import { FormTextField } from '../../../FormTextField/FormTextField';
 
 import { LABLES, PLACEHOLDERS } from '../../featureFormConstants';

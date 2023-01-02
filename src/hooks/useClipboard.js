@@ -13,7 +13,7 @@ import {
     featureRequireAutomationTest,
 } from '../constants';
 import { testScenariosSelector } from '../recoil/scenarios';
-import { whatAtom } from '../recoil/what-atom';
+import { whatAtom } from '../recoil/atoms/what';
 
 export function useClipboard() {
     const buildContent = useRecoilCallback(
