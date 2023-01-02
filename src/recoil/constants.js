@@ -25,6 +25,9 @@ export const RECOIL_KEY = {
             testScenarios: 'test-scenarios-selector',
         },
     },
+    user: {
+        atom: 'user-atom',
+    },
 };
 
 export const SCENARIO_SECTION = {

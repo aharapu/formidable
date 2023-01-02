@@ -1,16 +1,30 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { authClient } from '../../auth/auth';
+import { userAtom } from '../../recoil/atoms/user';
 import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
 
 export default function PageHeader() {
-
-    const [user, setUser] = useState('');
+    const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [user, setUser] = useRecoilState(userAtom);
 
-    const handleLogin = () => {
+    const handleSignIn = () => {
         console.log('login');
-        console.log('user', user);
+        console.log('email', email);
         console.log('pass', pass);
+    };
+
+    const handleSignUp = () => {
+        authClient.signUpWithEmailAndPassword({ email, password: pass })
+            .then((userCredential) => {
+            // Signed in
+                const user = userCredential.user;
+                console.log('user', user);
+                setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
+            })
+            .catch(console.error);
     };
 
     return (
@@ -27,12 +41,17 @@ export default function PageHeader() {
                 gap: '10px',
             }}
         >
+            {user && (
+                <div>
+                    {user.displayName}
+                </div>
+            )}
             <FFTextField
-                label="user"
+                label="email"
                 variant="outlined"
                 size="small"
-                value={user}
-                onChange={(e) => setUser(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
             <FFTextField
                 label="pass"
@@ -43,10 +62,17 @@ export default function PageHeader() {
             />
             <Button
                 variant="contained"
-                onClick={handleLogin}
+                onClick={handleSignIn}
                 size="small"
             >
-                Login
+                Sign In
+            </Button>
+            <Button
+                variant="contained"
+                onClick={handleSignUp}
+                size="small"
+            >
+                Sign Up
             </Button>
         </div>
     );
