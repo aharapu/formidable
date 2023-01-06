@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+  	// requires the resource to have an owner reference pointing to the user that owns the resource
+  	function userIsOwner() {
+      return get(resource.data.owner).data.uid == request.auth.uid;
+    }
+
+  	match /users/{userId} {
+      // Any authanticated user can create his own document
+      allow read, write: if request.auth != null && request.auth.uid == request.resource.id;
+    }
+
+    match /users/{userId} {
+      // Only the authenticated user who authored the document can read or write
+      allow read, write: if request.auth != null && resource != null && request.auth.uid == resource.id;
+    }
+
+		// allow operations on inputs if user is owner
+  	match /inputs/{inputId} {
+      allow create, read, update, delete: if userIsOwner();
+    }
+
+    // TODO --> add type validation
+    // https://firebase.google.com/docs/firestore/security/rules-fields?authuser=0
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    // this is a deploy test comment
+  }
+}
