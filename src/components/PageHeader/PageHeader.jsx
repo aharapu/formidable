@@ -16,9 +16,14 @@ export default function PageHeader() {
     const [user, setUser] = useRecoilState(userAtom);
 
     const handleSignIn = () => {
-        console.log('login');
-        console.log('email', email);
-        console.log('pass', pass);
+        authClient.signInWithEmailAndPassword({ email, password: pass })
+            .then((userCredential) => {
+            // Signed in
+                const user = userCredential.user;
+                console.log('signed in user:', user);
+                setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
+            })
+            .catch(console.error);
     };
 
     const handleSignUp = () => {
@@ -43,6 +48,7 @@ export default function PageHeader() {
         try {
             console.log('get');
             const docRef = doc(db, 'users', user.uid);
+            console.log('user ref: ', docRef);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
@@ -62,17 +68,25 @@ export default function PageHeader() {
                 console.log('No input document!');
             }
 
-            // const userReference = docSnap2.data().user;
-            // const docSnap3 = await getDoc(userReference);
+            const ownerRef = docSnap2.data().owner;
+            const ownerSnap = await getDoc(ownerRef);
 
-            // console.log('user through refernce', docSnap3.data());
+            console.log('user through refernce', ownerSnap.data());
         } catch(e) {
             console.log('GET ERROR');
             console.error(e);
         }
-
-
     };
+
+    const handleSignOut = () => {
+        authClient.signOut()
+            .then(() => {
+                console.log('signed out');
+                setUser(null);
+            })
+            .catch(console.error);
+    };
+
 
     return (
         <div
@@ -123,7 +137,7 @@ export default function PageHeader() {
             </Button>
             <Button
                 variant="contained"
-                onClick={() => authClient.signOut()}
+                onClick={handleSignOut}
                 size="small"
             >
                 Sign Out

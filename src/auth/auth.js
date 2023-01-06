@@ -28,7 +28,6 @@ class AuthService {
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
-    // should return a promise
     signInWithEmailAndPassword({ email, password }) {
         const auth = getAuth(firebaseApp);
         return signInWithEmailAndPassword(auth, email, password);
