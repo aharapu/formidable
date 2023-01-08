@@ -6,20 +6,14 @@ import { FormidableLogo } from '../../assets/FormidableLogo';
 
 import { BUG_PAGE, FEATURE_PAGE } from '../../constants';
 import { navigationAtom } from '../../recoil/atoms/navigation';
+import PageHeader from '../PageHeader/PageHeader';
 
 export default function LayoutHome() {
     const [, setPage] = useRecoilState(navigationAtom);
 
     return (
         <>
-            <div
-                id="banner-container"
-                style={{
-                    height: '68px',
-                    backgroundColor: '#F3F5F6',
-                    boxShadow: '0 3px 5px rgba(0, 0, 0, 0.1)',
-                }}
-            ></div>
+            <PageHeader />
             <div
                 id="options-container"
                 style={{

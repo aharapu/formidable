@@ -13,6 +13,9 @@ export const RECOIL_KEY = {
             atom: 'feature-acceptance-criterias-atom',
         },
     },
+    loading: {
+        atom: 'loading-atom',
+    },
     navigation: {
         atom: 'navigation-atom',
     },
@@ -24,6 +27,9 @@ export const RECOIL_KEY = {
         selector: {
             testScenarios: 'test-scenarios-selector',
         },
+    },
+    user: {
+        atom: 'user-atom',
     },
 };
 
