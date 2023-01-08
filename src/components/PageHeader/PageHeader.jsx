@@ -9,12 +9,14 @@ import { userAtom } from '../../recoil/atoms/user';
 import { db } from '../../firebase/app';
 
 import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
+import { useLoading } from '../../hooks/useLoading';
 
 export default function PageHeader() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [user, setUser] = useRecoilState(userAtom);
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
+    const { isLoading, addLoading, removeLoading} = useLoading();
 
     const clearInputs = () => {
         setEmail('');
@@ -22,19 +24,19 @@ export default function PageHeader() {
     };
 
     const handleSignIn = () => {
-        setIsLoading(true);
+        addLoading('signIn');
         authClient.signInWithEmailAndPassword({ email, password: pass })
             .then((userCredential) => {
                 const user = userCredential.user;
                 setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
                 clearInputs();
-                setIsLoading(false);
+                removeLoading('signIn');
             })
             .catch(console.error);
     };
 
     const handleSignUp = () => {
-        setIsLoading(true);
+        addLoading('signUp');
         authClient.signUpWithEmailAndPassword({ email, password: pass })
             .then((userCredential) => {
                 const user = userCredential.user;
@@ -44,7 +46,7 @@ export default function PageHeader() {
                     uid: user.uid,
                 });
             }).then(() => {
-                setIsLoading(false);
+                removeLoading('signUp');
                 setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
                 clearInputs();
             })
@@ -82,11 +84,11 @@ export default function PageHeader() {
     };
 
     const handleSignOut = () => {
-        setIsLoading(true);
+        addLoading('signOut');
         authClient.signOut()
             .then(() => {
                 setUser(null);
-                setIsLoading(false);
+                removeLoading('signOut');
             })
             .catch(console.error);
     };
@@ -138,6 +140,7 @@ export default function PageHeader() {
                     onChange={(e) => setPass(e.target.value)}
                 />
                 <Button
+                    // TODO -> make a FFButton wrapper that uses the loading state from recoil
                     variant="contained"
                     onClick={handleSignIn}
                     size="small"

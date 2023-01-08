@@ -13,6 +13,9 @@ export const RECOIL_KEY = {
             atom: 'feature-acceptance-criterias-atom',
         },
     },
+    loading: {
+        atom: 'loading-atom',
+    },
     navigation: {
         atom: 'navigation-atom',
     },
