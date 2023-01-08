@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -15,13 +15,18 @@ export default function PageHeader() {
     const [pass, setPass] = useState('');
     const [user, setUser] = useRecoilState(userAtom);
 
+    const clearInputs = () => {
+        setEmail('');
+        setPass('');
+    };
+
     const handleSignIn = () => {
         authClient.signInWithEmailAndPassword({ email, password: pass })
             .then((userCredential) => {
             // Signed in
                 const user = userCredential.user;
-                console.log('signed in user:', user);
                 setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
+                clearInputs();
             })
             .catch(console.error);
     };
@@ -31,28 +36,25 @@ export default function PageHeader() {
             .then((userCredential) => {
             // Signed in
                 const user = userCredential.user;
-                console.log('signed up user:', user);
-                setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
                 return setDoc(doc(db, 'users', user.uid), {
                     displayName: user.displayName,
                     email: user.email,
                     uid: user.uid,
                 });
-            }).then(result => {
-                console.log('set doc result', result);
+            }).then(() => {
+                setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
+                clearInputs();
             })
             .catch(console.error);
     };
 
     const handleGet = async () => {
         try {
-            console.log('get');
-            const docRef = doc(db, 'users', user.uid);
-            console.log('user ref: ', docRef);
-            const docSnap = await getDoc(docRef);
+            const userDocRef = doc(db, 'users', user.uid);
+            const userDocSnap = await getDoc(userDocRef);
 
-            if (docSnap.exists()) {
-                console.log('User data:', docSnap.data());
+            if (userDocSnap.exists()) {
+                console.log('User data:', userDocSnap.data());
             } else {
                 // doc.data() will be undefined in this case
                 console.log('No user document!');
@@ -73,7 +75,7 @@ export default function PageHeader() {
 
             console.log('user through refernce', ownerSnap.data());
         } catch(e) {
-            console.log('GET ERROR');
+            console.log('GET error');
             console.error(e);
         }
     };
@@ -87,6 +89,7 @@ export default function PageHeader() {
             .catch(console.error);
     };
 
+    const signedIn = user !== null;
 
     return (
         <div
@@ -103,51 +106,59 @@ export default function PageHeader() {
             }}
         >
             {user && (
-                <div>
-                    {user.displayName}
-                </div>
+                <Typography
+                    variant="h4"
+                    sx={{ flexGrow: 1, paddingLeft: '36px' }}
+                >
+                    Welcome, {user.displayName || 'friend'}!
+                </Typography>
             )}
-            <FFTextField
-                label="email"
-                variant="outlined"
-                size="small"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <FFTextField
-                label="pass"
-                variant="outlined"
-                size="small"
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
-            />
-            <Button
-                variant="contained"
-                onClick={handleSignIn}
-                size="small"
-            >
-                Sign In
-            </Button>
-            <Button
-                variant="contained"
-                onClick={handleSignUp}
-                size="small"
-            >
-                Sign Up
-            </Button>
-            <Button
-                variant="contained"
-                onClick={handleSignOut}
-                size="small"
-            >
-                Sign Out
-            </Button>
+            {!signedIn && (<>
+                <FFTextField
+                    label="email"
+                    variant="outlined"
+                    size="small"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <FFTextField
+                    label="pass"
+                    variant="outlined"
+                    size="small"
+                    value={pass}
+                    type="password"
+                    onChange={(e) => setPass(e.target.value)}
+                />
+                <Button
+                    variant="contained"
+                    onClick={handleSignIn}
+                    size="small"
+                >
+                    Sign In
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={handleSignUp}
+                    size="small"
+                >
+                    Sign Up
+                </Button>
+            </>)}
+            {signedIn && (
+                <Button
+                    variant="contained"
+                    onClick={handleSignOut}
+                    size="small"
+                >
+                        Sign Out
+                </Button>
+            )}
             <Button
                 variant="contained"
                 onClick={handleGet}
                 size="small"
             >
-                GET
+                Test GET
             </Button>
         </div>
     );
