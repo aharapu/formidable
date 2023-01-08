@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button, Skeleton, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -14,6 +14,7 @@ export default function PageHeader() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [user, setUser] = useRecoilState(userAtom);
+    const [isLoading, setIsLoading] = useState(false);
 
     const clearInputs = () => {
         setEmail('');
@@ -21,20 +22,21 @@ export default function PageHeader() {
     };
 
     const handleSignIn = () => {
+        setIsLoading(true);
         authClient.signInWithEmailAndPassword({ email, password: pass })
             .then((userCredential) => {
-            // Signed in
                 const user = userCredential.user;
                 setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
                 clearInputs();
+                setIsLoading(false);
             })
             .catch(console.error);
     };
 
     const handleSignUp = () => {
+        setIsLoading(true);
         authClient.signUpWithEmailAndPassword({ email, password: pass })
             .then((userCredential) => {
-            // Signed in
                 const user = userCredential.user;
                 return setDoc(doc(db, 'users', user.uid), {
                     displayName: user.displayName,
@@ -42,6 +44,7 @@ export default function PageHeader() {
                     uid: user.uid,
                 });
             }).then(() => {
+                setIsLoading(false);
                 setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
                 clearInputs();
             })
@@ -56,7 +59,6 @@ export default function PageHeader() {
             if (userDocSnap.exists()) {
                 console.log('User data:', userDocSnap.data());
             } else {
-                // doc.data() will be undefined in this case
                 console.log('No user document!');
             }
 
@@ -66,7 +68,6 @@ export default function PageHeader() {
             if (docSnap2.exists()) {
                 console.log('Input data:', docSnap2.data());
             } else {
-                // doc.data() will be undefined in this case
                 console.log('No input document!');
             }
 
@@ -81,10 +82,11 @@ export default function PageHeader() {
     };
 
     const handleSignOut = () => {
+        setIsLoading(true);
         authClient.signOut()
             .then(() => {
-                console.log('signed out');
                 setUser(null);
+                setIsLoading(false);
             })
             .catch(console.error);
     };
@@ -105,19 +107,24 @@ export default function PageHeader() {
                 gap: '10px',
             }}
         >
-            {user && (
-                <Typography
-                    variant="h4"
-                    sx={{ flexGrow: 1, paddingLeft: '36px' }}
-                >
-                    Welcome, {user.displayName || 'friend'}!
-                </Typography>
-            )}
+            {
+                isLoading ?
+                    <Skeleton
+                        variant="text" width={280} height={24} sx={{ marginLeft: '36px', marginRight: 'auto' }}
+                    /> :
+                    <Typography
+                        variant="h4"
+                        sx={{ marginLeft: '36px', marginRight: 'auto' }}
+                    >
+                        {renderGreeting(user)}
+                    </Typography>
+            }
             {!signedIn && (<>
                 <FFTextField
                     label="email"
                     variant="outlined"
                     size="small"
+                    disabled={isLoading}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -125,6 +132,7 @@ export default function PageHeader() {
                     label="pass"
                     variant="outlined"
                     size="small"
+                    disabled={isLoading}
                     value={pass}
                     type="password"
                     onChange={(e) => setPass(e.target.value)}
@@ -163,3 +171,10 @@ export default function PageHeader() {
         </div>
     );
 }
+
+const renderGreeting = (user) => {
+    if (user) {
+        return `Welcome, ${user.displayName || 'friend'}!`;
+    }
+    return 'Sign In for an awesome experience!';
+};
