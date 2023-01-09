@@ -1,16 +1,22 @@
 # formidable
 
-# local development
+### local development
 
-follow instructions at https://firebase.google.com/docs/cli to install the firebase cli if you don't have it already
-version at time of writing is 11.20.0
+1. configure environment variables. set them in the `/env/.env.local` file. The following are required:
 
-// TODO -> this could be part of a script that asks for the values as console input
-in ./src/firebse
-copy contents of firebase-config.example.json to firebse-config.json and fill in with values from firebase console
-
-
-to deploy changes to firebase use command:
 ```code
-firebase deploy
+FF_FIREBASE_API_KEY
+FF_FIREBASE_APP_ID
+FF_FIREBASE_AUTH_DOMAIN
+FF_FIREBASE_DATABASE_URL
+FF_FIREBASE_MESSAGING_SENDER_ID
+FF_FIREBASE_PROJECT_ID
+FF_FIREBASE_STORAGE_BUCKET
 ```
+
+2. follow instructions at https://firebase.google.com/docs/cli to install the firebase cli if you don't have it already
+   version at time of writing is 11.20.0
+
+### deployment
+
+-   to deploy changes to firebase use `firebase deploy` from the root of the project
