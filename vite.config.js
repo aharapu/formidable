@@ -8,4 +8,6 @@ export default defineConfig({
         port: 61337,
         strictPort: true,
     },
+    envDir: 'env',
+    envPrefix: 'FF_',
 });
