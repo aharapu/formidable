@@ -2,7 +2,7 @@ import { Button, Skeleton, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { doc, setDoc, getDoc  } from 'firebase/firestore';
+import { doc, getDoc  } from 'firebase/firestore';
 
 import { authClient } from '../../auth/auth';
 import { userAtom } from '../../recoil/atoms/user';
@@ -35,23 +35,20 @@ export default function PageHeader() {
             .catch(console.error);
     };
 
-    const handleSignUp = () => {
-        addLoading('signUp');
-        authClient.signUpWithEmailAndPassword({ email, password: pass })
-            .then((userCredential) => {
-                const user = userCredential.user;
-                return setDoc(doc(db, 'users', user.uid), {
-                    displayName: user.displayName,
-                    email: user.email,
-                    uid: user.uid,
-                });
-            }).then(() => {
-                removeLoading('signUp');
-                // TODO -> fix user variable from first then not available here. make async/await
-                setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
-                clearInputs();
-            })
-            .catch(console.error);
+    const handleSignUp = async () => {
+        try {
+            addLoading('signUp');
+
+            const credential = await authClient.signUpWithEmailAndPassword({ email, password: pass });
+            const user = credential.user;
+
+            setUser({ displayName: user.displayName || null, email: user.email, uid: user.uid });
+        } catch(e) {
+            console.error(e);
+        } finally {
+            clearInputs();
+            removeLoading('signUp');
+        }
     };
 
     const handleGet = async () => {

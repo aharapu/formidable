@@ -7,27 +7,51 @@ service cloud.firestore {
       return get(resource.data.owner).data.uid == request.auth.uid;
     }
 
-  	match /users/{userId} {
-      // Any authanticated user can create his own document
-      allow read, write: if request.auth != null && request.auth.uid == request.resource.id;
+    function isCompleteUserDocument() {
+      return (request.resource.data.keys().hasAll(['email', 'displayName', 'createdAt', 'updatedAt'])) &&
+        (request.resource.data.keys().hasOnly(['email', 'displayName', 'createdAt', 'updatedAt']));
     }
 
-    match /users/{userId} {
-      // Only the authenticated user who authored the document can read or write
-      allow read, write: if request.auth != null && resource != null && request.auth.uid == resource.id;
+    function allUserDataTypesAreValid(data) {
+      return data.displayName is string &&
+        data.email is string &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
     }
 
-		// allow operations on inputs if user is owner
-  	match /inputs/{inputId} {
-      allow create, read, update, delete: if userIsOwner();
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function resuorceIdAndUserIdMatch() {
+      return request.auth.uid == request.resource.id;
     }
 
     // TODO --> add type validation
     // https://firebase.google.com/docs/firestore/security/rules-fields?authuser=0
+    // TODO -> use this for updates
+    // Allow a client to update only these 6 fields in a document
+    // allow update: if (request.resource.data.diff(resource.data).affectedKeys()
+    // .hasOnly(['name', 'location', 'city', 'address', 'hours', 'cuisine']));
+
+  	match /users/{userId} {
+      allow create: if
+        isAuthenticated() &&
+        resuorceIdAndUserIdMatch() &&
+        isCompleteUserDocument() &&
+        allUserDataTypesAreValid(request.resource.data);
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth != null && resource != null && request.auth.uid == resource.id;
+    }
+
+  	match /inputs/{inputId} {
+      allow create, read, update, delete: if userIsOwner();
+    }
 
     match /{document=**} {
       allow read, write: if false;
     }
-    // this is a deploy test comment
   }
 }
