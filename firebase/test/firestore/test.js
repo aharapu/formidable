@@ -1,3 +1,5 @@
+/*eslint-env node, mocha */
+
 const firebse = require('@firebase/testing');
 const PROJECT_ID = 'valle-formidable-forms';
 
@@ -158,6 +160,20 @@ describe('Security Rules', () => {
                         email: 'user@email.com',
                         updatedAt: timestamp,
                         unknownKey: 'unknown value',
+                    }),
+                );
+            });
+
+            it('UID does not correspond to document id', async () => {
+                const db = getDb({ uid: GOOD_UID });
+                const testDoc = db.collection(COLLECTION.users).doc(EVIL_UID);
+
+                await firebse.assertFails(
+                    testDoc.set({
+                        createdAt: timestamp,
+                        displayName: 'john doe',
+                        email: 'eviluser@haha.com',
+                        updatedAt: timestamp,
                     }),
                 );
             });

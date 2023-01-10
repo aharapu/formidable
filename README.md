@@ -17,6 +17,12 @@ FF_FIREBASE_STORAGE_BUCKET
 2. follow instructions at https://firebase.google.com/docs/cli to install the firebase cli if you don't have it already
    version at time of writing is 11.20.0
 
+### emulators
+
+to run emulators you will need java 19 installed.
+
+-   to start the firebase emulators use `firebase emulators:start` from the root of the project
+
 ### deployment
 
 -   to deploy changes to firebase use `firebase deploy` from the root of the project
