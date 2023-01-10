@@ -47,6 +47,7 @@ export default function PageHeader() {
                 });
             }).then(() => {
                 removeLoading('signUp');
+                // TODO -> fix user variable from first then not available here. make async/await
                 setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
                 clearInputs();
             })

@@ -20,3 +20,5 @@ FF_FIREBASE_STORAGE_BUCKET
 ### deployment
 
 -   to deploy changes to firebase use `firebase deploy` from the root of the project
+-   to deploy changes to firebase functions use `firebase deploy --only functions` from the root of the project
+-   to deploy changes to a single function use `firebase deploy --only functions:FUNCTION_NAME` from the root of the project
