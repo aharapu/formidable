@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const {Timestamp} = require("firebase-admin/firestore");
 admin.initializeApp();
 
 // // Create and deploy your first functions
@@ -18,13 +19,13 @@ exports.onUserCreated = functions
       const {uid, email, displayName} = user;
 
       const userDoc = admin.firestore().collection("users").doc(uid);
-      const timestamp = admin.firestore.FieldValue.serverTimestamp();
+      const now = Timestamp.now();
 
       const data = {
         email,
         displayName: displayName || "",
-        createdAt: timestamp,
-        updatedAt: timestamp,
+        createdAt: now,
+        updatedAt: now,
       };
 
       return userDoc.set(data);
