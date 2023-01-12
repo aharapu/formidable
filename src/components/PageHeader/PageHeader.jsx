@@ -15,7 +15,6 @@ export default function PageHeader() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [user, setUser] = useRecoilState(userAtom);
-    // const [isLoading, setIsLoading] = useState(false);
     const { isLoading, addLoading, removeLoading} = useLoading();
 
     const clearInputs = () => {

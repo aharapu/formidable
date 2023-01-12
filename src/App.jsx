@@ -13,6 +13,7 @@ import { BUG_PAGE, FEATURE_PAGE, HOME_PAGE } from './constants';
 
 import './index.css';
 
+// TODO -> implement react router
 function App() {
     const pageName = useRecoilValue(navigationAtom);
 

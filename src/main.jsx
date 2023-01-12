@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RecoilRoot, useSetRecoilState } from 'recoil';
+
+import { collection, query, getDocs } from 'firebase/firestore';
+
 import { ThemeProvider } from '@mui/material/styles';
 
 import App from './App';
 import { theme } from './theme';
 import { authClient } from './auth/auth';
 import { userAtom } from './recoil/atoms/user';
+import { db } from './firebase/app';
+import { useLoading } from './hooks/useLoading';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
@@ -19,10 +24,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 );
 
 function AppContainer() {
-    // TODO -> initialize auth here and pass value to app state
-    //         and when done, render app, otherwise render loading
     const [ initialized, setInitialized ] = useState(false);
     const setUser = useSetRecoilState(userAtom);
+    const { addLoading, removeLoading, checkIfLoading } = useLoading();
 
     useRunOnce(() => {
         if (initialized) {
@@ -30,13 +34,42 @@ function AppContainer() {
         }
 
         const unsubscribe = authClient.onAuthenticationChange((user) => {
-            console.log('auth state changed');
-            console.log('user', user);
-            setUser(user ? ({ displayName: user.displayName, email: user.email, uid: user.uid }) : null);
+            if (user) {
+                console.log('user signed in', user);
+                setUser({ displayName: user.displayName, email: user.email, uid: user.uid });
+
+                const isLoadingInputTypes = checkIfLoading('input-types');
+                const isLoadingFormTypes = checkIfLoading('form-types');
+                if (!isLoadingInputTypes && !isLoadingFormTypes) {
+                    loadFormAndInputTypes();
+                }
+            }
             setInitialized(true);
             unsubscribe();
         });
     });
+
+    const loadFormAndInputTypes = useCallback(async () => {
+        try {
+            addLoading('form-types');
+            addLoading('input-types');
+
+            const [ formTypes, inputTypes ] = await Promise.all([
+                getDocs(query(collection(db, 'form_types'))),
+                getDocs(query(collection(db, 'input_types'))),
+            ]);
+
+            // TODO -> create an input map and add it to the recoil state
+            console.log('formTypes', formTypes.docs.map(doc => doc.data()));
+            console.log('inputTypes', inputTypes.docs.map(doc => doc.data()));
+
+            removeLoading('form-types');
+            removeLoading('input-types');
+        } catch (e) {
+            // TODO -> use a logging level
+            console.error(e);
+        }
+    }, [addLoading, removeLoading]);
 
     if (!initialized) {
         return (

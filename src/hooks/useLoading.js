@@ -14,7 +14,7 @@ export function useLoading() {
 
     const addLoading = useCallback(
         (element) => {
-            validateElement(element, loadingElements);
+            validateElement(element);
 
             if (loadingElements.includes(element)) {
                 throw new Error(`Element ${element} is already loading`);
@@ -22,6 +22,8 @@ export function useLoading() {
 
             loadingElements.push(element);
             loadingCount += 1;
+            // TODO -> create logger with levels of logging
+            console.log('Updating loading state:', JSON.stringify(loadingElements));
 
             if (loadingCount === 1) {
                 setLoading(true);
@@ -39,7 +41,7 @@ export function useLoading() {
 
     const removeLoading = useCallback(
         (element) => {
-            validateElement(element, loadingElements);
+            validateElement(element);
 
             if (!loadingElements.includes(element)) {
                 throw new Error(`Element ${element} is not loading`);
@@ -47,6 +49,7 @@ export function useLoading() {
 
             loadingElements = loadingElements.filter((e) => e !== element);
             loadingCount -= 1;
+            console.log('Updating loading state:', JSON.stringify(loadingElements));
 
             if (loadingCount === 0 && !timeout) {
                 setLoading(false);
@@ -55,7 +58,13 @@ export function useLoading() {
         [setLoading],
     );
 
-    return { isLoading, addLoading, removeLoading };
+    const checkIfLoading = useCallback((element) => {
+        validateElement(element);
+
+        return loadingElements.includes(element);
+    }, []);
+
+    return { isLoading, addLoading, removeLoading, checkIfLoading };
 }
 
 function validateElement(element) {

@@ -1,12 +1,6 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-  	// requires the resource to have an owner reference pointing to the user that owns the resource
-  	function userIsOwner() {
-      return get(resource.data.owner).data.uid == request.auth.uid;
-    }
-
     function isCompleteUserDocument() {
       return (request.resource.data.keys().hasAll(['email', 'displayName', 'createdAt', 'updatedAt'])) &&
         (request.resource.data.keys().hasOnly(['email', 'displayName', 'createdAt', 'updatedAt']));
@@ -46,8 +40,12 @@ service cloud.firestore {
       allow read: if request.auth != null && resource != null && request.auth.uid == resource.id;
     }
 
-  	match /inputs/{inputId} {
-      allow create, read, update, delete: if userIsOwner();
+    match /form_types/{formTypeId} {
+      allow read: if true;
+    }
+
+  	match /input_types/{inputId} {
+      allow read: if true;
     }
 
     match /{document=**} {

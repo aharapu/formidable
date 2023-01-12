@@ -28,3 +28,8 @@ to run emulators you will need java 19 installed.
 -   to deploy changes to firebase use `firebase deploy` from the root of the project
 -   to deploy changes to firebase functions use `firebase deploy --only functions` from the root of the project
 -   to deploy changes to a single function use `firebase deploy --only functions:FUNCTION_NAME` from the root of the project
+
+### architecture & design
+
+-   cloud architecture: https://whimsical.com/cloud-architecture-E8Ux8amHEzJ3czeN7oox6V
+-   data logic: https://whimsical.com/data-logic-681LgzvhzL14TVcBAAziW3
