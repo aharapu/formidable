@@ -12,6 +12,7 @@ import { authClient } from './auth/auth';
 import { userAtom } from './recoil/atoms/user';
 import { db } from './firebase/app';
 import { useLoading } from './hooks/useLoading';
+import { useRunOnce } from './hooks/useRunOnce';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
@@ -43,6 +44,8 @@ function AppContainer() {
                 if (!isLoadingInputTypes && !isLoadingFormTypes) {
                     loadFormAndInputTypes();
                 }
+            } else {
+                setUser(null);
             }
             setInitialized(true);
             unsubscribe();
@@ -80,15 +83,4 @@ function AppContainer() {
     return (
         <App />
     );
-}
-
-function useRunOnce(callback) {
-    const hasRun = React.useRef(false);
-
-    if (hasRun.current) {
-        return;
-    }
-
-    hasRun.current = true;
-    callback();
 }

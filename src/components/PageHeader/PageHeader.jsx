@@ -10,6 +10,7 @@ import { db } from '../../firebase/app';
 
 import { FFTextField } from '../mui-wrappers/FFTextField/FFTextField';
 import { useLoading } from '../../hooks/useLoading';
+import LoginWithGoogle from '../LoginWithGoogle';
 
 export default function PageHeader() {
     const [email, setEmail] = useState('');
@@ -119,6 +120,7 @@ export default function PageHeader() {
                     </Typography>
             }
             {!signedIn && (<>
+                <LoginWithGoogle />
                 <FFTextField
                     label="email"
                     variant="outlined"
